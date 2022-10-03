@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="purple_200">#FF000000</color>
+    <color name="purple_500">#FF000000</color>
+    <color name="purple_700">#212121</color>
+    <color name="teal_200">#002338</color>
+    <color name="teal_700">#002338</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bottom_layout">#58595B</color>
+
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#999999</color>
+    <color name="dividerColor">#BDBDBD</color>
+    <color name="whiteText">#FFFFFFFF</color>
+    <color name="menuItem">#FFFFFFFF</color>
+    <color name="menuBackground">#FF000000</color>
+    <color name="blackText">#FFF</color>
+    <color name="blueText">#FFF</color>
+    <color name="yellowText">#FFF</color>
+    <color name="hintColor">#51504F</color>
+
+    <color name="boxColor">#FFF</color>
+
+    <color name="splash_background">#0C6A83</color>
+    <color name="backgroundColor">#212121</color>
+    <color name="backgroundColorPrimary">#FF000000</color>
+    <color name="backgroundColorGreen">#212121</color>
+    <color name="backgroundCardColor">#58595B</color>
+    <color name="backgroundCardColorActive">#11AFA2</color>
+    <color name="backgroundCardColorBlue">#7C7776</color>
+    <color name="button_color">#58595B</color>
+    <color name="button_blue_color">#58595B</color>
+    <color name="button_red_color">#58595B</color>
+    <color name="primary_text_color">#51504F</color>
+    <color name="drawerTextColor">#999999</color>
+    <color name="spinnerBackground">#58595B</color>
+
+
+    <color name="icon_color">#FFF</color>
+    <color name="icon_yellow">#FFA000</color>
+    <color name="icon_green">#0C6A83</color>
+    <color name="icon_menu">#FFF</color>
+    <color name="play">#0C6A83</color>
+    <color name="stars_color">#FFF59D</color>
+
+
+    <color name="alertColor">#EF9A9A</color>
+    <color name="alert">#802798A5</color>
+    <color name="link">#2196F3</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="dialog_text_color">#66000000</color>
+    <color name="grey">#FFF</color>
+    <color name="green">#11AFA2</color>
+    <color name="warning">#FFA000</color>
+    <color name="blue">#304FFE</color>
+    <color name="black_20">#202020</color>
+    <color name="bill_background">#7C7776</color>
+
+
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#FFF</color>
+
+</resources>

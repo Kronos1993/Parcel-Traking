@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.kronos.parcel.traking.ui.home.HomeFragment"
+        android:label="@string/title_parcel_shipped"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_dialog_add_parcel"
+            app:destination="@id/dialog_add_parcel" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/dialog_add_parcel"
+        android:name="com.kronos.parcel.traking.ui.add_parcel.AddParcelFragment"
+        tools:layout="@layout/fragment_dialog_add_parcel" />
+
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="com.kronos.parcel.traking.ui.history.HistoryFragment"
+        android:label="@string/title_history"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.kronos.parcel.traking.ui.notifications.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+</navigation>
