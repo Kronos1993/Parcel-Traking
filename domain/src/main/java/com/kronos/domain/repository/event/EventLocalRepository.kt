@@ -11,4 +11,10 @@ interface EventLocalRepository {
     suspend fun listAll(): List<EventModel>
 
     suspend fun listAllByParcel(trackingNumber:String): List<EventModel>
+
+    suspend fun countEventNotReadByParcel(trackingNumber:String): Int
+
+    suspend fun countEventNotRead(): Int
+
+    suspend fun setAllEventRead()
 }

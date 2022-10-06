@@ -8,10 +8,12 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import androidx.activity.viewModels
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,6 +25,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kronos.core.util.AndroidPermissionUtil
 import com.kronos.core.util.NavigateUtil
 import com.kronos.parcel.tracking.databinding.ActivityMainBinding
+import com.kronos.parcel.tracking.ui.history.HistoryViewModel
+import com.kronos.parcel.tracking.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -30,10 +34,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val viewModel by viewModels<MainActivityViewModel>()
+    private val viewModelHistory by viewModels<HistoryViewModel>()
+    private val viewModelHome by viewModels<HomeViewModel>()
 
     private var grantedAll = false
     private var grantedFullStorage = false
-    private lateinit var appBarConfiguration:AppBarConfiguration
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun init(){
+    private fun init() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -138,6 +145,52 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        observeViewModel()
+        observeNavigation(navController)
+        viewModel.getEventCount()
+        viewModelHome.refreshParcels()
+    }
+
+    private fun observeNavigation(navController: NavController) {
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.navigation_notifications -> {
+                    viewModel.setAllEventReaded()
+                }
+            }
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.eventCount.observe(this, ::handleEventCount)
+        viewModelHistory.state.observe(this, ::handleHistoryState)
+        viewModelHome.state.observe(this, ::handleHomeState)
+    }
+
+    private fun handleHistoryState(state: MainState?) {
+        when(state){
+            MainState.NewEvent->{
+                viewModel.getEventCount()
+            }
+        }
+    }
+
+    private fun handleHomeState(state: MainState?) {
+        when(state){
+            MainState.NewEvent->{
+                viewModel.getEventCount()
+            }
+        }
+    }
+
+    private fun handleEventCount(i: Int) {
+        val navBar  = binding.navView
+        if (i>0)
+            navBar.getOrCreateBadge(R.id.navigation_notifications).number = i
+        else
+            navBar.removeBadge(R.id.navigation_notifications)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

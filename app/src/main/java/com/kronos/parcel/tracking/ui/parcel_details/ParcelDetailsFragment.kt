@@ -85,13 +85,13 @@ class ParcelDetailsFragment : Fragment() {
             LoadingDialog.getProgressDialog(
                 requireContext(),
                 R.string.loading_dialog_text,
-                com.kronos.resources.R.color.teal_700
+                com.kronos.resources.R.color.colorSecondaryVariant
             )!!.show()
         } else {
             LoadingDialog.getProgressDialog(
                 requireContext(),
                 R.string.loading_dialog_text,
-                com.kronos.resources.R.color.teal_700
+                com.kronos.resources.R.color.colorSecondaryVariant
             )!!.dismiss()
         }
     }

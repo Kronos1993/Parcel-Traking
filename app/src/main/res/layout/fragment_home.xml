@@ -2,9 +2,7 @@
 <layout>
 
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="viewModel"
             type="com.kronos.parcel.tracking.ui.home.HomeViewModel" />
@@ -46,12 +44,12 @@
                 android:id="@+id/recyclerViewCurrentParcels"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:handle_visibility="@{viewModel.parcelList.size()>0}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="5"
-                app:handle_visibility="@{viewModel.parcelList.size()>0}"
                 tools:listitem="@layout/item_parcel" />
 
 

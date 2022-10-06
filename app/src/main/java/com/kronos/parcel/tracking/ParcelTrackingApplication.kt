@@ -32,7 +32,7 @@ class ParcelTrackingApplication:Application(){
     private fun createNotificationChanel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
-                NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL, NotificationManager.IMPORTANCE_DEFAULT
+                NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL, NotificationManager.IMPORTANCE_HIGH
             )
             notificationChannel.description = NOTIFICATION_CHANNEL
             val notificationManager = getSystemService(

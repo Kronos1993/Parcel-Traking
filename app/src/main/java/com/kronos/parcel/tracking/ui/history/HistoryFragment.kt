@@ -1,14 +1,13 @@
 package com.kronos.parcel.tracking.ui.history
 
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +19,9 @@ import com.kronos.core.util.SnackBarUtil
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentHistoryBinding
 import com.kronos.domain.model.parcel.ParcelModel
+import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.ui.history.state.HistoryState
+import com.kronos.parcel.tracking.ui.home.CURRENT_PARCEL
 import java.util.*
 
 class HistoryFragment : Fragment() {
@@ -51,7 +52,7 @@ class HistoryFragment : Fragment() {
         viewModel.state.observe(this.viewLifecycleOwner, ::handleHistoryState)
     }
 
-    private fun handleHistoryState(state: HistoryState) {
+    private fun handleHistoryState(state: MainState) {
         when (state) {
             is HistoryState.Loading -> {
                 handleLoading(state.loading)
@@ -87,13 +88,13 @@ class HistoryFragment : Fragment() {
             LoadingDialog.getProgressDialog(
                 requireContext(),
                 R.string.loading_dialog_text,
-                com.kronos.resources.R.color.teal_700
+                com.kronos.resources.R.color.colorSecondaryVariant
             )!!.show()
         } else {
             LoadingDialog.getProgressDialog(
                 requireContext(),
                 R.string.loading_dialog_text,
-                com.kronos.resources.R.color.teal_700
+                com.kronos.resources.R.color.colorSecondaryVariant
             )!!.dismiss()
         }
     }
@@ -109,6 +110,9 @@ class HistoryFragment : Fragment() {
         binding.recyclerViewParcelsHistory.adapter = viewModel.parcelAdapter
         viewModel.parcelAdapter.setAdapterItemClick(object : AdapterItemClickListener<ParcelModel> {
             override fun onItemClick(t: ParcelModel, pos: Int) {
+                var bundle = Bundle()
+                bundle.putSerializable(CURRENT_PARCEL, t)
+                findNavController().navigate(R.id.navigation_parcel_details, bundle)
             }
 
         })

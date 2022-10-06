@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kronos.core.extensions.asLiveData
+import com.kronos.core.extensions.formatDate
 import com.kronos.core.notification.INotifications
 import com.kronos.core.notification.NotificationType
 import com.kronos.core.view_model.ParentViewModel
@@ -13,6 +14,7 @@ import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.domain.repository.event.EventLocalRepository
 import com.kronos.domain.repository.parcel.ParcelLocalRepository
 import com.kronos.domain.repository.parcel.ParcelRemoteRepository
+import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.ui.home.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,14 +38,14 @@ class HomeViewModel @Inject constructor(
 
     val parcelAdapter: ParcelAdapter = ParcelAdapter()
 
-    private val _state = MutableLiveData<HomeState>()
+    private val _state = MutableLiveData<MainState>()
     val state = _state.asLiveData()
 
-    fun setState(state: HomeState) {
+    fun setState(state: MainState) {
         _state.value = state
     }
 
-    fun postState(state: HomeState) {
+    fun postState(state: MainState) {
         _state.postValue(state)
     }
 
@@ -65,7 +67,65 @@ class HomeViewModel @Inject constructor(
         setState(HomeState.Loading(true))
         viewModelScope.launch {
             parcelLocalRepository.saveParcel(itemAt)
+            logParcelToHistory(itemAt)
             getParcels()
+        }
+    }
+
+    private fun logParcelToHistory(item: ParcelModel) {
+        viewModelScope.launch {
+            eventLocalRepository.saveEvent(
+                EventModel(
+                    0,
+                    context.getString(R.string.parcel_updated_event).format(item.name),
+                    context.getString(R.string.parcel_updated_to_archive_event_details).format(
+                        item.name,
+                        Date(item.dateUpdated).formatDate(context.getString(R.string.date_format))
+                    ),
+                    false,
+                    item.trackingNumber,
+                    Calendar.getInstance().timeInMillis,
+                    Calendar.getInstance().timeInMillis,
+                )
+            )
+        }
+        setState(MainState.NewEvent)
+    }
+
+    private fun logParcelStatusUpdated(item: ParcelModel,newStatus:String) {
+        viewModelScope.launch {
+            eventLocalRepository.saveEvent(
+                EventModel(
+                    0,
+                    context.getString(R.string.notification_title).format(item.name),
+                    context.getString(R.string.notification_details)
+                        .format(item.trackingNumber, item.status, newStatus),
+                    false,
+                    item.trackingNumber,
+                    Calendar.getInstance().timeInMillis,
+                    Calendar.getInstance().timeInMillis,
+                )
+            )
+            setState(MainState.NewEvent)
+        }
+    }
+
+    private fun logParcelAdded(item: ParcelModel) {
+        viewModelScope.launch {
+            eventLocalRepository.saveEvent(
+                EventModel(
+                    0,
+                    context.getString(R.string.parcel_added_event).format(item.name),
+                    context.getString(R.string.parcel_added_event_details).format(
+                        item.name,
+                        Date(item.dateUpdated).formatDate(context.getString(R.string.date_format))
+                    ),
+                    false,
+                    item.trackingNumber,
+                    Calendar.getInstance().timeInMillis,
+                    Calendar.getInstance().timeInMillis,
+                )
+            )
         }
     }
 
@@ -82,6 +142,7 @@ class HomeViewModel @Inject constructor(
                 parcelLocalRepository.saveParcel(parcel)
             }
             save.await()
+            logParcelAdded(parcel)
             postState(HomeState.Loading(false))
             postState(HomeState.Search)
         }
@@ -95,7 +156,7 @@ class HomeViewModel @Inject constructor(
                     if (it.isNotEmpty()) {
                         _parcelList.postValue(it)
                         it.forEachIndexed { index, parcelModel ->
-                            refreshParcel(parcelModel,index)
+                            refreshParcel(parcelModel, index)
                         }
                     } else {
                         postState(HomeState.Refreshing(false))
@@ -105,7 +166,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun refreshParcel(parcel: ParcelModel,current:Int) {
+    fun refreshParcel(parcel: ParcelModel, current: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             lateinit var parcelUpdate: ParcelModel
             val call = async {
@@ -121,18 +182,7 @@ class HomeViewModel @Inject constructor(
                         com.kronos.resources.R.drawable.ic_notifications,
                         context
                     )
-                    eventLocalRepository.saveEvent(
-                        EventModel(
-                            0,
-                            context.getString(R.string.notification_title).format(parcel.name),
-                            context.getString(R.string.notification_details)
-                                .format(parcel.trackingNumber, parcel.status, parcelUpdate.status),
-                            false,
-                            parcel.trackingNumber,
-                            Calendar.getInstance().timeInMillis,
-                            Calendar.getInstance().timeInMillis,
-                        )
-                    )
+                    logParcelStatusUpdated(parcel,parcelUpdate.status)
                     parcel.status = parcelUpdate.status
                 }
                 parcel.dateUpdated = parcelUpdate.dateUpdated

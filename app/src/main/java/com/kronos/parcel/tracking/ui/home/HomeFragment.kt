@@ -1,6 +1,5 @@
 package com.kronos.parcel.tracking.ui.home
 
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +17,7 @@ import com.kronos.core.extensions.fragmentBinding
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.SnackBarUtil
 import com.kronos.domain.model.parcel.ParcelModel
+import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentHomeBinding
 import com.kronos.parcel.tracking.ui.home.state.HomeState
@@ -48,12 +48,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun setListeners() {
-        binding.fabAddNewParcel.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_home_to_dialog_add_parcel)
-        }
-
         binding.homeRefreshLayout.setOnRefreshListener {
             viewModel.refreshParcels()
+        }
+
+
+        binding.fabAddNewParcel.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_home_to_dialog_add_parcel)
         }
     }
 
@@ -63,7 +64,7 @@ class HomeFragment : Fragment() {
         viewModel.state.observe(this.viewLifecycleOwner, ::handleHomeState)
     }
 
-    private fun handleHomeState(homeState: HomeState) {
+    private fun handleHomeState(homeState: MainState) {
         when (homeState) {
             is HomeState.Loading -> {
                 handleLoading(homeState.loading)
@@ -107,13 +108,13 @@ class HomeFragment : Fragment() {
             LoadingDialog.getProgressDialog(
                 requireContext(),
                 R.string.loading_dialog_text,
-                com.kronos.resources.R.color.teal_700
+                com.kronos.resources.R.color.colorSecondaryVariant
             )!!.show()
         } else {
             LoadingDialog.getProgressDialog(
                 requireContext(),
                 R.string.loading_dialog_text,
-                com.kronos.resources.R.color.teal_700
+                com.kronos.resources.R.color.colorSecondaryVariant
             )!!.dismiss()
         }
     }
@@ -187,6 +188,5 @@ class HomeFragment : Fragment() {
 
     private fun initViewModel() {
         viewModel.getParcels()
-        viewModel.refreshParcels()
     }
 }

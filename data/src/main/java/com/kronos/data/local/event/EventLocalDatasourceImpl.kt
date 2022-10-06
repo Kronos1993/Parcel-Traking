@@ -70,4 +70,42 @@ class EventLocalDatasourceImpl @Inject constructor(
         return result
     }
 
+    override suspend fun countEventNotReadByParcel(trackingNumber: String): Int {
+        var result = 0
+
+        try {
+            val internalDb = databaseFactory.loadLocalDatabase() as ApplicationDatabase
+            result = internalDb.eventDao().countUnreadByParcel(trackingNumber)
+
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+
+        return result
+    }
+
+    override suspend fun countEventNotRead(): Int {
+        var result = 0
+
+        try {
+            val internalDb = databaseFactory.loadLocalDatabase() as ApplicationDatabase
+            result = internalDb.eventDao().countUnread()
+
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+
+        return result
+    }
+
+    override suspend fun setAllEventRead() {
+        try {
+            val internalDb = databaseFactory.loadLocalDatabase() as ApplicationDatabase
+            internalDb.eventDao().setAllRead()
+
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
+
 }

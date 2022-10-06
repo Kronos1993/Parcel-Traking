@@ -1,6 +1,5 @@
 package com.kronos.parcel.tracking.ui.notifications
 
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -84,13 +83,13 @@ class NotificationsFragment : Fragment() {
             LoadingDialog.getProgressDialog(
                 requireContext(),
                 R.string.loading_dialog_text,
-                com.kronos.resources.R.color.teal_700
+                com.kronos.resources.R.color.colorSecondaryVariant
             )!!.show()
         } else {
             LoadingDialog.getProgressDialog(
                 requireContext(),
                 R.string.loading_dialog_text,
-                com.kronos.resources.R.color.teal_700
+                com.kronos.resources.R.color.colorSecondaryVariant
             )!!.dismiss()
         }
     }

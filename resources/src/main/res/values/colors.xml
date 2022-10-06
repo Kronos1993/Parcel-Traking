@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="purple_200">#ffad42</color>
-    <color name="purple_500">#f57c00</color>
-    <color name="purple_700">#bb4d00</color>
-    <color name="teal_200">#f9a825</color>
-    <color name="teal_700">#c17900</color>
+    <color name="colorPrimary">#f57c00</color>
+    <color name="colorPrimaryVariant">#bb4d00</color>
+    <color name="colorSecondary">#f9a825</color>
+    <color name="colorSecondaryVariant">#c17900</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
 
 
 

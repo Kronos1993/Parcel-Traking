@@ -25,5 +25,17 @@ class LocalEventLocalRepositoryImpl @Inject constructor(
         return eventLocalDataSource.listAllByParcel(trackingNumber)
     }
 
+    override suspend fun countEventNotReadByParcel(trackingNumber: String): Int {
+        return eventLocalDataSource.countEventNotReadByParcel(trackingNumber)
+    }
+
+    override suspend fun countEventNotRead(): Int {
+        return eventLocalDataSource.countEventNotRead()
+    }
+
+    override suspend fun setAllEventRead() {
+        eventLocalDataSource.setAllEventRead()
+    }
+
 
 }
