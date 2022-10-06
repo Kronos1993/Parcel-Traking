@@ -1,4 +1,4 @@
-package com.kronos.parcel.traking.ui.add_parcel
+package com.kronos.parcel.tracking.ui.add_parcel
 
 import android.app.Dialog
 import android.os.Bundle
@@ -11,9 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kronos.core.extensions.fragmentBinding
-import com.kronos.myparceltraking.R
-import com.kronos.myparceltraking.databinding.FragmentDialogAddParcelBinding
-import com.kronos.parcel.traking.ui.home.HomeViewModel
+import com.kronos.parcel.tracking.R
+import com.kronos.parcel.tracking.databinding.FragmentDialogAddParcelBinding
+import com.kronos.parcel.tracking.ui.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

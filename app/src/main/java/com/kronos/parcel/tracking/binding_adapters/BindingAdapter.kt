@@ -1,11 +1,10 @@
-package com.kronos.parcel.traking.binding_adapters
+package com.kronos.parcel.tracking.binding_adapters
 
+import android.view.View
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
-import com.google.android.material.button.MaterialButton
-import com.kronos.myparceltraking.R
+import com.kronos.parcel.tracking.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,21 +28,28 @@ fun timeTransitSpent(textView: TextView, date: Long) = textView.run {
     val minutes = seconds / 60
     val hours = minutes / 60
     val days = hours / 24 + 1
-    if (days < 0) {
-        textView.text =
-            textView.context.resources.getString(R.string.time_spent_hours).format(hours)
-    } else {
-        textView.text = textView.context.resources.getString(R.string.time_spent_days).format(days)
+    when {
+        seconds < 60 -> {
+            textView.text =
+                textView.context.resources.getString(R.string.time_spent_seconds)
+        }
+        minutes < 60 -> {
+            textView.text =
+                textView.context.resources.getString(R.string.time_spent_minutes).format(minutes)
+        }
+        hours < 24 -> {
+            textView.text =
+                textView.context.resources.getString(R.string.time_spent_hours).format(hours)
+        }
+        else -> {
+            textView.text =
+                textView.context.resources.getString(R.string.time_spent_days).format(days)
+        }
     }
 }
 
 
 @BindingAdapter("handle_visibility")
-fun handleVisibility(view: MaterialButton, enable: Boolean) = view.run {
-    isVisible = enable
-}
-
-@BindingAdapter("handle_layout_visibility")
-fun handleLayoutVisibility(view: ConstraintLayout, enable: Boolean) = view.run {
+fun handleVisibility(view: View, enable: Boolean) = view.run {
     isVisible = enable
 }

@@ -10,5 +10,5 @@ class ExternalDbPersistenceOptionsImpl @Inject constructor(
 ) : PersistenceOptions {
 
     override val basePath: String
-        get() = "zip-cargo/db"
+        get() = "my-box/db"
 }

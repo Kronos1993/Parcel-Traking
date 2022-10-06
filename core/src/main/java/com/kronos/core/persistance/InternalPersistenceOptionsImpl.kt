@@ -10,6 +10,6 @@ class InternalPersistenceOptionsImpl @Inject constructor(
 ) : PersistenceOptions {
 
     override val basePath: String
-        get() = "zip-cargo"
+        get() = "my-box"
 
 }

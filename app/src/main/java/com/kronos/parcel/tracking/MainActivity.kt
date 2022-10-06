@@ -1,4 +1,4 @@
-package com.kronos.parcel.traking
+package com.kronos.parcel.tracking
 
 import android.Manifest
 import android.content.Intent
@@ -12,16 +12,19 @@ import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kronos.core.util.AndroidPermissionUtil
 import com.kronos.core.util.NavigateUtil
-import com.kronos.myparceltraking.databinding.ActivityMainBinding
+import com.kronos.parcel.tracking.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -30,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private var grantedAll = false
     private var grantedFullStorage = false
+    private lateinit var appBarConfiguration:AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +79,7 @@ class MainActivity : AppCompatActivity() {
             MaterialAlertDialogBuilder(this)
                 .setMessage(getString(R.string.permission_dialog_message))
                 .setTitle(getString(R.string.permission_dialog_title))
-                .setPositiveButton(R.string.ok) { dialogInterface, i ->
+                .setPositiveButton(R.string.ok) { dialogInterface, _ ->
                     NavigateUtil.startActivityForResult(
                         this,
                         Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION,
@@ -83,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                     )
                     dialogInterface.dismiss()
                 }
-                .setNegativeButton(R.string.cancel) { dialogInterface, i ->
+                .setNegativeButton(R.string.cancel) { dialogInterface, _ ->
                     dialogInterface.dismiss()
                     finish()
                 }
@@ -121,18 +125,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun init(){
+    private fun init(){
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
+        appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_history, R.id.navigation_notifications
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(this, R.id.nav_host_fragment_activity_main)
+        return (navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp())
     }
 }

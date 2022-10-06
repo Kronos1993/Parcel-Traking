@@ -1,10 +1,9 @@
-package com.kronos.parcel.traking.ui.home
+package com.kronos.parcel.tracking.ui.home
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -18,13 +17,14 @@ import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.fragmentBinding
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.SnackBarUtil
-import com.kronos.zipcargo.domain.model.parcel.ParcelModel
-import com.kronos.myparceltraking.R
-import com.kronos.myparceltraking.databinding.FragmentHomeBinding
-import com.kronos.parcel.traking.ui.home.state.HomeState
+import com.kronos.domain.model.parcel.ParcelModel
+import com.kronos.parcel.tracking.R
+import com.kronos.parcel.tracking.databinding.FragmentHomeBinding
+import com.kronos.parcel.tracking.ui.home.state.HomeState
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+const val CURRENT_PARCEL = "current_parcel"
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -40,10 +40,10 @@ class HomeFragment : Fragment() {
     ) = binding.run {
         viewModel = this@HomeFragment.viewModel
         lifecycleOwner = this@HomeFragment.viewLifecycleOwner
-        initViewModel()
         observeViewModel()
         setListeners()
         initViews()
+        initViewModel()
         root
     }
 
@@ -60,7 +60,6 @@ class HomeFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.parcelList.observe(this.viewLifecycleOwner, ::handleParcelList)
         viewModel.loading.observe(this.viewLifecycleOwner, ::handleLoading)
-        viewModel.error.observe(this.viewLifecycleOwner, ::handleError)
         viewModel.state.observe(this.viewLifecycleOwner, ::handleHomeState)
     }
 
@@ -71,7 +70,7 @@ class HomeFragment : Fragment() {
             }
             is HomeState.Refreshing -> {
                 binding.homeRefreshLayout.isRefreshing = homeState.loading
-                if(!homeState.loading)
+                if (!homeState.loading)
                     viewModel.getParcels()
             }
             is HomeState.Search -> {
@@ -121,13 +120,6 @@ class HomeFragment : Fragment() {
 
     private fun handleParcelList(list: List<ParcelModel>) {
         viewModel.parcelAdapter.submitList(list)
-        if (list.isEmpty()) {
-            binding.recyclerViewCurrentParcels.visibility = View.GONE
-            binding.textHome.visibility = View.VISIBLE
-        } else {
-            binding.recyclerViewCurrentParcels.visibility = View.VISIBLE
-            binding.textHome.visibility = View.GONE
-        }
         viewModel.parcelAdapter.notifyDataSetChanged()
     }
 
@@ -137,6 +129,17 @@ class HomeFragment : Fragment() {
         binding.recyclerViewCurrentParcels.adapter = viewModel.parcelAdapter
         viewModel.parcelAdapter.setAdapterItemClick(object : AdapterItemClickListener<ParcelModel> {
             override fun onItemClick(t: ParcelModel, pos: Int) {
+                if (viewModel.state.value is HomeState.Refreshing) {
+                    if (!(viewModel.state.value as HomeState.Refreshing).loading) {
+                        var bundle = Bundle()
+                        bundle.putSerializable(CURRENT_PARCEL, t)
+                        findNavController().navigate(R.id.navigation_parcel_details, bundle)
+                    }
+                }else{
+                    var bundle = Bundle()
+                    bundle.putSerializable(CURRENT_PARCEL, t)
+                    findNavController().navigate(R.id.navigation_parcel_details, bundle)
+                }
             }
 
         })
@@ -152,9 +155,13 @@ class HomeFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewModel.toHistory(
-                    viewModel.parcelAdapter.getItemAt(viewHolder.adapterPosition)
-                )
+                when(direction){
+                    ItemTouchHelper.LEFT->{
+                        viewModel.toHistory(
+                            viewModel.parcelAdapter.getItemAt(viewHolder.adapterPosition)
+                        )
+                    }
+                }
             }
         }
 
@@ -162,10 +169,15 @@ class HomeFragment : Fragment() {
             SwipeToDelete(
                 ContextCompat.getDrawable(
                     requireContext(),
-                    com.kronos.resources.R.drawable.ic_close
+                    com.kronos.resources.R.drawable.ic_delete
                 )!!,
-                ColorDrawable(Color.TRANSPARENT),
-                itemTouchHelperCallback!!,
+                ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.snack_bar_error_background)),
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    com.kronos.resources.R.drawable.ic_unarchive
+                )!!,
+                ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.green)),
+                itemTouchHelperCallback,
                 ItemTouchHelper.LEFT
             )
         )
@@ -175,5 +187,6 @@ class HomeFragment : Fragment() {
 
     private fun initViewModel() {
         viewModel.getParcels()
+        viewModel.refreshParcels()
     }
 }

@@ -1,20 +1,26 @@
-package com.kronos.parcel.traking.ui.history
+package com.kronos.parcel.tracking.ui.history
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kronos.core.adapters.AdapterItemClickListener
+import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.fragmentBinding
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.SnackBarUtil
-import com.kronos.zipcargo.domain.model.parcel.ParcelModel
-import com.kronos.myparceltraking.R
-import com.kronos.myparceltraking.databinding.FragmentHistoryBinding
-import com.kronos.parcel.traking.ui.history.state.HistoryState
+import com.kronos.parcel.tracking.R
+import com.kronos.parcel.tracking.databinding.FragmentHistoryBinding
+import com.kronos.domain.model.parcel.ParcelModel
+import com.kronos.parcel.tracking.ui.history.state.HistoryState
 import java.util.*
 
 class HistoryFragment : Fragment() {
@@ -30,9 +36,9 @@ class HistoryFragment : Fragment() {
     ) = binding.run {
         viewModel = this@HistoryFragment.viewModel
         lifecycleOwner = this@HistoryFragment.viewLifecycleOwner
-        initViewModel()
         observeViewModel()
         initViews()
+        initViewModel()
         root
     }
 
@@ -94,13 +100,6 @@ class HistoryFragment : Fragment() {
 
     private fun handleParcelList(list: List<ParcelModel>) {
         viewModel.parcelAdapter.submitList(list)
-        if (list.isEmpty()) {
-            binding.recyclerViewParcelsHistory.visibility = View.GONE
-            binding.textHome.visibility = View.VISIBLE
-        } else {
-            binding.recyclerViewParcelsHistory.visibility = View.VISIBLE
-            binding.textHome.visibility = View.GONE
-        }
         viewModel.parcelAdapter.notifyDataSetChanged()
     }
 
@@ -113,6 +112,48 @@ class HistoryFragment : Fragment() {
             }
 
         })
+
+        val itemTouchHelperCallback: ItemTouchHelper.Callback = object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                when(direction){
+                    ItemTouchHelper.LEFT->{
+                        viewModel.deleteParcel(
+                            viewModel.parcelAdapter.getItemAt(viewHolder.adapterPosition)
+                        )
+                    }
+                    ItemTouchHelper.RIGHT->{
+                        viewModel.restoreParcel(viewModel.parcelAdapter.getItemAt(viewHolder.adapterPosition))
+                    }
+                }
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(
+            SwipeToDelete(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    com.kronos.resources.R.drawable.ic_delete
+                )!!,
+                ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.snack_bar_error_background)),
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    com.kronos.resources.R.drawable.ic_unarchive
+                )!!,
+                ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.green)),
+                itemTouchHelperCallback,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            )
+        )
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewParcelsHistory)
     }
 
     private fun initViewModel() {

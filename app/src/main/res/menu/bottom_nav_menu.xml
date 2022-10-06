@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_shipping"
+        android:icon="@drawable/ic_tracking_package"
         android:title="@string/title_parcel_shipped" />
 
     <item
         android:id="@+id/navigation_history"
-        android:icon="@drawable/ic_drawer"
+        android:icon="@drawable/ic_parcel_open"
         android:title="@string/title_history" />
 
     <item

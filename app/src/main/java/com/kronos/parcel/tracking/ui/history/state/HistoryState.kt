@@ -1,4 +1,4 @@
-package com.kronos.parcel.traking.ui.history.state
+package com.kronos.parcel.tracking.ui.history.state
 
 import java.util.*
 

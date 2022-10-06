@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.kronos.traking.ui.home.HomeViewModel" />
+            type="com.kronos.parcel.tracking.ui.home.HomeViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

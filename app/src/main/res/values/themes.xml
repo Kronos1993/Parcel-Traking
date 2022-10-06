@@ -119,12 +119,23 @@
     </style>
 
     <style name="TextViewNormal" parent="Theme.ZipCargoTraking">
-        <item name="android:textColor">@color/grey</item>
+        <item name="android:textColor">@color/blackText</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textSize">@dimen/text_16</item>
-        <item name="android:layout_marginTop">@dimen/margin_5</item>
+        <item name="android:textSize">@dimen/text_15</item>
+        <item name="android:layout_marginTop">@dimen/margin_3</item>
+        <item name="android:layout_marginStart">@dimen/margin_8</item>
+        <item name="android:layout_marginEnd">@dimen/margin_8</item>
+    </style>
+
+    <style name="TextViewSmall" parent="Theme.ZipCargoTraking">
+        <item name="android:textColor">@color/blackText</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/text_12</item>
+        <item name="android:layout_marginTop">@dimen/margin_3</item>
         <item name="android:layout_marginStart">@dimen/margin_8</item>
         <item name="android:layout_marginEnd">@dimen/margin_8</item>
     </style>

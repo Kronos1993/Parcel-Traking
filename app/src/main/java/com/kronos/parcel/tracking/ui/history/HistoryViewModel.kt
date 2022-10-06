@@ -1,20 +1,21 @@
-package com.kronos.parcel.traking.ui.history
+package com.kronos.parcel.tracking.ui.history
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kronos.core.extensions.asLiveData
 import com.kronos.core.view_model.ParentViewModel
-import com.kronos.zipcargo.domain.model.parcel.ParcelModel
-import com.kronos.zipcargo.domain.repository.LocalRepository
-import com.kronos.parcel.traking.ui.home.ParcelAdapter
-import com.kronos.parcel.traking.ui.history.state.HistoryState
+import com.kronos.domain.model.parcel.ParcelModel
+import com.kronos.domain.repository.parcel.ParcelLocalRepository
+import com.kronos.parcel.tracking.ui.home.ParcelAdapter
+import com.kronos.parcel.tracking.ui.history.state.HistoryState
+import com.kronos.parcel.tracking.ui.home.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel  @Inject constructor(
-    var localRepository: LocalRepository,
+    var parcelLocalRepository: ParcelLocalRepository,
 ) : ParentViewModel() {
     var parcel = ParcelModel(trackingNumber = "", status = "", imageUrl = "")
 
@@ -38,8 +39,26 @@ class HistoryViewModel  @Inject constructor(
     fun getParcels() {
         setState(HistoryState.Loading(true))
         viewModelScope.launch {
-            var list = localRepository.listAllParcelHistory()
+            var list = parcelLocalRepository.listAllParcelHistory()
             postParcelList(list)
+            setState(HistoryState.Loading(false))
+        }
+    }
+
+    fun restoreParcel(itemAt: ParcelModel) {
+        itemAt.history = false
+        setState(HistoryState.Loading(true))
+        viewModelScope.launch {
+            parcelLocalRepository.saveParcel(itemAt)
+            getParcels()
+        }
+    }
+
+    fun deleteParcel(parcel: ParcelModel) {
+        setState(HistoryState.Loading(true))
+        viewModelScope.launch {
+            parcelLocalRepository.deleteParcel(parcel)
+            getParcels()
             setState(HistoryState.Loading(false))
         }
     }

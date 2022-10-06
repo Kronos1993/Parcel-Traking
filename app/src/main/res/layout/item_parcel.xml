@@ -5,17 +5,18 @@
     <data>
         <variable
             name="parcelModel"
-            type="com.kronos.zipcargo.domain.model.parcel.ParcelModel" />
+            type="com.kronos.domain.model.parcel.ParcelModel" />
     </data>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewParcel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="4dp"
-        app:contentPadding="10dp">
+        android:layout_margin="@dimen/margin_5"
+        app:cardBackgroundColor="@color/backgroundCardColor"
+        app:cardCornerRadius="@dimen/card_radius"
+        app:cardElevation="@dimen/cardview_default_elevation"
+        app:contentPadding="@dimen/margin_10">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -32,57 +33,93 @@
                 android:id="@+id/imageStatus"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/margin_5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <TextView
                 android:id="@+id/textViewParcelTrackingNumber"
+                style="@style/TextViewNormal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:text="@{parcelModel.trackingNumber}"
-                style="@style/TextViewNormal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textViewParcelName"
+                style="@style/TextViewNormal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:text="@{parcelModel.name}"
-                style="@style/TextViewNormal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@id/textViewParcelTrackingNumber" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewParcelTrackingNumber" />
 
             <TextView
-                android:id="@+id/textViewParcelUpdateDate"
+                android:id="@+id/textViewParcelStatus"
+                style="@style/TextViewNormal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:visibility="gone"
-                app:format_date_long="@{parcelModel.dateUpdated}"
-                style="@style/TextViewNormal"
+                android:text="@{parcelModel.status}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@id/textViewParcelName" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewParcelName" />
+
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/TextViewSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/added"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus" />
 
             <TextView
                 android:id="@+id/textViewParcelTime"
+                style="@style/TextViewSmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                app:time_transit_spent="@{parcelModel.dateAdded}"
-                style="@style/TextViewNormal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline7"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus"
+                app:time_transit_spent="@{parcelModel.dateAdded}" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline7"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.60" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/TextViewSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/updated"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus" />
+
+            <TextView
+                android:id="@+id/textViewParcelUpdated"
+                style="@style/TextViewSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@id/textViewParcelUpdateDate"/>
+                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus"
+                app:time_transit_spent="@{parcelModel.dateUpdated}" />
 
 
 
