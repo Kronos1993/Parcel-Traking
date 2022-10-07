@@ -15,6 +15,7 @@ import com.kronos.core.util.SnackBarUtil
 import com.kronos.data.remote.retrofit.UrlConstants
 import com.kronos.domain.model.event.EventModel
 import com.kronos.domain.model.parcel.ParcelModel
+import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentParcelDetailsBinding
 import com.kronos.parcel.tracking.ui.home.CURRENT_PARCEL
@@ -49,7 +50,7 @@ class ParcelDetailsFragment : Fragment() {
         viewModel.state.observe(this.viewLifecycleOwner, ::handleState)
     }
 
-    private fun handleState(state: ParcelDetailState) {
+    private fun handleState(state: MainState) {
         when (state) {
             is ParcelDetailState.Loading -> {
                 handleLoading(state.loading)
@@ -114,7 +115,14 @@ class ParcelDetailsFragment : Fragment() {
             }
 
         })
-        
+        binding.buttonUpdateParcel.setOnClickListener{
+            if (validateField()){
+                viewModel.updateParcelFields(
+                    binding.editTextTrackingNumber.text.toString(),
+                    binding.editTextName.text.toString()
+                )
+            }
+        }
     }
 
     private fun initViewModel() {
@@ -125,5 +133,22 @@ class ParcelDetailsFragment : Fragment() {
         } else {
             findNavController().popBackStack()
         }
+    }
+
+    fun validateField() : Boolean{
+        var valid = true
+        if (binding.editTextTrackingNumber.text!!.isEmpty()){
+            valid = false
+            binding.textInputLayoutTrackingNumber.error = getString(com.kronos.resources.R.string.required_field)
+        }else{
+            binding.textInputLayoutTrackingNumber.error = null
+        }
+        if (binding.editTextName.text!!.isEmpty()){
+            valid = false
+            binding.textInputLayoutParcelName.error = getString(com.kronos.resources.R.string.required_field)
+        }else{
+            binding.textInputLayoutParcelName.error = null
+        }
+        return valid
     }
 }

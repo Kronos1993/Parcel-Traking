@@ -4,7 +4,7 @@ import java.io.Serializable
 import java.util.*
 
 data class ParcelModel(
-    val trackingNumber: String,
+    var trackingNumber: String,
     var status: String,
     var imageUrl: String,
     var id: Int = 0,

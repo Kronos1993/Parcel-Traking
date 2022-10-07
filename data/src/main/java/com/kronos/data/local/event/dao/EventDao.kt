@@ -9,10 +9,10 @@ interface EventDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdate(eventEntity: EventEntity)
 
-    @Query("SELECT * FROM EVENT ORDER BY DATE_UPDATED ASC")
+    @Query("SELECT * FROM EVENT ORDER BY DATE_UPDATED DESC")
     suspend fun listAll(): List<EventEntity>
 
-    @Query("SELECT * FROM EVENT WHERE PARCEL = :trackingNumber ORDER BY DATE_UPDATED ASC")
+    @Query("SELECT * FROM EVENT WHERE PARCEL = :trackingNumber ORDER BY DATE_UPDATED DESC")
     suspend fun listAll(trackingNumber:String): List<EventEntity>
 
     @Query("SELECT COUNT(ID) FROM EVENT WHERE PARCEL = :trackingNumber and READ = 0")

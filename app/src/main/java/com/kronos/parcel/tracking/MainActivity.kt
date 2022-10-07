@@ -27,6 +27,7 @@ import com.kronos.core.util.NavigateUtil
 import com.kronos.parcel.tracking.databinding.ActivityMainBinding
 import com.kronos.parcel.tracking.ui.history.HistoryViewModel
 import com.kronos.parcel.tracking.ui.home.HomeViewModel
+import com.kronos.parcel.tracking.ui.parcel_details.ParcelDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainActivityViewModel>()
     private val viewModelHistory by viewModels<HistoryViewModel>()
     private val viewModelHome by viewModels<HomeViewModel>()
+    private val viewModelParcelDetail by viewModels<ParcelDetailsViewModel>()
 
     private var grantedAll = false
     private var grantedFullStorage = false
@@ -166,6 +168,15 @@ class MainActivity : AppCompatActivity() {
         viewModel.eventCount.observe(this, ::handleEventCount)
         viewModelHistory.state.observe(this, ::handleHistoryState)
         viewModelHome.state.observe(this, ::handleHomeState)
+        viewModelParcelDetail.state.observe(this, ::handleParcelDetailState)
+    }
+
+    private fun handleParcelDetailState(state: MainState?) {
+        when(state){
+            MainState.NewEvent->{
+                viewModel.getEventCount()
+            }
+        }
     }
 
     private fun handleHistoryState(state: MainState?) {

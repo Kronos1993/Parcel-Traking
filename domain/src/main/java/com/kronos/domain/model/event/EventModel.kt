@@ -5,7 +5,7 @@ data class EventModel(
     val name: String,
     val body: String,
     val read: Boolean,
-    val parcel: String = "",
+    var parcel: String = "",
     val dateAdded: Long,
     val dateUpdated: Long,
 )

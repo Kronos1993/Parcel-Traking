@@ -42,35 +42,57 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textViewParcelTrackingNumber"
-                    style="@style/TextViewNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.parcel.trackingNumber}"
-                    app:layout_constraintEnd_toEndOf="@id/guideline95"
-                    app:layout_constraintStart_toStartOf="@id/guideline05"
-                    app:layout_constraintTop_toBottomOf="@+id/imageStatus" />
-
-                <TextView
-                    android:id="@+id/textViewParcelName"
-                    style="@style/TextViewNormal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.parcel.name}"
-                    app:layout_constraintEnd_toEndOf="@id/guideline95"
-                    app:layout_constraintStart_toStartOf="@id/guideline05"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewParcelTrackingNumber" />
-
-                <TextView
                     android:id="@+id/textViewParcelStatus"
                     style="@style/TextViewNormal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.parcel.status}"
+                    android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="@id/guideline95"
                     app:layout_constraintStart_toStartOf="@id/guideline05"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewParcelName" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageStatus" />
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutTrackingNumber"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/tracking_number"
+                    app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextTrackingNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@{viewModel.parcel.trackingNumber}"
+                        android:imeOptions="actionNext"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutParcelName"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/tracking_name"
+                    android:textColorHint="@color/hintColor"
+                    app:errorTextAppearance="@color/alertColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayoutTrackingNumber">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:imeOptions="actionDone"
+                        android:text="@{viewModel.parcel.name}"
+                        android:inputType="textCapWords" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/textView"
@@ -79,16 +101,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/added"
                     app:layout_constraintStart_toStartOf="@id/guideline05"
-                    app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus" />
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayoutParcelName" />
 
                 <TextView
                     android:id="@+id/textViewParcelTime"
                     style="@style/TextViewSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView"
                     app:layout_constraintEnd_toStartOf="@+id/guideline5"
                     app:layout_constraintStart_toEndOf="@+id/textView"
-                    app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus"
+                    app:layout_constraintTop_toTopOf="@+id/textView"
                     app:time_transit_spent="@{viewModel.parcel.dateAdded}" />
 
                 <androidx.constraintlayout.widget.Guideline
@@ -105,24 +128,37 @@
                     android:layout_height="wrap_content"
                     android:text="@string/updated"
                     app:layout_constraintStart_toStartOf="@+id/guideline5"
-                    app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus" />
+                    app:layout_constraintTop_toTopOf="@+id/textViewParcelTime" />
 
                 <TextView
                     android:id="@+id/textViewParcelUpdated"
                     style="@style/TextViewSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView2"
                     app:layout_constraintEnd_toEndOf="@id/guideline95"
                     app:layout_constraintStart_toEndOf="@+id/textView2"
-                    app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus"
+                    app:layout_constraintTop_toTopOf="@+id/textView2"
                     app:time_transit_spent="@{viewModel.parcel.dateUpdated}" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonUpdateParcel"
+                    style="@style/ButtonRound"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/update"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewParcelUpdated" />
+
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/barrierParcelData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:barrierDirection="bottom"
-                    app:constraint_referenced_ids="textViewParcelTime,textViewParcelUpdated,textView,textView2"/>
+                    app:constraint_referenced_ids="buttonUpdateParcel,textViewParcelTime,textViewParcelUpdated,textView,textView2"/>
 
                 <TextView
                     android:id="@+id/text_no_events"

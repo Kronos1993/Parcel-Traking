@@ -1,64 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="eventModel"
             type="com.kronos.domain.model.event.EventModel" />
     </data>
 
-    <merge>
-        <LinearLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:orientation="vertical">
+            android:layout_margin="@dimen/margin_5"
+            app:cardBackgroundColor="@color/backgroundCardColor"
+            app:cardCornerRadius="@dimen/card_radius"
+            app:cardElevation="@dimen/cardview_default_elevation"
+            app:contentPadding="@dimen/margin_10">
 
-            <TextView
-                android:id="@+id/textViewEventAdded"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                app:format_date_long="@{eventModel.dateAdded}"
-                style="@style/TextViewNormal"/>
+                android:layout_height="match_parent">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewEvent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_5"
-                app:cardBackgroundColor="@color/backgroundCardColor"
-                app:cardCornerRadius="@dimen/card_radius"
-                app:cardElevation="@dimen/cardview_default_elevation"
-                app:contentPadding="@dimen/margin_10">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/textViewEventAdded"
+                    style="@style/TextViewNormal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    app:format_date_long="@{eventModel.dateAdded}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/textViewEventName"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{eventModel.name}"
-                        style="@style/TextViewNormal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/textViewEventName"
+                    style="@style/TextViewNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:singleLine="false"
+                    android:maxLines="2"
+                    android:text="@{eventModel.name}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewEventAdded" />
 
-                    <TextView
-                        android:id="@+id/textViewEventBody"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{eventModel.body}"
-                        style="@style/TextViewNormal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/textViewEventName" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-    </merge>
+                <TextView
+                    android:id="@+id/textViewEventBody"
+                    style="@style/TextViewNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:singleLine="false"
+                    android:maxLines="4"
+                    android:text="@{eventModel.body}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewEventName" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 </layout>

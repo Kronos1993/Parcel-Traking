@@ -109,7 +109,7 @@
 
     <style name="TextViewStroke" parent="Theme.ZipCargoTraking">
         <item name="android:background">@drawable/rounded_text_view_stroke</item>
-        <item name="android:textColor">@color/green</item>
+        <item name="android:textColor">@color/primaryText</item>
         <item name="android:padding">@dimen/margin_10</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -276,8 +276,8 @@
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeWidth">2dp</item>
-        <item name="boxStrokeColor">@color/white</item>
-        <item name="errorTextAppearance">@color/design_default_color_error</item>
+        <item name="boxStrokeColor">@color/mtrl_textinput_default_box_stroke_color</item>
+        <item name="errorTextAppearance">@color/alertColor</item>
         <item name="android:layout_marginStart">@dimen/margin_10</item>
         <item name="android:layout_marginEnd">@dimen/margin_10</item>
         <item name="android:layout_marginTop">@dimen/margin_10</item>
