@@ -8,6 +8,8 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
@@ -142,7 +144,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_history, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_history, R.id.navigation_notifications, R.id.navigation_settings
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -155,7 +157,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeNavigation(navController: NavController) {
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.navigation_notifications -> {
                     viewModel.setAllEventReaded()
@@ -172,32 +174,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleParcelDetailState(state: MainState?) {
-        when(state){
-            MainState.NewEvent->{
+        when (state) {
+            MainState.NewEvent -> {
                 viewModel.getEventCount()
             }
         }
     }
 
     private fun handleHistoryState(state: MainState?) {
-        when(state){
-            MainState.NewEvent->{
+        when (state) {
+            MainState.NewEvent -> {
                 viewModel.getEventCount()
             }
         }
     }
 
     private fun handleHomeState(state: MainState?) {
-        when(state){
-            MainState.NewEvent->{
+        when (state) {
+            MainState.NewEvent -> {
                 viewModel.getEventCount()
             }
         }
     }
 
     private fun handleEventCount(i: Int) {
-        val navBar  = binding.navView
-        if (i>0)
+        val navBar = binding.navView
+        if (i > 0)
             navBar.getOrCreateBadge(R.id.navigation_notifications).number = i
         else
             navBar.removeBadge(R.id.navigation_notifications)
@@ -208,5 +210,19 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(this, R.id.nav_host_fragment_activity_main)
         return (navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp())
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        val id: Int = item.itemId
+        return super.onOptionsItemSelected(item)
     }
 }
