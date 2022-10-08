@@ -52,20 +52,10 @@
                         style="@style/TextViewNormal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@{viewModel.user.name}"
+                        android:text="@{viewModel.user.name + ' ' + viewModel.user.lastname}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textViewUserLastName"
-                        style="@style/TextViewNormal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{viewModel.user.lastname}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
 
                     <TextView
                         android:id="@+id/textViewUserPhone"
@@ -75,7 +65,7 @@
                         android:text="@{viewModel.user.phone}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewUserLastName" />
+                        app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
 
                     <TextView
                         android:id="@+id/textViewUserMail"
@@ -85,7 +75,7 @@
                         android:text="@{viewModel.user.email}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewUserLastName" />
+                        app:layout_constraintTop_toBottomOf="@+id/textViewUserPhone" />
 
                     <TextView
                         android:id="@+id/textViewUserAddress"
@@ -96,7 +86,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewUserPhone" />
+                        app:layout_constraintTop_toBottomOf="@+id/textViewUserMail" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -112,12 +102,24 @@
                 app:contentPadding="@dimen/margin_10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView">
+                app:layout_constraintTop_toBottomOf="@+id/cardViewUserData">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
+                    <TextView
+                        android:id="@+id/textView"
+                        style="@style/TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/text_15"
+                        android:textAlignment="center"
+                        android:text="Estadisticas"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>

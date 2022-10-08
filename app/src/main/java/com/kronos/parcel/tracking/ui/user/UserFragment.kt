@@ -1,29 +1,21 @@
 package com.kronos.parcel.tracking.ui.user
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.kronos.core.adapters.AdapterItemClickListener
-import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.fragmentBinding
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.SnackBarUtil
-import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentUserBinding
 import com.kronos.parcel.tracking.ui.history.state.HistoryState
-import com.kronos.parcel.tracking.ui.home.CURRENT_PARCEL
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class UserFragment : Fragment() {
 
     private val binding by fragmentBinding<FragmentUserBinding>(R.layout.fragment_user)
@@ -97,10 +89,14 @@ class UserFragment : Fragment() {
     }
 
     private fun initViews() {
-
+        binding.userLogged.viewModel = viewModel
+        binding.userLogged.lifecycleOwner = this@UserFragment.viewLifecycleOwner
+        binding.userNotLogged.viewModel = viewModel
+        binding.userNotLogged.lifecycleOwner = this@UserFragment.viewLifecycleOwner
     }
 
     private fun initViewModel() {
+        viewModel.getUserLocal()
     }
 
 }

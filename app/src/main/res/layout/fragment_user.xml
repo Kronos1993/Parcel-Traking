@@ -4,9 +4,8 @@
 
     <data>
 
-        <import type="com.kronos.parcel.tracking.ui.user.state.UserState" />
-
         <import type="android.view.View" />
+        <import type="com.kronos.parcel.tracking.ui.user.state.UserState" />
 
         <variable
             name="viewModel"
@@ -20,16 +19,16 @@
 
 
         <include
-            android:id="@+id/include2"
+            android:id="@+id/user_not_logged"
             layout="@layout/fragment_user_not_user"
-            android:visibility="@{viewModel.user.logged ? View.GONE:View.VISIBLE}"
+            android:visibility="@{viewModel.user.logged ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <include
-            android:id="@+id/include"
+            android:id="@+id/user_logged"
             layout="@layout/fragment_user_data"
             android:visibility="@{viewModel.user.logged ? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
