@@ -27,4 +27,7 @@ interface EventDao {
     @Delete
     suspend fun deleteEvent(eventEntity: EventEntity)
 
+    @Query("DELETE FROM EVENT WHERE PARCEL = :trackingNumber")
+    suspend fun deleteEvent(trackingNumber: String)
+
 }

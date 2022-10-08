@@ -11,6 +11,7 @@ interface EventLocalDataSource {
     suspend fun countEventNotReadByParcel(trackingNumber: String): Int
     suspend fun countEventNotRead(): Int
     suspend fun setAllEventRead()
+    suspend fun deleteEvent(trackingNumber: String)
 
 
 }

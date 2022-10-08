@@ -156,13 +156,9 @@ class HomeFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                when(direction){
-                    ItemTouchHelper.LEFT->{
-                        viewModel.toHistory(
-                            viewModel.parcelAdapter.getItemAt(viewHolder.adapterPosition)
-                        )
-                    }
-                }
+                viewModel.toHistory(
+                    viewModel.parcelAdapter.getItemAt(viewHolder.adapterPosition)
+                )
             }
         }
 
@@ -170,16 +166,16 @@ class HomeFragment : Fragment() {
             SwipeToDelete(
                 ContextCompat.getDrawable(
                     requireContext(),
-                    com.kronos.resources.R.drawable.ic_delete
+                    com.kronos.resources.R.drawable.ic_archive
                 )!!,
-                ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.snack_bar_error_background)),
+                ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.green)),
                 ContextCompat.getDrawable(
                     requireContext(),
-                    com.kronos.resources.R.drawable.ic_unarchive
+                    com.kronos.resources.R.drawable.ic_archive
                 )!!,
                 ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.green)),
                 itemTouchHelperCallback,
-                ItemTouchHelper.LEFT
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
             )
         )
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewCurrentParcels)

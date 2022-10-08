@@ -28,4 +28,7 @@
     <dimen name="margin_32">32dp</dimen>
     <dimen name="text_18">18sp</dimen>
     <dimen name="card_radius">8dp</dimen>
+
+    <dimen name="size_40">40dp</dimen>
+    <dimen name="size_100">100dp</dimen>
 </resources>

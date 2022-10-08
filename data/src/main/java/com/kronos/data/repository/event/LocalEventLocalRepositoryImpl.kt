@@ -17,6 +17,10 @@ class LocalEventLocalRepositoryImpl @Inject constructor(
         return eventLocalDataSource.deleteEvent(event)
     }
 
+    override suspend fun deleteEvent(trackingNumber: String) {
+        eventLocalDataSource.deleteEvent(trackingNumber)
+    }
+
     override suspend fun listAll(): List<EventModel> {
         return eventLocalDataSource.listAll()
     }

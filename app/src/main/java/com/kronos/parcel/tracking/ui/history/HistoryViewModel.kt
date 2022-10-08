@@ -89,6 +89,7 @@ class HistoryViewModel  @Inject constructor(
         setState(HistoryState.Loading(true))
         viewModelScope.launch {
             parcelLocalRepository.deleteParcel(parcel)
+            eventLocalRepository.deleteEvent(parcel.trackingNumber)
             getParcels()
             setState(HistoryState.Loading(false))
         }

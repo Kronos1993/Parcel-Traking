@@ -9,7 +9,7 @@ import com.kronos.data.local.parcel.mapper.toEntity
 import com.kronos.domain.model.parcel.ParcelModel
 import javax.inject.Inject
 
-class ParcelParcelLocalDatasourceImpl @Inject constructor(
+class ParcelLocalDatasourceImpl @Inject constructor(
     @ApplicationDatabaseFactory private val databaseFactory: LocalDatabaseFactory,
 ) : ParcelLocalDataSource {
     override suspend fun saveParcel(parcel: ParcelModel): ParcelModel {

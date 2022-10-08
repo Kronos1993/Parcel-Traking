@@ -42,11 +42,11 @@
     <color name="button_color">#F4A531</color>
     <color name="button_blue_color">#346AC6</color>
     <color name="button_red_color">#F42A2A</color>
-    <color name="primary_text_color">#529A59</color>
+    <color name="primary_text_color">#1B1C1C</color>
     <color name="drawerTextColor">#FF000000</color>
     <color name="spinnerBackground">#FFF</color>
 
-    <color name="icon_color">#FFF</color>
+    <color name="icon_color">#FF000000</color>
     <color name="icon_yellow">#F4A531</color>
     <color name="icon_black">#000</color>
     <color name="icon_green">#529A59</color>

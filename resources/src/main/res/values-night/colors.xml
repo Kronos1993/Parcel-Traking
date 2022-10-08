@@ -32,7 +32,7 @@
     <color name="button_color">#58595B</color>
     <color name="button_blue_color">#58595B</color>
     <color name="button_red_color">#58595B</color>
-    <color name="primary_text_color">#51504F</color>
+    <color name="primary_text_color">#FFF</color>
     <color name="drawerTextColor">#999999</color>
     <color name="spinnerBackground">#58595B</color>
 

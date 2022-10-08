@@ -8,6 +8,8 @@ interface EventLocalRepository {
 
     suspend fun deleteEvent(event:EventModel): EventModel
 
+    suspend fun deleteEvent(trackingNumber: String)
+
     suspend fun listAll(): List<EventModel>
 
     suspend fun listAllByParcel(trackingNumber:String): List<EventModel>

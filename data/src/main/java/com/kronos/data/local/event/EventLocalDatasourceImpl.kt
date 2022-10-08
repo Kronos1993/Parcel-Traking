@@ -38,6 +38,15 @@ class EventLocalDatasourceImpl @Inject constructor(
         return eventModel
     }
 
+    override suspend fun deleteEvent(trackingNumber: String) {
+        try {
+            val internalDb = databaseFactory.loadLocalDatabase() as ApplicationDatabase
+            internalDb.eventDao().deleteEvent(trackingNumber)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
+
     override suspend fun listAll(): List<EventModel> {
         var result = listOf<EventModel>()
 
