@@ -92,14 +92,14 @@ class HomeViewModel @Inject constructor(
         setState(MainState.NewEvent)
     }
 
-    private fun logParcelStatusUpdated(item: ParcelModel,newStatus:String) {
+    private fun logParcelStatusUpdated(item: ParcelModel,oldStatus:String,newStatus:String) {
         viewModelScope.launch {
             eventLocalRepository.saveEvent(
                 EventModel(
                     0,
                     context.getString(R.string.notification_title).format(item.name),
                     context.getString(R.string.notification_details)
-                        .format(item.trackingNumber, item.status, newStatus),
+                        .format(item.trackingNumber, oldStatus, newStatus),
                     false,
                     item.trackingNumber,
                     Calendar.getInstance().timeInMillis,
@@ -169,6 +169,7 @@ class HomeViewModel @Inject constructor(
     fun refreshParcel(parcel: ParcelModel, current: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             lateinit var parcelUpdate: ParcelModel
+            var oldState = parcel.status
             val call = async {
                 parcelUpdate = parcelRemoteRepository.searchParcel(parcel.trackingNumber)
                 if (parcelUpdate.status != "not found" && parcel.status != parcelUpdate.status) {
@@ -182,7 +183,7 @@ class HomeViewModel @Inject constructor(
                         com.kronos.resources.R.drawable.ic_notifications,
                         context
                     )
-                    logParcelStatusUpdated(parcel,parcelUpdate.status)
+                    logParcelStatusUpdated(parcel,oldState,parcelUpdate.status)
                     parcel.status = parcelUpdate.status
                 }
                 parcel.dateUpdated = parcelUpdate.dateUpdated

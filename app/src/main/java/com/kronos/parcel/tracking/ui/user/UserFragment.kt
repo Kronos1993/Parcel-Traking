@@ -2,6 +2,7 @@ package com.kronos.parcel.tracking.ui.user
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -11,7 +12,7 @@ import com.kronos.core.util.SnackBarUtil
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentUserBinding
-import com.kronos.parcel.tracking.ui.history.state.HistoryState
+import com.kronos.parcel.tracking.ui.user.state.UserState
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -38,16 +39,26 @@ class UserFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.loading.observe(this.viewLifecycleOwner, ::handleLoading)
         viewModel.error.observe(this.viewLifecycleOwner, ::handleError)
-        viewModel.state.observe(this.viewLifecycleOwner, ::handleHistoryState)
+        viewModel.state.observe(this.viewLifecycleOwner, ::handleState)
     }
 
-    private fun handleHistoryState(state: MainState) {
+    private fun handleState(state: MainState) {
         when (state) {
-            is HistoryState.Loading -> {
+            is UserState.Loading -> {
                 handleLoading(state.loading)
             }
-            is HistoryState.Error -> {
+            is UserState.Error -> {
                 handleError(state.error)
+            }
+            is UserState.UserLogged -> {
+                viewModel.user.value.let {
+                    viewModel.userLogged.value = View.VISIBLE
+                    viewModel.userNotLogged.value = View.GONE
+                }
+            }
+            is UserState.UserNotLogged -> {
+                viewModel.userLogged.value = View.GONE
+                viewModel.userNotLogged.value = View.VISIBLE
             }
         }
     }
@@ -93,6 +104,13 @@ class UserFragment : Fragment() {
         binding.userLogged.lifecycleOwner = this@UserFragment.viewLifecycleOwner
         binding.userNotLogged.viewModel = viewModel
         binding.userNotLogged.lifecycleOwner = this@UserFragment.viewLifecycleOwner
+        binding.userNotLogged.buttonLogin.setOnClickListener {
+            viewModel.getBoxUser("", "")
+        }
+
+        binding.userLogged.imageViewLogOut.setOnClickListener {
+            viewModel.deleteUser()
+        }
     }
 
     private fun initViewModel() {

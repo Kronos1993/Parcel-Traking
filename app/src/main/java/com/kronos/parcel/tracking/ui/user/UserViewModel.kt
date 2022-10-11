@@ -1,11 +1,14 @@
 package com.kronos.parcel.tracking.ui.user
 
 import android.content.Context
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kronos.core.extensions.asLiveData
 import com.kronos.core.view_model.ParentViewModel
+import com.kronos.domain.model.statistics.StatisticsModel
 import com.kronos.domain.model.user.UserModel
+import com.kronos.domain.repository.statistics.StatisticsLocalRepository
 import com.kronos.domain.repository.user.UserLocalRepository
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.ui.user.state.UserState
@@ -19,6 +22,7 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     private var userLocalRepository: UserLocalRepository,
+    private var statisticsLocalRepository: StatisticsLocalRepository,
 ) : ParentViewModel() {
 
     private val _state = MutableLiveData<MainState>()
@@ -26,6 +30,12 @@ class UserViewModel @Inject constructor(
 
     private val _user = MutableLiveData<UserModel>()
     val user = _user.asLiveData()
+
+    val userLogged = MutableLiveData<Int>()
+    val userNotLogged = MutableLiveData<Int>()
+
+    private val _statistics = MutableLiveData<StatisticsModel>()
+    val statistics = _statistics.asLiveData()
 
     fun setState(state: MainState) {
         _state.value = state
@@ -36,7 +46,7 @@ class UserViewModel @Inject constructor(
     }
 
     fun getBoxUser(username: String, password: String) {
-
+        saveUser(UserModel("Marcos Octavio","Guerra Liso","+50760351870","mg@gmail.com","1970 82nd Ave, Doral, Miami, Florida"))
     }
 
     fun saveUser(user: UserModel) {
@@ -50,29 +60,40 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun deleteUser(user: UserModel) {
+    fun deleteUser() {
         setState(UserState.Loading(true))
         viewModelScope.launch {
             userLocalRepository.deleteUser()
+            statisticsLocalRepository.delete()
             setState(UserState.Loading(false))
             setState(UserState.UserNotLogged)
         }
     }
 
     fun getUserLocal() {
+        userLogged.value = View.GONE
+        userNotLogged.value = View.VISIBLE
         setState(UserState.Loading(true))
         viewModelScope.launch {
             var user = userLocalRepository.getUser()
-            _user.value = user
             setState(UserState.Loading(false))
-            if (user.isLogged())
+            if (user!=null && user.name.isNotEmpty()){
+                _user.value = user
+                getStatisticsLocal()
                 setState(UserState.UserLogged)
-            else{
-                getBoxUser("","")
+            }
+            else {
                 setState(UserState.UserNotLogged)
             }
         }
     }
 
-
+    private fun getStatisticsLocal() {
+        setState(UserState.Loading(true))
+        viewModelScope.launch {
+            _statistics.value = statisticsLocalRepository.get()
+            setState(UserState.Loading(false))
+        }
+    }
 }
+

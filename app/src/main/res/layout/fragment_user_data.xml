@@ -20,6 +20,16 @@
 
 
             <ImageView
+                android:id="@+id/imageViewLogOut"
+                android:layout_width="@dimen/margin_24"
+                android:layout_height="@dimen/margin_24"
+                android:layout_margin="@dimen/margin_12"
+                android:src="@drawable/ic_logout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/icon_color" />
+
+            <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="@dimen/size_100"
                 android:layout_height="@dimen/size_100"
@@ -29,6 +39,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/icon_color" />
+
+            <TextView
+                android:id="@+id/textViewUserName"
+                style="@style/TextViewNormal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.user.name + ' ' + viewModel.user.lastname}"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewUserData"
@@ -41,21 +62,11 @@
                 app:contentPadding="@dimen/margin_10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView">
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserName">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/textViewUserName"
-                        style="@style/TextViewNormal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{viewModel.user.name + ' ' + viewModel.user.lastname}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/textViewUserPhone"
@@ -63,9 +74,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@{viewModel.user.phone}"
+                        android:drawableStart="@drawable/ic_phone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/textViewUserMail"
@@ -73,6 +85,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@{viewModel.user.email}"
+                        android:drawableStart="@drawable/ic_email"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textViewUserPhone" />
@@ -83,6 +96,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@{viewModel.user.address}"
+                        android:drawableStart="@drawable/ic_location"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -100,6 +114,7 @@
                 app:cardCornerRadius="@dimen/card_radius"
                 app:cardElevation="@dimen/cardview_default_elevation"
                 app:contentPadding="@dimen/margin_10"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardViewUserData">
@@ -109,17 +124,140 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/textView"
-                        style="@style/TextViewNormal"
-                        android:layout_width="0dp"
+                        android:id="@+id/textView3"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/text_15"
+                        android:text="Statistics"
                         android:textAlignment="center"
-                        android:text="Estadisticas"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        style="@style/TextViewNormal"
+                        android:textAllCaps="true"
+                        android:layout_margin="@dimen/margin_12"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".5" />
+
+                    <TextView
+                        android:id="@+id/textViewParcelAdded"
+                        style="@style/TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Added: "
+                        android:textAlignment="textEnd"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                    <TextView
+                        android:id="@+id/textViewParcelAddedValue"
+                        style="@style/TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(viewModel.statistics.added)}"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewParcelAdded"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toTopOf="@+id/textViewParcelAdded" />
+
+                    <TextView
+                        android:id="@+id/textViewParcelLastMonth"
+                        style="@style/TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Added Last Month: "
+                        android:textAlignment="textEnd"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewParcelAdded" />
+
+                    <TextView
+                        android:id="@+id/textViewParcelLastMonthValue"
+                        style="@style/TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(viewModel.statistics.addedLastMonth)}"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewParcelLastMonth"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toTopOf="@+id/textViewParcelLastMonth" />
+
+                    <TextView
+                        android:id="@+id/textViewParcelArchived"
+                        style="@style/TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Archived: "
+                        android:textAlignment="textEnd"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewParcelLastMonth" />
+
+                    <TextView
+                        android:id="@+id/textViewParcelArchivedValue"
+                        style="@style/TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(viewModel.statistics.archived)}"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewParcelArchived"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toTopOf="@+id/textViewParcelArchived" />
+
+                    <TextView
+                        android:id="@+id/textViewParcelInTransit"
+                        style="@style/TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="In Transit: "
+                        android:textAlignment="textEnd"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewParcelArchived" />
+
+                    <TextView
+                        android:id="@+id/textViewParcelInTransitValue"
+                        style="@style/TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(viewModel.statistics.inTransit)}"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewParcelInTransit"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toTopOf="@+id/textViewParcelInTransit" />
+
+                    <TextView
+                        android:id="@+id/textViewParcelReceived"
+                        style="@style/TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Received: "
+                        android:textAlignment="textEnd"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewParcelInTransit" />
+
+                    <TextView
+                        android:id="@+id/textViewParcelReceivevdValue"
+                        style="@style/TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(viewModel.statistics.received)}"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewParcelReceived"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toTopOf="@+id/textViewParcelReceived" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -127,5 +265,4 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
 </layout>
