@@ -8,14 +8,18 @@ import com.kronos.core.extensions.asLiveData
 import com.kronos.core.view_model.ParentViewModel
 import com.kronos.domain.model.statistics.StatisticsModel
 import com.kronos.domain.model.user.UserModel
+import com.kronos.domain.repository.parcel.ParcelLocalRepository
 import com.kronos.domain.repository.statistics.StatisticsLocalRepository
 import com.kronos.domain.repository.user.UserLocalRepository
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.ui.user.state.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +27,7 @@ class UserViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     private var userLocalRepository: UserLocalRepository,
     private var statisticsLocalRepository: StatisticsLocalRepository,
+    private var parcelLocalRepository: ParcelLocalRepository,
 ) : ParentViewModel() {
 
     private val _state = MutableLiveData<MainState>()
@@ -90,8 +95,18 @@ class UserViewModel @Inject constructor(
 
     private fun getStatisticsLocal() {
         setState(UserState.Loading(true))
-        viewModelScope.launch {
-            _statistics.value = statisticsLocalRepository.get()
+        var stats = StatisticsModel()
+        viewModelScope.launch{
+            var call = async {
+                stats = statisticsLocalRepository.get()
+                var calendar = Calendar.getInstance()
+                calendar.set(Calendar.DAY_OF_MONTH, 1)
+                calendar.set(Calendar.HOUR_OF_DAY, 0)
+                calendar.set(Calendar.MINUTE, 0)
+                stats.addedLastMonth = parcelLocalRepository.listParcelAddedAfter(calendar.timeInMillis).size
+            }
+            call.await()
+            _statistics.value = stats
             setState(UserState.Loading(false))
         }
     }

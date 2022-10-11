@@ -24,6 +24,10 @@ class LocalParcelLocalRepositoryImpl @Inject constructor(
         return parcelLocalDataSource.listParcelHistory()
     }
 
+    override suspend fun listParcelAddedAfter(after: Long): List<ParcelModel> {
+        return parcelLocalDataSource.listParcelAddedAfter(after)
+    }
+
     override suspend fun listAll(): List<ParcelModel> {
         return parcelLocalDataSource.listAll()
     }

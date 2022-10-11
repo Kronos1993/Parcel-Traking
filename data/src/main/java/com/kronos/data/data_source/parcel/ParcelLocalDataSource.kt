@@ -8,6 +8,7 @@ interface ParcelLocalDataSource {
     suspend fun deleteParcel(parcel: ParcelModel): ParcelModel
     suspend fun listAllParcelLocal(): List<ParcelModel>
     suspend fun listParcelHistory(): List<ParcelModel>
+    suspend fun listParcelAddedAfter(after:Long): List<ParcelModel>
     suspend fun listAll(): List<ParcelModel>
 
 

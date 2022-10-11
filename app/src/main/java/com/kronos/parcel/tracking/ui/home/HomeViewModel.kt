@@ -14,6 +14,8 @@ import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.domain.repository.event.EventLocalRepository
 import com.kronos.domain.repository.parcel.ParcelLocalRepository
 import com.kronos.domain.repository.parcel.ParcelRemoteRepository
+import com.kronos.domain.repository.statistics.StatisticsLocalRepository
+import com.kronos.domain.repository.user.UserLocalRepository
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.ui.home.state.HomeState
@@ -31,6 +33,8 @@ class HomeViewModel @Inject constructor(
     private var parcelLocalRepository: ParcelLocalRepository,
     private var parcelRemoteRepository: ParcelRemoteRepository,
     private var eventLocalRepository: EventLocalRepository,
+    private var statisticsLocalRepository: StatisticsLocalRepository,
+    private var userRepository: UserLocalRepository,
     var notification: INotifications,
 ) : ParentViewModel() {
     private val _parcelList = MutableLiveData<List<ParcelModel>>()
@@ -68,6 +72,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             parcelLocalRepository.saveParcel(itemAt)
             logParcelToHistory(itemAt)
+            increaseArchivedStatistics()
             getParcels()
         }
     }
@@ -92,7 +97,7 @@ class HomeViewModel @Inject constructor(
         setState(MainState.NewEvent)
     }
 
-    private fun logParcelStatusUpdated(item: ParcelModel,oldStatus:String,newStatus:String) {
+    private fun logParcelStatusUpdated(item: ParcelModel, oldStatus: String, newStatus: String) {
         viewModelScope.launch {
             eventLocalRepository.saveEvent(
                 EventModel(
@@ -143,6 +148,7 @@ class HomeViewModel @Inject constructor(
             }
             save.await()
             logParcelAdded(parcel)
+            increaseTotalParcelStatistics()
             postState(HomeState.Loading(false))
             postState(HomeState.Search)
         }
@@ -183,17 +189,18 @@ class HomeViewModel @Inject constructor(
                         com.kronos.resources.R.drawable.ic_notifications,
                         context
                     )
-                    logParcelStatusUpdated(parcel,oldState,parcelUpdate.status)
+                    logParcelStatusUpdated(parcel, oldState, parcelUpdate.status)
                     parcel.status = parcelUpdate.status
+                    if (parcelUpdate.status.contains("Entregado")){
+                        if (oldState.contains("tránsito")){
+                            decreaseTransitStatistics()
+                        }
+                        increaseReceivedStatistics()
+                    }
                 }
                 parcel.dateUpdated = parcelUpdate.dateUpdated
             }
             call.await()
-            Log.e("REFRESH PARCEL", "refreshParcelOneByOne POS: $current")
-            Log.e("REFRESH PARCEL", "refreshParcelOneByOne Parcel update: ${parcelUpdate.name}")
-            Log.e("REFRESH PARCEL", "refreshParcelOneByOne Parcel update: ${parcelUpdate}")
-            Log.e("REFRESH PARCEL", "refreshParcelOneByOne Current Parcel: ${parcel.name}")
-            Log.e("REFRESH PARCEL", "refreshParcelOneByOne Current Parcel: ${parcel}")
             if (parcelUpdate.fail.isEmpty()) {
                 val save = async {
                     parcelLocalRepository.saveParcel(parcel)
@@ -205,6 +212,56 @@ class HomeViewModel @Inject constructor(
                 postState(HomeState.Error(currentError))
             }
             postState(HomeState.Refreshing(false))
+        }
+    }
+
+    fun increaseTotalParcelStatistics() {
+        viewModelScope.launch {
+            if (!userRepository.getUser().name.isNullOrEmpty()) {
+                var statisticsModel = statisticsLocalRepository.get()
+                statisticsModel.added +=1
+                statisticsLocalRepository.saveStatistics(statisticsModel)
+            }
+        }
+    }
+
+    fun increaseReceivedStatistics() {
+        viewModelScope.launch {
+            if (!userRepository.getUser().name.isNullOrEmpty()) {
+                var statisticsModel = statisticsLocalRepository.get()
+                statisticsModel.received +=1
+                statisticsLocalRepository.saveStatistics(statisticsModel)
+            }
+        }
+    }
+
+    fun increaseArchivedStatistics() {
+        viewModelScope.launch {
+            if (!userRepository.getUser().name.isNullOrEmpty()) {
+                var statisticsModel = statisticsLocalRepository.get()
+                statisticsModel.archived +=1
+                statisticsLocalRepository.saveStatistics(statisticsModel)
+            }
+        }
+    }
+
+    fun increaseTransitStatistics() {
+        viewModelScope.launch {
+            if (!userRepository.getUser().name.isNullOrEmpty()) {
+                var statisticsModel = statisticsLocalRepository.get()
+                statisticsModel.inTransit +=1
+                statisticsLocalRepository.saveStatistics(statisticsModel)
+            }
+        }
+    }
+
+    fun decreaseTransitStatistics() {
+        viewModelScope.launch {
+            if (!userRepository.getUser().name.isNullOrEmpty()) {
+                var statisticsModel = statisticsLocalRepository.get()
+                statisticsModel.inTransit -=1
+                statisticsLocalRepository.saveStatistics(statisticsModel)
+            }
         }
     }
 }

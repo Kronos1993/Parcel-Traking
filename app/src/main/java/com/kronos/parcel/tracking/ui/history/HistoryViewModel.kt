@@ -10,6 +10,8 @@ import com.kronos.domain.model.event.EventModel
 import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.domain.repository.event.EventLocalRepository
 import com.kronos.domain.repository.parcel.ParcelLocalRepository
+import com.kronos.domain.repository.statistics.StatisticsLocalRepository
+import com.kronos.domain.repository.user.UserLocalRepository
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.ui.home.ParcelAdapter
@@ -26,6 +28,8 @@ class HistoryViewModel  @Inject constructor(
     @ApplicationContext val context: Context,
     var parcelLocalRepository: ParcelLocalRepository,
     private var eventLocalRepository: EventLocalRepository,
+    private var statisticsLocalRepository: StatisticsLocalRepository,
+    private var userRepository: UserLocalRepository,
 ) : ParentViewModel() {
     var parcel = ParcelModel(trackingNumber = "", status = "", imageUrl = "")
 
@@ -90,8 +94,19 @@ class HistoryViewModel  @Inject constructor(
         viewModelScope.launch {
             parcelLocalRepository.deleteParcel(parcel)
             eventLocalRepository.deleteEvent(parcel.trackingNumber)
+            decreaseArchivedStatistics()
             getParcels()
             setState(HistoryState.Loading(false))
+        }
+    }
+
+    fun decreaseArchivedStatistics() {
+        viewModelScope.launch {
+            if (!userRepository.getUser().name.isNullOrEmpty()) {
+                var statisticsModel = statisticsLocalRepository.get()
+                statisticsModel.archived -=1
+                statisticsLocalRepository.saveStatistics(statisticsModel)
+            }
         }
     }
 

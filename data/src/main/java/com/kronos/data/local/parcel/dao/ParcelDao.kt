@@ -19,6 +19,9 @@ interface ParcelDao {
 
     @Query("SELECT * FROM PARCEL WHERE HISTORY = 1")
     suspend fun listHistory(): List<ParcelEntity>
+
+    @Query("SELECT * FROM PARCEL WHERE DATE_ADDED >= :after")
+    suspend fun listParcelAddedAfter(after:Long): List<ParcelEntity>
     
     @Delete
     suspend fun deleteParcel(parcel:ParcelEntity)
