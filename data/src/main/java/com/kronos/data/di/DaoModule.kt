@@ -4,6 +4,7 @@ import com.kronos.data.local.LocalDatabaseFactory
 import com.kronos.data.local.database.ApplicationDatabase
 import com.kronos.data.local.event.dao.EventDao
 import com.kronos.data.local.parcel.dao.ParcelDao
+import com.kronos.data.local.statistics.dao.StatisticsDao
 import com.kronos.data.local.user.dao.UserDao
 import dagger.Module
 import dagger.Provides
@@ -26,5 +27,10 @@ class DaoModule {
     @Provides
     fun provideUserDao(@ApplicationDatabaseFactory factory: LocalDatabaseFactory): UserDao {
         return (factory.loadLocalDatabase() as ApplicationDatabase).userDao()
+    }
+
+    @Provides
+    fun provideStatisticsDao(@ApplicationDatabaseFactory factory: LocalDatabaseFactory): StatisticsDao {
+        return (factory.loadLocalDatabase() as ApplicationDatabase).statisticsDao()
     }
 }

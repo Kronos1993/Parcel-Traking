@@ -6,11 +6,13 @@ import com.kronos.data.local.event.dao.EventDao
 import com.kronos.data.local.event.entity.EventEntity
 import com.kronos.data.local.parcel.dao.ParcelDao
 import com.kronos.data.local.parcel.entity.ParcelEntity
+import com.kronos.data.local.statistics.dao.StatisticsDao
+import com.kronos.data.local.statistics.entity.StatisticsEntity
 import com.kronos.data.local.user.dao.UserDao
 import com.kronos.data.local.user.entity.UserEntity
 
 @Database(
-    entities = [ParcelEntity::class,EventEntity::class,UserEntity::class],
+    entities = [ParcelEntity::class, EventEntity::class, UserEntity::class, StatisticsEntity::class],
     version = 1,
     exportSchema = false
 )
@@ -18,4 +20,5 @@ abstract class ApplicationDatabase : RoomDatabase() {
     abstract fun parcelDao(): ParcelDao
     abstract fun eventDao(): EventDao
     abstract fun userDao(): UserDao
+    abstract fun statisticsDao(): StatisticsDao
 }

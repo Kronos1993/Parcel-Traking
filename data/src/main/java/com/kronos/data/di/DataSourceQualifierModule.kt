@@ -7,8 +7,7 @@ import javax.inject.Qualifier
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataSourceQualifierModule
-{
+object DataSourceQualifierModule {
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
     annotation class RemoteApplicationDataSource

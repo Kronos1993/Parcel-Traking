@@ -7,9 +7,4 @@ data class UserModel(
     var email:String = "",
     var address:String = "",
 ){
-
-    fun isLogged():Boolean{
-        return name.isNotEmpty() && lastname.isNotEmpty() && email.isNotEmpty()
-    }
-
 }
