@@ -65,6 +65,7 @@ class HistoryViewModel  @Inject constructor(
         viewModelScope.launch {
             parcelLocalRepository.saveParcel(itemAt)
             logParcelUnarchive(itemAt)
+            decreaseArchivedStatistics()
             getParcels()
         }
     }
