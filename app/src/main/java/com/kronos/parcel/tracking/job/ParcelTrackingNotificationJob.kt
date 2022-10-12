@@ -5,7 +5,9 @@ import android.app.job.JobService
 import android.util.Log
 import com.kronos.core.notification.INotifications
 import com.kronos.core.notification.NotificationType
+import com.kronos.domain.model.event.EventModel
 import com.kronos.domain.model.parcel.ParcelModel
+import com.kronos.domain.repository.event.EventLocalRepository
 import com.kronos.domain.repository.parcel.ParcelLocalRepository
 import com.kronos.domain.repository.parcel.ParcelRemoteRepository
 import com.kronos.parcel.tracking.R
@@ -13,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import java.util.*
 import javax.inject.Inject
 
 const val notificationJobId = 1
@@ -28,6 +31,10 @@ class ParcelTrackingNotificationJob : JobService() {
 
     @Inject
     lateinit var parcelLocalRepository: ParcelLocalRepository
+
+    @Inject
+    lateinit var eventLocalRepository: EventLocalRepository
+
 
     @Inject
     lateinit var notification: INotifications
@@ -54,11 +61,11 @@ class ParcelTrackingNotificationJob : JobService() {
         Log.d(TAG, "doWork")
         Log.d(TAG, "Current Do Work Params: ${params.jobId}")
         if (params != null && params.jobId == notificationJobId) {
-
+            refreshParcels()
         }
     }
 
-    private fun refreshParcels(list: List<ParcelModel>) {
+    private fun refreshParcels() {
         runBlocking(Dispatchers.IO) {
             var list = parcelLocalRepository.listAllParcelLocal()
             list.forEach { parcelModel ->
@@ -83,6 +90,18 @@ class ParcelTrackingNotificationJob : JobService() {
                         NotificationType.PARCEL_STATUS,
                         com.kronos.resources.R.drawable.ic_notifications,
                         applicationContext
+                    )
+                    eventLocalRepository.saveEvent(
+                        EventModel(
+                            0,
+                            getString(R.string.notification_title).format(parcel.name),
+                            getString(R.string.notification_details)
+                                .format(parcel.trackingNumber, parcel.status, parcelUpdate.status),
+                            false,
+                            parcel.trackingNumber,
+                            Calendar.getInstance().timeInMillis,
+                            Calendar.getInstance().timeInMillis,
+                        )
                     )
                     parcel.status = parcelUpdate.status
                 }
