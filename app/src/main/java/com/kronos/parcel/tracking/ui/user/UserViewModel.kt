@@ -104,6 +104,7 @@ class UserViewModel @Inject constructor(
                 calendar.set(Calendar.HOUR_OF_DAY, 0)
                 calendar.set(Calendar.MINUTE, 0)
                 stats.addedLastMonth = parcelLocalRepository.listParcelAddedAfter(calendar.timeInMillis).size
+                stats.archived = parcelLocalRepository.listAllParcelHistory().size
             }
             call.await()
             _statistics.value = stats
