@@ -10,10 +10,15 @@ import android.content.ComponentName
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import com.kronos.core.notification.INotifications
+import com.kronos.domain.repository.event.EventLocalRepository
+import com.kronos.domain.repository.parcel.ParcelLocalRepository
+import com.kronos.domain.repository.parcel.ParcelRemoteRepository
 import com.kronos.parcel.tracking.job.ParcelTrackingNotificationJob
 import com.kronos.parcel.tracking.job.notificationJobId
 import dagger.hilt.android.HiltAndroidApp
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 
 const val NOTIFICATION_CHANNEL = "PARCEL_TRACKING_NOTIFICATION_CHANNEL"

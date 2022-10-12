@@ -12,9 +12,7 @@ import com.kronos.domain.repository.parcel.ParcelLocalRepository
 import com.kronos.domain.repository.parcel.ParcelRemoteRepository
 import com.kronos.parcel.tracking.R
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.util.*
 import javax.inject.Inject
 
@@ -66,7 +64,7 @@ class ParcelTrackingNotificationJob : JobService() {
     }
 
     private fun refreshParcels() {
-        runBlocking(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.IO,start=CoroutineStart.LAZY) {
             var list = parcelLocalRepository.listAllParcelLocal()
             list.forEach { parcelModel ->
                 refreshParcel(parcelModel)
