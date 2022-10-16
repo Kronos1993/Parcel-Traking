@@ -9,6 +9,7 @@ import com.kronos.core.extensions.formatDate
 import com.kronos.core.notification.INotifications
 import com.kronos.core.notification.NotificationType
 import com.kronos.core.view_model.ParentViewModel
+import com.kronos.data.remote.retrofit.UrlProvider
 import com.kronos.domain.model.event.EventModel
 import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.domain.repository.event.EventLocalRepository
@@ -34,6 +35,7 @@ class HomeViewModel @Inject constructor(
     private var parcelRemoteRepository: ParcelRemoteRepository,
     private var eventLocalRepository: EventLocalRepository,
     private var statisticsLocalRepository: StatisticsLocalRepository,
+    var urlProvider: UrlProvider,
     private var userRepository: UserLocalRepository,
     var notification: INotifications,
 ) : ParentViewModel() {

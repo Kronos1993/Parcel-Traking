@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -222,7 +223,9 @@ class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        val id: Int = item.itemId
+        when(val id: Int = item.itemId) {
+            R.id.navigation_settings-> findNavController(R.id.nav_host_fragment_activity_main).navigate(id)
+        }
         return super.onOptionsItemSelected(item)
     }
 }

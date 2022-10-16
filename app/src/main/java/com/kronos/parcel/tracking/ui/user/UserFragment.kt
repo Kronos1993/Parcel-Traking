@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.kronos.core.extensions.fragmentBinding
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.SnackBarUtil
+import com.kronos.core.util.copyText
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentUserBinding
@@ -110,6 +111,10 @@ class UserFragment : Fragment() {
 
         binding.userLogged.imageViewLogOut.setOnClickListener {
             viewModel.deleteUser()
+        }
+
+        binding.userLogged.imageCopy.setOnClickListener {
+            copyText(requireContext(),binding.userLogged.textViewUserAddress.text.toString())
         }
     }
 

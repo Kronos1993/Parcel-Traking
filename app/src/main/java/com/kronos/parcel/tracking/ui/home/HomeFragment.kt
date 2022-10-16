@@ -128,6 +128,7 @@ class HomeFragment : Fragment() {
         binding.recyclerViewCurrentParcels.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCurrentParcels.setHasFixedSize(false)
         binding.recyclerViewCurrentParcels.adapter = viewModel.parcelAdapter
+        viewModel.parcelAdapter.setUrlProvider(viewModel.urlProvider)
         viewModel.parcelAdapter.setAdapterItemClick(object : AdapterItemClickListener<ParcelModel> {
             override fun onItemClick(t: ParcelModel, pos: Int) {
                 if (viewModel.state.value is HomeState.Refreshing) {

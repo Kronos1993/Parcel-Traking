@@ -12,7 +12,6 @@ import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.extensions.fragmentBinding
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.SnackBarUtil
-import com.kronos.data.remote.retrofit.UrlConstants
 import com.kronos.domain.model.event.EventModel
 import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.parcel.tracking.MainState
@@ -98,7 +97,7 @@ class ParcelDetailsFragment : Fragment() {
     }
 
     private fun handleParcel(parcel: ParcelModel) {
-        Glide.with(requireContext()).load(UrlConstants.IMAGE_URL +  parcel.imageUrl).into(binding.imageStatus)
+        Glide.with(requireContext()).load(viewModel.getImageUrl(parcel)).into(binding.imageStatus)
     }
 
     private fun handleEventList(list: List<EventModel>) {

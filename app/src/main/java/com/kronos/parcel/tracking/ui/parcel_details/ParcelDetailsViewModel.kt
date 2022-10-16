@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.kronos.core.extensions.asLiveData
 import com.kronos.core.extensions.formatDate
 import com.kronos.core.view_model.ParentViewModel
+import com.kronos.data.remote.retrofit.UrlProvider
 import com.kronos.domain.model.event.EventModel
 import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.domain.repository.event.EventLocalRepository
@@ -28,6 +29,7 @@ class ParcelDetailsViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     private var parcelLocalRepository: ParcelLocalRepository,
     private var eventLocalRepository: EventLocalRepository,
+    private var urlProvider: UrlProvider,
 ) : ParentViewModel() {
 
     private val _parcel = MutableLiveData<ParcelModel>()
@@ -109,6 +111,10 @@ class ParcelDetailsViewModel @Inject constructor(
             call.await()
             getEvents()
         }
+    }
+
+    fun getImageUrl(parcel: ParcelModel):String{
+        return urlProvider.getServerUrl() + parcel.imageUrl
     }
 
 

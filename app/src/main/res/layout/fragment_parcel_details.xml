@@ -39,7 +39,8 @@
                     android:layout_margin="@dimen/margin_5"
                     app:layout_constraintEnd_toEndOf="@id/guideline95"
                     app:layout_constraintStart_toStartOf="@id/guideline05"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="TODO" />
 
                 <TextView
                     android:id="@+id/textViewParcelStatus"
@@ -66,6 +67,8 @@
                         android:id="@+id/editTextTrackingNumber"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_hashtag"
+                        android:drawablePadding="@dimen/margin_5"
                         android:text="@{viewModel.parcel.trackingNumber}"
                         android:imeOptions="actionNext"
                         android:inputType="text" />
@@ -88,6 +91,8 @@
                         android:id="@+id/editTextName"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_edit"
+                        android:drawablePadding="@dimen/margin_5"
                         android:imeOptions="actionDone"
                         android:text="@{viewModel.parcel.name}"
                         android:inputType="textCapWords" />
@@ -141,7 +146,6 @@
                     app:layout_constraintTop_toTopOf="@+id/textView2"
                     app:time_transit_spent="@{viewModel.parcel.dateUpdated}" />
 
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonUpdateParcel"
                     style="@style/ButtonRound"
@@ -149,6 +153,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/update"
+                    app:icon="@drawable/ic_save"
+                    app:iconGravity="textStart"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewParcelUpdated" />
 

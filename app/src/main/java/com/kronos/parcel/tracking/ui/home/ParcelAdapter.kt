@@ -7,16 +7,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.diff.GeneralDiffCallback
+import com.kronos.core.util.copyText
+import com.kronos.data.remote.retrofit.UrlProvider
 import com.kronos.parcel.tracking.databinding.ItemParcelBinding
-import com.kronos.data.remote.retrofit.UrlConstants
 import com.kronos.domain.model.parcel.ParcelModel
 
 class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(GeneralDiffCallback<ParcelModel>()) {
 
     private lateinit var adapterItemClickListener:AdapterItemClickListener<ParcelModel>
+    private lateinit var urlProvider: UrlProvider
 
     fun setAdapterItemClick(adapterItemClickListener:AdapterItemClickListener<ParcelModel>){
         this.adapterItemClickListener = adapterItemClickListener
+    }
+
+    fun setUrlProvider(urlProvider: UrlProvider){
+        this.urlProvider = urlProvider
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParcelViewHolder {
@@ -27,7 +33,10 @@ class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(G
     override fun onBindViewHolder(holder: ParcelViewHolder, position: Int) {
         val currentParcel = getItem(position)
         holder.bind(currentParcel)
-        Glide.with(holder.itemView).load(UrlConstants.IMAGE_URL +  currentParcel.imageUrl).into(holder.binding.imageStatus)
+        holder.binding.textViewParcelTrackingNumber.setOnClickListener {
+            copyText(holder.binding.textViewParcelTrackingNumber.context,holder.binding.textViewParcelTrackingNumber.text.toString())
+        }
+        Glide.with(holder.itemView).load(urlProvider.getServerUrl() +  currentParcel.imageUrl).into(holder.binding.imageStatus)
     }
 
     fun getItemAt(adapterPosition: Int) = getItem(adapterPosition)

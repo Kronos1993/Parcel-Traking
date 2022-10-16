@@ -108,6 +108,7 @@ class HistoryFragment : Fragment() {
         binding.recyclerViewParcelsHistory.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewParcelsHistory.setHasFixedSize(false)
         binding.recyclerViewParcelsHistory.adapter = viewModel.parcelAdapter
+        viewModel.parcelAdapter.setUrlProvider(viewModel.urlProvider)
         viewModel.parcelAdapter.setAdapterItemClick(object : AdapterItemClickListener<ParcelModel> {
             override fun onItemClick(t: ParcelModel, pos: Int) {
                 var bundle = Bundle()

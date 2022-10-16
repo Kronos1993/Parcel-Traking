@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kronos.core.extensions.asLiveData
 import com.kronos.core.extensions.formatDate
 import com.kronos.core.view_model.ParentViewModel
+import com.kronos.data.remote.retrofit.UrlProvider
 import com.kronos.domain.model.event.EventModel
 import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.domain.repository.event.EventLocalRepository
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class HistoryViewModel  @Inject constructor(
     @ApplicationContext val context: Context,
     var parcelLocalRepository: ParcelLocalRepository,
+    var urlProvider: UrlProvider,
     private var eventLocalRepository: EventLocalRepository,
     private var statisticsLocalRepository: StatisticsLocalRepository,
     private var userRepository: UserLocalRepository,
