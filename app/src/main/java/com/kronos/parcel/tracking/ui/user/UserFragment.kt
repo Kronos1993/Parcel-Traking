@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.kronos.core.extensions.fragmentBinding
 import com.kronos.core.util.LoadingDialog
-import com.kronos.core.util.SnackBarUtil
 import com.kronos.core.util.copyText
+import com.kronos.core.util.show
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentUserBinding
@@ -67,14 +67,14 @@ class UserFragment : Fragment() {
     private fun handleError(hashtable: Hashtable<String, String>) {
         if (hashtable["error"] != null) {
             if (hashtable["error"]!!.isNotEmpty()) {
-                SnackBarUtil.show(
+                show(
                     binding.root,
                     hashtable["error"].orEmpty(),
                     com.kronos.resources.R.color.snack_bar_white,
                     com.kronos.resources.R.color.snack_bar_error_background
                 )
             } else {
-                SnackBarUtil.show(
+                show(
                     binding.root,
                     hashtable["error"].orEmpty(),
                     com.kronos.resources.R.color.snack_bar_white,

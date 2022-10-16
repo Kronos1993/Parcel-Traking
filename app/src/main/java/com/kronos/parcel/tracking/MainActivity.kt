@@ -18,19 +18,18 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.kronos.core.util.AndroidPermissionUtil
-import com.kronos.core.util.NavigateUtil
+import com.kronos.core.util.validatePermission
 import com.kronos.parcel.tracking.databinding.ActivityMainBinding
 import com.kronos.parcel.tracking.ui.history.HistoryViewModel
 import com.kronos.parcel.tracking.ui.home.HomeViewModel
 import com.kronos.parcel.tracking.ui.parcel_details.ParcelDetailsViewModel
+import com.kronos.core.util.startActivityForResult
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -61,11 +60,11 @@ class MainActivity : AppCompatActivity() {
             checkFullStorageAccess()
         } else {
             grantedAll =
-                AndroidPermissionUtil.validatePermission(
+                validatePermission(
                     this,
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ) &&
-                        AndroidPermissionUtil.validatePermission(
+                        validatePermission(
                             this,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                         )
@@ -92,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 .setMessage(getString(R.string.permission_dialog_message))
                 .setTitle(getString(R.string.permission_dialog_title))
                 .setPositiveButton(R.string.ok) { dialogInterface, _ ->
-                    NavigateUtil.startActivityForResult(
+                    startActivityForResult(
                         this,
                         Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION,
                         150
