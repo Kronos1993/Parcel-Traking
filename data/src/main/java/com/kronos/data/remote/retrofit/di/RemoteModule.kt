@@ -3,7 +3,7 @@ package com.kronos.data.remote.retrofit.di
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.kronos.data.remote.retrofit.UrlConstants.BASE_URL
+import com.kronos.data.remote.retrofit.UrlProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -113,10 +113,10 @@ class RemoteModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(gson: Gson?, okHttpClient: OkHttpClient?): Retrofit {
+    fun provideRetrofit(gson: Gson?, okHttpClient: OkHttpClient?,urlProvider:UrlProvider): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .baseUrl(BASE_URL)
+            .baseUrl(urlProvider.getApiUrl())
             .client(okHttpClient)
             .build()
     }

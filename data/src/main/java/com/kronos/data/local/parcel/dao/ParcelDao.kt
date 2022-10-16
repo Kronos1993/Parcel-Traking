@@ -14,7 +14,7 @@ interface ParcelDao {
     @Query("SELECT * FROM PARCEL WHERE HISTORY = 0")
     suspend fun listParcels(): List<ParcelEntity>
 
-    @Query("SELECT * FROM PARCEL")
+    @Query("SELECT * FROM PARCEL ORDER BY DATE_ADDED DESC")
     suspend fun listAll(): List<ParcelEntity>
 
     @Query("SELECT * FROM PARCEL WHERE HISTORY = 1")
