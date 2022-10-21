@@ -11,6 +11,8 @@ interface ParcelLocalRepository {
     suspend fun listAllParcelLocal(): List<ParcelModel>
 
     suspend fun listAllParcelHistory(): List<ParcelModel>
+    
+    suspend fun listAllParcelInTransit(): List<ParcelModel>
 
     suspend fun listParcelAddedAfter(after:Long): List<ParcelModel>
 
