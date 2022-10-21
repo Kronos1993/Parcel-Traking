@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -20,19 +21,21 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/transparent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:background="@color/transparent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/constraintLayout">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline2"
+                    android:id="@+id/guideline8v"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
@@ -43,8 +46,8 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_margin="@dimen/margin_5"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintBottom_toTopOf="@id/guideline8H"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline8v"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{parcelModel.trackingNumber}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/guideline2"
+                    app:layout_constraintStart_toStartOf="@+id/guideline8v"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -65,8 +68,8 @@
                     android:layout_height="wrap_content"
                     android:text="@{parcelModel.name}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/guideline2"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewParcelTrackingNumber" />
+                    app:layout_constraintStart_toStartOf="@+id/guideline8v"
+                    app:layout_constraintTop_toBottomOf="@id/textViewParcelTrackingNumber" />
 
                 <TextView
                     android:id="@+id/textViewParcelStatus"
@@ -74,10 +77,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{parcelModel.status}"
+                    app:layout_constraintBottom_toTopOf="@id/guideline8H"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/guideline2"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewParcelName" />
+                    app:layout_constraintStart_toStartOf="@+id/guideline8v"
+                    app:layout_constraintTop_toBottomOf="@id/textViewParcelName" />
 
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/guideline8H"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="textViewParcelStatus,textViewParcelName,textViewParcelTrackingNumber,imageStatus"/>
 
                 <TextView
                     android:id="@+id/textView"
@@ -86,8 +96,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/added"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/guideline2"
-                    app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/guideline8H" />
 
                 <TextView
                     android:id="@+id/textViewParcelTime"
@@ -97,7 +107,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline7"
                     app:layout_constraintStart_toEndOf="@+id/textView"
-                    app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus"
+                    app:layout_constraintTop_toBottomOf="@id/guideline8H"
                     app:time_transit_spent="@{parcelModel.dateAdded}" />
 
                 <androidx.constraintlayout.widget.Guideline
@@ -105,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.7" />
+                    app:layout_constraintGuide_percent="0.5" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -113,50 +123,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/updated"
-                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline7"
-                    app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus" />
+                    app:layout_constraintTop_toBottomOf="@id/guideline8H" />
 
                 <TextView
                     android:id="@+id/textViewParcelUpdated"
                     style="@style/TextViewSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView2"
-                    app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus"
+                    app:layout_constraintTop_toBottomOf="@id/guideline8H"
                     app:time_transit_spent="@{parcelModel.dateUpdated}" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent=".9" />
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_eye"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
