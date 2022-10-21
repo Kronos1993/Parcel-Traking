@@ -108,4 +108,20 @@ class ParcelLocalDatasourceImpl @Inject constructor(
         return result
     }
 
+    override suspend fun listAllParcelInTransit(): List<ParcelModel> {
+        var result = listOf<ParcelModel>()
+
+        try {
+            val internalDb = databaseFactory.loadLocalDatabase() as ApplicationDatabase
+            result = internalDb.parcelDao().listAllParcelInTransit().map {
+                it.toDomain()
+            }
+
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+
+        return result
+    }
+
 }

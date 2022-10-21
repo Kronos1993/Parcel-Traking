@@ -74,7 +74,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             parcelLocalRepository.saveParcel(itemAt)
             logParcelToHistory(itemAt)
-            increaseArchivedStatistics()
             getParcels()
         }
     }
@@ -193,12 +192,6 @@ class HomeViewModel @Inject constructor(
                     )
                     logParcelStatusUpdated(parcel, oldState, parcelUpdate.status)
                     parcel.status = parcelUpdate.status
-                    if (parcelUpdate.status.contains("Entregado")){
-                        if (oldState.contains("tránsito")){
-                            decreaseTransitStatistics()
-                        }
-                        increaseReceivedStatistics()
-                    }
                 }
                 parcel.dateUpdated = parcelUpdate.dateUpdated
             }
@@ -227,43 +220,5 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun increaseReceivedStatistics() {
-        viewModelScope.launch {
-            if (!userRepository.getUser().name.isNullOrEmpty()) {
-                var statisticsModel = statisticsLocalRepository.get()
-                statisticsModel.received +=1
-                statisticsLocalRepository.saveStatistics(statisticsModel)
-            }
-        }
-    }
 
-    fun increaseArchivedStatistics() {
-        viewModelScope.launch {
-            if (!userRepository.getUser().name.isNullOrEmpty()) {
-                var statisticsModel = statisticsLocalRepository.get()
-                statisticsModel.archived +=1
-                statisticsLocalRepository.saveStatistics(statisticsModel)
-            }
-        }
-    }
-
-    fun increaseTransitStatistics() {
-        viewModelScope.launch {
-            if (!userRepository.getUser().name.isNullOrEmpty()) {
-                var statisticsModel = statisticsLocalRepository.get()
-                statisticsModel.inTransit +=1
-                statisticsLocalRepository.saveStatistics(statisticsModel)
-            }
-        }
-    }
-
-    fun decreaseTransitStatistics() {
-        viewModelScope.launch {
-            if (!userRepository.getUser().name.isNullOrEmpty()) {
-                var statisticsModel = statisticsLocalRepository.get()
-                statisticsModel.inTransit -=1
-                statisticsLocalRepository.saveStatistics(statisticsModel)
-            }
-        }
-    }
 }

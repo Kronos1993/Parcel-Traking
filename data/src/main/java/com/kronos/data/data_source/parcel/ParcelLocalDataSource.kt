@@ -10,6 +10,7 @@ interface ParcelLocalDataSource {
     suspend fun listParcelHistory(): List<ParcelModel>
     suspend fun listParcelAddedAfter(after:Long): List<ParcelModel>
     suspend fun listAll(): List<ParcelModel>
+    suspend fun listAllParcelInTransit(): List<ParcelModel>
 
 
 }

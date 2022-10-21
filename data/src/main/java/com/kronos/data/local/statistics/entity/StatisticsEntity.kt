@@ -15,9 +15,6 @@ data class StatisticsEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "ID") val id: Int,
     @ColumnInfo(name = "PARCEL_ADDED") val added: Int,
-    @ColumnInfo(name = "PARCEL_ADDED_LAST_MONTH") val addedLastMonth: Int,
-    @ColumnInfo(name = "PARCEL_ARCHIVED") val archived: Int,
-    @ColumnInfo(name = "PARCEL_IN_TRANSIT") val inTransit: Int,
-    @ColumnInfo(name = "PARCEL_RECEIVED") val received: Int,
+    @ColumnInfo(name = "PARCEL_RECEIVED") val received: Int
 )
 
