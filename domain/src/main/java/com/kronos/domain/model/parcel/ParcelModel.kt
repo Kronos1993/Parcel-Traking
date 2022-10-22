@@ -12,5 +12,6 @@ data class ParcelModel(
     var history: Boolean = false,
     val dateAdded: Long = Calendar.getInstance().timeInMillis,
     var dateUpdated: Long = Calendar.getInstance().timeInMillis,
-    val fail: String = ""
+    val fail: String = "",
+    var loading: Boolean = false,
 ):Serializable

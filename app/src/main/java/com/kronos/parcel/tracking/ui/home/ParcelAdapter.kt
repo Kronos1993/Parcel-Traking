@@ -11,7 +11,6 @@ import com.kronos.core.util.copyText
 import com.kronos.data.remote.retrofit.UrlProvider
 import com.kronos.parcel.tracking.databinding.ItemParcelBinding
 import com.kronos.domain.model.parcel.ParcelModel
-
 class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(GeneralDiffCallback<ParcelModel>()) {
 
     private lateinit var adapterItemClickListener:AdapterItemClickListener<ParcelModel>
@@ -39,7 +38,7 @@ class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(G
         Glide.with(holder.itemView).load(urlProvider.getServerUrl() +  currentParcel.imageUrl).into(holder.binding.imageStatus)
     }
 
-    fun getItemAt(adapterPosition: Int) = getItem(adapterPosition)
+    fun getItemAt(adapterPosition: Int): ParcelModel = getItem(adapterPosition)
 
     class ParcelViewHolder(var binding:ItemParcelBinding, var clickListener:AdapterItemClickListener<ParcelModel>) : RecyclerView.ViewHolder(binding.root) {
         fun bind(parcel: ParcelModel){
@@ -52,3 +51,4 @@ class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(G
         }
     }
 }
+

@@ -75,6 +75,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{viewModel.user.phone}"
                         android:drawableStart="@drawable/ic_phone"
+                        android:drawablePadding="@dimen/margin_5"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -86,6 +87,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{viewModel.user.email}"
                         android:drawableStart="@drawable/ic_email"
+                        android:drawablePadding="@dimen/margin_5"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textViewUserPhone" />
@@ -96,6 +98,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_location"
+                        android:drawablePadding="@dimen/margin_5"
                         android:text="@{viewModel.user.address}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/imageCopy"

@@ -71,8 +71,6 @@ class HomeFragment : Fragment() {
             }
             is HomeState.Refreshing -> {
                 binding.homeRefreshLayout.isRefreshing = homeState.loading
-                if (!homeState.loading)
-                    viewModel.getParcels()
             }
             is HomeState.Search -> {
                 viewModel.getParcels()

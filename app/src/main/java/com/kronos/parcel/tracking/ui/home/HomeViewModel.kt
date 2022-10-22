@@ -1,7 +1,6 @@
 package com.kronos.parcel.tracking.ui.home
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kronos.core.extensions.asLiveData
@@ -150,6 +149,8 @@ class HomeViewModel @Inject constructor(
             save.await()
             logParcelAdded(parcel)
             increaseTotalParcelStatistics()
+            if (parcel.status.contains("Entregado"))
+                increaseReceivedStatistics()
             postState(HomeState.Loading(false))
             postState(HomeState.Search)
         }
@@ -158,55 +159,68 @@ class HomeViewModel @Inject constructor(
     fun refreshParcels() {
         viewModelScope.launch {
             setState(HomeState.Refreshing(true))
-            viewModelScope.launch(Dispatchers.IO) {
-                parcelLocalRepository.listAllParcelLocal().let {
-                    if (it.isNotEmpty()) {
-                        _parcelList.postValue(it)
-                        it.forEachIndexed { index, parcelModel ->
-                            refreshParcel(parcelModel, index)
-                        }
-                    } else {
-                        postState(HomeState.Refreshing(false))
+            parcelAdapter.currentList.let {
+                if (it.isNotEmpty()) {
+                    var list = it.toMutableList()
+                    it.forEachIndexed { index, parcelModel ->
+                        parcelModel.loading = true
+                        parcelAdapter.notifyItemChanged(index)
                     }
+                    refreshParcel(list,0,it.size)
+                } else {
+                    postState(HomeState.Refreshing(false))
                 }
             }
+            postState(HomeState.Refreshing(false))
         }
     }
 
-    fun refreshParcel(parcel: ParcelModel, current: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            lateinit var parcelUpdate: ParcelModel
-            var oldState = parcel.status
-            val call = async {
-                parcelUpdate = parcelRemoteRepository.searchParcel(parcel.trackingNumber)
-                if (parcelUpdate.status != "not found" && parcel.status != parcelUpdate.status) {
-                    parcel.imageUrl = parcelUpdate.imageUrl
-                    notification.createNotification(
-                        context.getString(R.string.notification_title).format(parcel.name),
-                        context.getString(R.string.notification_details)
-                            .format(parcel.trackingNumber, parcel.status, parcelUpdate.status),
-                        NotificationType.GENERAL.name,
-                        NotificationType.PARCEL_STATUS,
-                        com.kronos.resources.R.drawable.ic_notifications,
-                        context
-                    )
-                    logParcelStatusUpdated(parcel, oldState, parcelUpdate.status)
-                    parcel.status = parcelUpdate.status
+    fun refreshParcel(parcels: MutableList<ParcelModel>, current: Int,total:Int) {
+        if (current<parcels.size){
+            var parcel = parcels[current]
+            viewModelScope.launch(Dispatchers.IO) {
+                lateinit var parcelUpdate: ParcelModel
+                var oldState = parcel.status
+                val call = async {
+                    parcelUpdate = parcelRemoteRepository.searchParcel(parcel.trackingNumber)
+                    if (parcelUpdate.status != "not found" && parcel.status != parcelUpdate.status) {
+                        parcel.imageUrl = parcelUpdate.imageUrl
+                        notification.createNotification(
+                            context.getString(R.string.notification_title).format(parcel.name),
+                            context.getString(R.string.notification_details)
+                                .format(parcel.trackingNumber, parcel.status, parcelUpdate.status),
+                            NotificationType.GENERAL.name,
+                            NotificationType.PARCEL_STATUS,
+                            com.kronos.resources.R.drawable.ic_notifications,
+                            context
+                        )
+                        logParcelStatusUpdated(parcel, oldState, parcelUpdate.status)
+                        parcel.status = parcelUpdate.status
+                        if (parcelUpdate.status.contains("Entregado")) {
+                            increaseReceivedStatistics()
+                        }
+                    }
+                    parcel.dateUpdated = parcelUpdate.dateUpdated
+                    if (parcelUpdate.fail.isEmpty()) {
+                        val save = async {
+                            parcelLocalRepository.saveParcel(parcel)
+                        }
+                        save.await()
+                        parcel.loading = false
+                        viewModelScope.launch(Dispatchers.Main){
+                            parcelAdapter.notifyItemChanged(current)
+                        }
+                    } else {
+                        var currentError = Hashtable<String, String>()
+                        currentError["error"] = parcelUpdate.fail
+                        postState(HomeState.Error(currentError))
+                        refreshParcel(parcels,total,total)
+                    }
                 }
-                parcel.dateUpdated = parcelUpdate.dateUpdated
+                call.await()
+                var next = current+1
+                refreshParcel(parcels,next,total)
             }
-            call.await()
-            if (parcelUpdate.fail.isEmpty()) {
-                val save = async {
-                    parcelLocalRepository.saveParcel(parcel)
-                }
-                save.await()
-            } else {
-                var currentError = Hashtable<String, String>()
-                currentError["error"] = parcelUpdate.fail
-                postState(HomeState.Error(currentError))
-            }
-            postState(HomeState.Refreshing(false))
         }
     }
 
@@ -214,11 +228,20 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             if (!userRepository.getUser().name.isNullOrEmpty()) {
                 var statisticsModel = statisticsLocalRepository.get()
-                statisticsModel.added +=1
+                statisticsModel.added += 1
                 statisticsLocalRepository.saveStatistics(statisticsModel)
             }
         }
     }
 
+    fun increaseReceivedStatistics() {
+        viewModelScope.launch {
+            if (!userRepository.getUser().name.isNullOrEmpty()) {
+                var statisticsModel = statisticsLocalRepository.get()
+                statisticsModel.received += 1
+                statisticsLocalRepository.saveStatistics(statisticsModel)
+            }
+        }
+    }
 
 }
