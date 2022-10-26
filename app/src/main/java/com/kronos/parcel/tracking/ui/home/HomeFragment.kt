@@ -3,6 +3,7 @@ package com.kronos.parcel.tracking.ui.home
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -40,11 +41,16 @@ class HomeFragment : Fragment() {
     ) = binding.run {
         viewModel = this@HomeFragment.viewModel
         lifecycleOwner = this@HomeFragment.viewLifecycleOwner
+        root
+    }
+
+
+    override fun onResume() {
+        super.onResume()
         observeViewModel()
         setListeners()
         initViews()
         initViewModel()
-        root
     }
 
     private fun setListeners() {

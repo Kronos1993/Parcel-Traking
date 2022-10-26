@@ -1,10 +1,7 @@
 package com.kronos.core.persistance.di
 
 import com.kronos.core.io.PersistenceOptions
-import com.kronos.core.persistance.ExternalDbPersistenceOptionsImpl
-import com.kronos.core.persistance.ExternalPersistenceOptionsImpl
-import com.kronos.core.persistance.InternalDbPersistenceOptionsImpl
-import com.kronos.core.persistance.InternalPersistenceOptionsImpl
+import com.kronos.core.persistance.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,6 +25,10 @@ annotation class ExternalDbPersistenceOptions
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class InternalDbPersistenceOptions
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class InternalLogsPersistenceOptions
 
 
 @Module
@@ -54,4 +55,9 @@ abstract class PersistenceOptionsModule {
     @Singleton
     @Binds
     abstract fun provideInternalDbWorkspacePersistenceOptions(impl: InternalDbPersistenceOptionsImpl): PersistenceOptions
+
+    @InternalLogsPersistenceOptions
+    @Singleton
+    @Binds
+    abstract fun provideInternalLogsWorkspacePersistenceOptions(impl: InternalLogPersistenceOptionsImpl): PersistenceOptions
 }

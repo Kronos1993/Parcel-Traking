@@ -13,6 +13,8 @@ import com.kronos.domain.repository.event.EventLocalRepository
 import com.kronos.domain.repository.parcel.ParcelLocalRepository
 import com.kronos.domain.repository.statistics.StatisticsLocalRepository
 import com.kronos.domain.repository.user.UserLocalRepository
+import com.kronos.logger.LoggerType
+import com.kronos.logger.interfaces.ILogger
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.ui.home.ParcelAdapter
@@ -32,6 +34,7 @@ class HistoryViewModel  @Inject constructor(
     private var eventLocalRepository: EventLocalRepository,
     private var statisticsLocalRepository: StatisticsLocalRepository,
     private var userRepository: UserLocalRepository,
+    var logger:ILogger,
 ) : ParentViewModel() {
     var parcel = ParcelModel(trackingNumber = "", status = "", imageUrl = "")
 
@@ -67,6 +70,7 @@ class HistoryViewModel  @Inject constructor(
         viewModelScope.launch {
             parcelLocalRepository.saveParcel(itemAt)
             logParcelUnarchive(itemAt)
+            logger.write(this::javaClass.name, LoggerType.INFO,"Parcel ${itemAt.trackingNumber} to main list")
             decreaseArchivedStatistics()
             getParcels()
         }
@@ -97,13 +101,14 @@ class HistoryViewModel  @Inject constructor(
         viewModelScope.launch {
             parcelLocalRepository.deleteParcel(parcel)
             eventLocalRepository.deleteEvent(parcel.trackingNumber)
+            logger.write(this::javaClass.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} removed")
             decreaseArchivedStatistics()
             getParcels()
             setState(HistoryState.Loading(false))
         }
     }
 
-    fun decreaseArchivedStatistics() {
+    private fun decreaseArchivedStatistics() {
         viewModelScope.launch {
             if (!userRepository.getUser().name.isNullOrEmpty()) {
                 var statisticsModel = statisticsLocalRepository.get()

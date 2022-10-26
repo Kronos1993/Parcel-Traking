@@ -3,6 +3,7 @@ package com.kronos.parcel.tracking.job
 import android.app.job.JobParameters
 import android.app.job.JobService
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.kronos.core.notification.INotifications
 import com.kronos.core.notification.NotificationType
 import com.kronos.domain.model.event.EventModel
@@ -10,7 +11,10 @@ import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.domain.repository.event.EventLocalRepository
 import com.kronos.domain.repository.parcel.ParcelLocalRepository
 import com.kronos.domain.repository.parcel.ParcelRemoteRepository
+import com.kronos.logger.LoggerType
+import com.kronos.logger.interfaces.ILogger
 import com.kronos.parcel.tracking.R
+import com.kronos.parcel.tracking.ui.home.state.HomeState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.util.*
@@ -33,15 +37,18 @@ class ParcelTrackingNotificationJob : JobService() {
     @Inject
     lateinit var eventLocalRepository: EventLocalRepository
 
-
     @Inject
     lateinit var notification: INotifications
 
+    @Inject
+    lateinit var logger: ILogger
 
     override fun onStartJob(params: JobParameters): Boolean {
         Log.d(TAG, "onStartJob")
         Log.d(TAG, "Current job started: ${params.jobId}")
         Log.d(TAG, "Current Job Params: ${params.jobId}")
+        logger.write(this::javaClass.name,LoggerType.INFO,"Current job started: ${params.jobId}")
+        logger.write(this::javaClass.name,LoggerType.INFO,"Current Job Params: ${params.jobId}")
         if (!jobCancelled) {
             doWork(params)
         }
@@ -51,6 +58,7 @@ class ParcelTrackingNotificationJob : JobService() {
     override fun onStopJob(params: JobParameters): Boolean {
         Log.d(TAG, "onStopJob")
         Log.d(TAG, "Current job stopped: ${params.jobId}")
+        logger.write(this::javaClass.name,LoggerType.INFO,"Current job stopped: ${params.jobId}")
         jobCancelled = true
         return true
     }
@@ -58,59 +66,57 @@ class ParcelTrackingNotificationJob : JobService() {
     private fun doWork(params: JobParameters) {
         Log.d(TAG, "doWork")
         Log.d(TAG, "Current Do Work Params: ${params.jobId}")
+        logger.write(this::javaClass.name,LoggerType.INFO,"Current Do Work Params: ${params.jobId}")
         if (params != null && params.jobId == notificationJobId) {
             refreshParcels()
         }
     }
 
     private fun refreshParcels() {
-        GlobalScope.launch(Dispatchers.IO,start=CoroutineStart.LAZY) {
+        GlobalScope.launch(Dispatchers.IO,start=CoroutineStart.LAZY){
+            logger.write(this::javaClass.name,LoggerType.INFO,"Current Do Work Params: Refreshing parcels")
             var list = parcelLocalRepository.listAllParcelLocal()
-            list.forEach { parcelModel ->
-                refreshParcel(parcelModel)
-            }
+            refreshParcel(list,0,list.size)
         }
-
     }
 
-    private fun refreshParcel(parcel: ParcelModel) {
-        lateinit var parcelUpdate: ParcelModel
-        runBlocking(Dispatchers.IO) {
-            val call = async {
-                parcelUpdate = parcelRemoteRepository.searchParcel(parcel.trackingNumber)
-                if (parcelUpdate.status != "not found" && parcel.status != parcelUpdate.status) {
-                    parcel.imageUrl = parcelUpdate.imageUrl
-                    notification.createNotification(
-                        getString(R.string.notification_title).format(parcel.name),
-                        getString(R.string.notification_details)
-                            .format(parcel.trackingNumber, parcel.status, parcelUpdate.status),
-                        NotificationType.GENERAL.name,
-                        NotificationType.PARCEL_STATUS,
-                        com.kronos.resources.R.drawable.ic_notifications,
-                        applicationContext
-                    )
-                    eventLocalRepository.saveEvent(
-                        EventModel(
-                            0,
-                            getString(R.string.notification_title).format(parcel.name),
-                            getString(R.string.notification_details)
+    fun refreshParcel(parcels: List<ParcelModel>, current: Int,total:Int) {
+        if (current<parcels.size){
+            var parcel = parcels[current]
+            runBlocking(Dispatchers.IO) {
+                lateinit var parcelUpdate: ParcelModel
+                val call = async {
+                    logger.write(this::javaClass.name,LoggerType.INFO,"Current Do Work Params: Current parcel to refresh ${parcel.name}")
+                    parcelUpdate = parcelRemoteRepository.searchParcel(parcel.trackingNumber)
+                    if (parcelUpdate.status != "not found" && parcel.status != parcelUpdate.status) {
+                        parcel.imageUrl = parcelUpdate.imageUrl
+                        notification.createNotification(
+                            applicationContext.getString(R.string.notification_title).format(parcel.name),
+                            applicationContext.getString(R.string.notification_details)
                                 .format(parcel.trackingNumber, parcel.status, parcelUpdate.status),
-                            false,
-                            parcel.trackingNumber,
-                            Calendar.getInstance().timeInMillis,
-                            Calendar.getInstance().timeInMillis,
+                            NotificationType.GENERAL.name,
+                            NotificationType.PARCEL_STATUS,
+                            com.kronos.resources.R.drawable.ic_notifications,
+                            applicationContext
                         )
-                    )
-                    parcel.status = parcelUpdate.status
+                        parcel.status = parcelUpdate.status
+                    }
+                    parcel.dateUpdated = parcelUpdate.dateUpdated
+                    logger.write(this::javaClass.name,LoggerType.INFO,"Current Do Work Params: ${parcel.name} updated")
+                    if (parcelUpdate.fail.isEmpty()) {
+                        val save = async {
+                            parcelLocalRepository.saveParcel(parcel)
+                            logger.write(this::javaClass.name,LoggerType.INFO,"Current Do Work Params: ${parcel.name} saved")
+                        }
+                        save.await()
+                    } else {
+                        logger.write(this::javaClass.name,LoggerType.INFO,"Current Do Work Params: error ocurred ${parcelUpdate.fail}")
+                        refreshParcel(parcels,total,total)
+                    }
                 }
-                parcel.dateUpdated = parcelUpdate.dateUpdated
-            }
-            call.await()
-            if (parcelUpdate.fail.isEmpty()) {
-                val save = async {
-                    parcelLocalRepository.saveParcel(parcel)
-                }
-                save.await()
+                call.await()
+                var next = current+1
+                refreshParcel(parcels,next,total)
             }
         }
     }

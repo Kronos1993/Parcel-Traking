@@ -11,6 +11,8 @@ import com.kronos.domain.model.user.UserModel
 import com.kronos.domain.repository.parcel.ParcelLocalRepository
 import com.kronos.domain.repository.statistics.StatisticsLocalRepository
 import com.kronos.domain.repository.user.UserLocalRepository
+import com.kronos.logger.LoggerType
+import com.kronos.logger.interfaces.ILogger
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.ui.user.state.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +30,7 @@ class UserViewModel @Inject constructor(
     private var userLocalRepository: UserLocalRepository,
     private var statisticsLocalRepository: StatisticsLocalRepository,
     private var parcelLocalRepository: ParcelLocalRepository,
+    private var logger: ILogger,
 ) : ParentViewModel() {
 
     private val _state = MutableLiveData<MainState>()
@@ -70,6 +73,7 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch {
             userLocalRepository.deleteUser()
             statisticsLocalRepository.delete()
+            logger.write(this::javaClass.name, LoggerType.INFO,"User deleted")
             setState(UserState.Loading(false))
             setState(UserState.UserNotLogged)
         }
@@ -85,6 +89,7 @@ class UserViewModel @Inject constructor(
             if (user!=null && user.name.isNotEmpty()){
                 _user.value = user
                 getStatisticsLocal()
+                logger.write(this::javaClass.name,LoggerType.INFO,"User ${user.name} loaded")
                 setState(UserState.UserLogged)
             }
             else {

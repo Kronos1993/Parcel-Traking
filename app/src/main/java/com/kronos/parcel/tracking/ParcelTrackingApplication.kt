@@ -14,6 +14,7 @@ import com.kronos.core.notification.INotifications
 import com.kronos.domain.repository.event.EventLocalRepository
 import com.kronos.domain.repository.parcel.ParcelLocalRepository
 import com.kronos.domain.repository.parcel.ParcelRemoteRepository
+import com.kronos.logger.interfaces.ILogger
 import com.kronos.parcel.tracking.job.ParcelTrackingNotificationJob
 import com.kronos.parcel.tracking.job.notificationJobId
 import dagger.hilt.android.HiltAndroidApp
@@ -28,10 +29,14 @@ const val TAG = "ParcelTrackingApp"
 @HiltAndroidApp
 class ParcelTrackingApplication:Application(){
 
+    @Inject
+    lateinit var logger: ILogger
+
     override fun onCreate() {
         super.onCreate()
         createNotificationChanel()
         scheduleJob(applicationContext,TimeUnit.HOURS.toMillis(1))
+        logger.configure()
     }
 
     private fun createNotificationChanel() {

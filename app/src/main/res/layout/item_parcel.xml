@@ -112,9 +112,9 @@
                 <TextView
                     android:id="@+id/textViewParcelTime"
                     style="@style/TextViewSmall"
-                    android:textStyle="bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline7"
                     app:layout_constraintStart_toEndOf="@+id/textView"
@@ -135,9 +135,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/updated"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline7"
-                    app:layout_constraintTop_toBottomOf="@id/guideline8H" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/guideline8H"/>
 
                 <TextView
                     android:id="@+id/textViewParcelUpdated"

@@ -12,6 +12,8 @@ import com.kronos.domain.model.event.EventModel
 import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.domain.repository.event.EventLocalRepository
 import com.kronos.domain.repository.parcel.ParcelLocalRepository
+import com.kronos.logger.LoggerType
+import com.kronos.logger.interfaces.ILogger
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.ui.notifications.EventAdapter
@@ -30,6 +32,7 @@ class ParcelDetailsViewModel @Inject constructor(
     private var parcelLocalRepository: ParcelLocalRepository,
     private var eventLocalRepository: EventLocalRepository,
     private var urlProvider: UrlProvider,
+    var logger:ILogger,
 ) : ParentViewModel() {
 
     private val _parcel = MutableLiveData<ParcelModel>()
@@ -94,6 +97,7 @@ class ParcelDetailsViewModel @Inject constructor(
                     )
                 )
             }
+            logger.write(this::javaClass.name, LoggerType.INFO,"Parcel ${parcel.value!!.trackingNumber} updated")
             call.await()
             updateEvents()
             postState(MainState.NewEvent)

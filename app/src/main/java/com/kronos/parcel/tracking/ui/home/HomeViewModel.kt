@@ -16,6 +16,8 @@ import com.kronos.domain.repository.parcel.ParcelLocalRepository
 import com.kronos.domain.repository.parcel.ParcelRemoteRepository
 import com.kronos.domain.repository.statistics.StatisticsLocalRepository
 import com.kronos.domain.repository.user.UserLocalRepository
+import com.kronos.logger.LoggerType
+import com.kronos.logger.interfaces.ILogger
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.ui.home.state.HomeState
@@ -37,6 +39,7 @@ class HomeViewModel @Inject constructor(
     var urlProvider: UrlProvider,
     private var userRepository: UserLocalRepository,
     var notification: INotifications,
+    var logger: ILogger,
 ) : ParentViewModel() {
     private val _parcelList = MutableLiveData<List<ParcelModel>>()
     val parcelList = _parcelList.asLiveData()
@@ -73,6 +76,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             parcelLocalRepository.saveParcel(itemAt)
             logParcelToHistory(itemAt)
+            logger.write(this::javaClass.name,LoggerType.INFO,"Parcel ${itemAt.trackingNumber} to history")
             getParcels()
         }
     }
@@ -151,6 +155,7 @@ class HomeViewModel @Inject constructor(
             increaseTotalParcelStatistics()
             if (parcel.status.contains("Entregado"))
                 increaseReceivedStatistics()
+            logger.write(this::javaClass.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} added")
             postState(HomeState.Loading(false))
             postState(HomeState.Search)
         }
@@ -210,11 +215,13 @@ class HomeViewModel @Inject constructor(
                         viewModelScope.launch(Dispatchers.Main){
                             parcelAdapter.notifyItemChanged(current)
                         }
+                        logger.write(this::javaClass.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} refreshed")
                     } else {
                         var currentError = Hashtable<String, String>()
                         currentError["error"] = parcelUpdate.fail
                         postState(HomeState.Error(currentError))
                         refreshParcel(parcels,total,total)
+                        logger.write(this::javaClass.name,LoggerType.ERROR,"Parcel ${parcelUpdate.trackingNumber} error: ${parcelUpdate.fail}")
                     }
                 }
                 call.await()
@@ -224,7 +231,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun increaseTotalParcelStatistics() {
+    private fun increaseTotalParcelStatistics() {
         viewModelScope.launch {
             if (!userRepository.getUser().name.isNullOrEmpty()) {
                 var statisticsModel = statisticsLocalRepository.get()
@@ -234,7 +241,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun increaseReceivedStatistics() {
+    private fun increaseReceivedStatistics() {
         viewModelScope.launch {
             if (!userRepository.getUser().name.isNullOrEmpty()) {
                 var statisticsModel = statisticsLocalRepository.get()
