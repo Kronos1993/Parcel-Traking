@@ -73,7 +73,7 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch {
             userLocalRepository.deleteUser()
             statisticsLocalRepository.delete()
-            logger.write(this::javaClass.name, LoggerType.INFO,"User deleted")
+            logger.write(this::class.java.name, LoggerType.INFO,"User deleted")
             setState(UserState.Loading(false))
             setState(UserState.UserNotLogged)
         }
@@ -89,7 +89,7 @@ class UserViewModel @Inject constructor(
             if (user!=null && user.name.isNotEmpty()){
                 _user.value = user
                 getStatisticsLocal()
-                logger.write(this::javaClass.name,LoggerType.INFO,"User ${user.name} loaded")
+                logger.write(this::class.java.name,LoggerType.INFO,"User ${user.name} loaded")
                 setState(UserState.UserLogged)
             }
             else {

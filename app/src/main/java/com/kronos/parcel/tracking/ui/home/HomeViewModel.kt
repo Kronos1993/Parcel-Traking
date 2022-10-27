@@ -76,7 +76,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             parcelLocalRepository.saveParcel(itemAt)
             logParcelToHistory(itemAt)
-            logger.write(this::javaClass.name,LoggerType.INFO,"Parcel ${itemAt.trackingNumber} to history")
+            logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${itemAt.trackingNumber} to history")
             getParcels()
         }
     }
@@ -155,7 +155,7 @@ class HomeViewModel @Inject constructor(
             increaseTotalParcelStatistics()
             if (parcel.status.contains("Entregado"))
                 increaseReceivedStatistics()
-            logger.write(this::javaClass.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} added")
+            logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} added")
             postState(HomeState.Loading(false))
             postState(HomeState.Search)
         }
@@ -211,22 +211,21 @@ class HomeViewModel @Inject constructor(
                             parcelLocalRepository.saveParcel(parcel)
                         }
                         save.await()
-                        parcel.loading = false
-                        viewModelScope.launch(Dispatchers.Main){
-                            parcelAdapter.notifyItemChanged(current)
-                        }
-                        logger.write(this::javaClass.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} refreshed")
+                        logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} refreshed")
                     } else {
                         var currentError = Hashtable<String, String>()
                         currentError["error"] = parcelUpdate.fail
                         postState(HomeState.Error(currentError))
-                        refreshParcel(parcels,total,total)
-                        logger.write(this::javaClass.name,LoggerType.ERROR,"Parcel ${parcelUpdate.trackingNumber} error: ${parcelUpdate.fail}")
+                        refreshParcel(parcels,current+1,total)
+                        logger.write(this::class.java.name,LoggerType.ERROR,"Parcel ${parcelUpdate.trackingNumber} error: ${parcelUpdate.fail}")
+                    }
+                    parcel.loading = false
+                    viewModelScope.launch(Dispatchers.Main){
+                        parcelAdapter.notifyItemChanged(current)
                     }
                 }
                 call.await()
-                var next = current+1
-                refreshParcel(parcels,next,total)
+                refreshParcel(parcels,current+1,total)
             }
         }
     }

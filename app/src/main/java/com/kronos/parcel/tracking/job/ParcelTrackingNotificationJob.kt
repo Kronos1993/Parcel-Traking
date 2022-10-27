@@ -50,19 +50,16 @@ class ParcelTrackingNotificationJob : JobService() {
         Log.d(TAG, "onStartJob")
         Log.d(TAG, "Current job started: ${params.jobId}")
         Log.d(TAG, "Current Job Params: ${params.jobId}")
-        logger.write(this::javaClass.name, LoggerType.INFO, "Current job started: ${params.jobId}")
-        logger.write(this::javaClass.name, LoggerType.INFO, "Current Job Params: ${params.jobId}")
-        if (!jobCancelled) {
-            doWork(params)
-        }
+        logger.write(this::class.java.name, LoggerType.INFO, "Current job started: ${params.jobId}")
+        logger.write(this::class.java.name, LoggerType.INFO, "Current Job Params: ${params.jobId}")
+        doWork(params)
         return true
     }
 
     override fun onStopJob(params: JobParameters): Boolean {
         Log.d(TAG, "onStopJob")
         Log.d(TAG, "Current job stopped: ${params.jobId}")
-        logger.write(this::javaClass.name, LoggerType.INFO, "Current job stopped: ${params.jobId}")
-        jobCancelled = true
+        logger.write(this::class.java.name, LoggerType.INFO, "Current job stopped: ${params.jobId}")
         return true
     }
 
@@ -70,28 +67,28 @@ class ParcelTrackingNotificationJob : JobService() {
         Log.d(TAG, "doWork")
         Log.d(TAG, "Current Do Work Params: ${params.jobId}")
         logger.write(
-            this::javaClass.name,
+            this::class.java.name,
             LoggerType.INFO,
             "Current Do Work Params: ${params.jobId}"
         )
         if (params != null && params.jobId == notificationJobId) {
-            refreshParcels()
+            refreshParcels(params)
         }
     }
 
-    private fun refreshParcels() {
+    private fun refreshParcels(params: JobParameters) {
         runBlocking(Dispatchers.IO) {
             logger.write(
-                this::javaClass.name,
+                this::class.java.name,
                 LoggerType.INFO,
                 "Current Do Work Params: Refreshing parcels"
             )
             var list = parcelLocalRepository.listAllParcelLocal()
-            refreshParcel(list, 0, list.size)
+            refreshParcel(list, 0, list.size,params)
         }
     }
 
-    fun refreshParcel(parcels: List<ParcelModel>, current: Int, total: Int) {
+    fun refreshParcel(parcels: List<ParcelModel>, current: Int, total: Int,params: JobParameters) {
         if (current < parcels.size) {
             var parcel = parcels[current]
             var callback = object : Callback<ParcelDto> {
@@ -122,7 +119,7 @@ class ParcelTrackingNotificationJob : JobService() {
                             }
                             parcel.dateUpdated = parcelUpdate.dateUpdated
                             logger.write(
-                                this::javaClass.name,
+                                this::class.java.name,
                                 LoggerType.INFO,
                                 "Current Do Work Params: ${parcel.name} updated"
                             )
@@ -131,7 +128,7 @@ class ParcelTrackingNotificationJob : JobService() {
                                     var save = async {
                                         parcelLocalRepository.saveParcel(parcel)
                                         logger.write(
-                                            this::javaClass.name,
+                                            this::class.java.name,
                                             LoggerType.INFO,
                                             "Current Do Work Params: ${parcel.name} saved"
                                         )
@@ -140,30 +137,37 @@ class ParcelTrackingNotificationJob : JobService() {
                                 }
                             } else {
                                 logger.write(
-                                    this::javaClass.name,
+                                    this::class.java.name,
                                     LoggerType.INFO,
                                     "Current Do Work Params: error ocurred ${parcelUpdate.name} : ${parcelUpdate.fail}"
                                 )
                             }
                         }
                         var next = current + 1
-                        refreshParcel(parcels, next, total)
+                        refreshParcel(parcels, next, total,params)
                     } else {
-                        refreshParcel(parcels, total, total)
+                        refreshParcel(parcels, total, total,params)
                     }
                 }
 
                 override fun onFailure(call: Call<ParcelDto>, t: Throwable) {
                     logger.write(
-                        this::javaClass.name,
+                        this::class.java.name,
                         LoggerType.INFO,
                         "Current Do Work Params: error ocurred ${t.message}"
                     )
-                    refreshParcel(parcels, total, total)
+                    refreshParcel(parcels, total, total,params)
                 }
 
             }
             parcelRemoteRepository.searchParcelAsync(parcel.trackingNumber,callback)
+        }else{
+            logger.write(
+                this::class.java.name,
+                LoggerType.INFO,
+                "Current Do Work Params:finishing job"
+            )
+            jobFinished(params,true)
         }
     }
 
