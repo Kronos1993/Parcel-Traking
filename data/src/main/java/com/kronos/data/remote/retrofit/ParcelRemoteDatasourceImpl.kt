@@ -3,8 +3,10 @@ package com.kronos.data.remote.retrofit
 import android.util.Log
 import com.kronos.data.data_source.parcel.ParcelRemoteDataSource
 import com.kronos.data.remote.retrofit.parcel.api.ParcelApi
+import com.kronos.data.remote.retrofit.parcel.dto.ParcelDto
 import com.kronos.data.remote.retrofit.parcel.mapper.toParcelModel
 import com.kronos.domain.model.parcel.ParcelModel
+import retrofit2.Callback
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -28,6 +30,10 @@ class ParcelRemoteDatasourceImpl @Inject constructor(
             }
         Log.e("ParcelRemoteDatasource", "searchParcel: $result")
         return result
+    }
+
+    override fun searchParcelAsync(tracking: String, callback: Any) {
+        parcelApi.searchParcel(tracking).enqueue(callback as Callback<ParcelDto>)
     }
 
 }

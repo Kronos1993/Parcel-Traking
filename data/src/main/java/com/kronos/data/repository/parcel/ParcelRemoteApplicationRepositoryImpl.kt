@@ -12,4 +12,8 @@ class ParcelRemoteApplicationRepositoryImpl @Inject constructor(
         return parcelRemoteLocalDataSource.searchParcel(tracking)
     }
 
+    override fun searchParcelAsync(trackingNumber: String, callback: Any) {
+        parcelRemoteLocalDataSource.searchParcelAsync(trackingNumber,callback)
+    }
+
 }

@@ -35,7 +35,7 @@ class ParcelTrackingApplication:Application(){
     override fun onCreate() {
         super.onCreate()
         createNotificationChanel()
-        scheduleJob(applicationContext,TimeUnit.HOURS.toMillis(1))
+        scheduleJob(applicationContext, TimeUnit.HOURS.toMillis(1))
         logger.configure()
     }
 
