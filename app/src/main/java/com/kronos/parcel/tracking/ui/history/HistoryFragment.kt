@@ -3,6 +3,7 @@ package com.kronos.parcel.tracking.ui.history
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -22,8 +23,10 @@ import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentHistoryBinding
 import com.kronos.parcel.tracking.ui.history.state.HistoryState
 import com.kronos.parcel.tracking.ui.home.CURRENT_PARCEL
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class HistoryFragment : Fragment() {
 
     private val binding by fragmentBinding<FragmentHistoryBinding>(R.layout.fragment_history)
@@ -37,13 +40,15 @@ class HistoryFragment : Fragment() {
     ) = binding.run {
         viewModel = this@HistoryFragment.viewModel
         lifecycleOwner = this@HistoryFragment.viewLifecycleOwner
-        observeViewModel()
-        initViews()
-        initViewModel()
         root
     }
 
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
+        initViews()
+        initViewModel()
+    }
 
     private fun observeViewModel() {
         viewModel.parcelList.observe(this.viewLifecycleOwner, ::handleParcelList)
@@ -129,13 +134,13 @@ class HistoryFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                when(direction){
-                    ItemTouchHelper.LEFT->{
+                when (direction) {
+                    ItemTouchHelper.LEFT -> {
                         viewModel.deleteParcel(
                             viewModel.parcelAdapter.getItemAt(viewHolder.adapterPosition)
                         )
                     }
-                    ItemTouchHelper.RIGHT->{
+                    ItemTouchHelper.RIGHT -> {
                         viewModel.restoreParcel(viewModel.parcelAdapter.getItemAt(viewHolder.adapterPosition))
                     }
                 }
@@ -148,12 +153,22 @@ class HistoryFragment : Fragment() {
                     requireContext(),
                     com.kronos.resources.R.drawable.ic_delete
                 )!!,
-                ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.snack_bar_error_background)),
+                ColorDrawable(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        com.kronos.resources.R.color.snack_bar_error_background
+                    )
+                ),
                 ContextCompat.getDrawable(
                     requireContext(),
                     com.kronos.resources.R.drawable.ic_unarchive
                 )!!,
-                ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.green)),
+                ColorDrawable(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        com.kronos.resources.R.color.green
+                    )
+                ),
                 itemTouchHelperCallback,
                 ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
             )
@@ -165,4 +180,15 @@ class HistoryFragment : Fragment() {
         viewModel.getParcels()
     }
 
+    override fun onPause() {
+        viewModel.parcelAdapter.setAdapterItemClick(null)
+        binding.unbind()
+        super.onPause()
+    }
+
+    override fun onDestroyView() {
+        viewModel.parcelAdapter.setAdapterItemClick(null)
+        binding.unbind()
+        super.onDestroyView()
+    }
 }

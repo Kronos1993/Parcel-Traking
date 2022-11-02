@@ -13,10 +13,10 @@ import com.kronos.parcel.tracking.databinding.ItemParcelBinding
 import com.kronos.domain.model.parcel.ParcelModel
 class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(GeneralDiffCallback<ParcelModel>()) {
 
-    private lateinit var adapterItemClickListener:AdapterItemClickListener<ParcelModel>
+    private var adapterItemClickListener:AdapterItemClickListener<ParcelModel>?=null
     private lateinit var urlProvider: UrlProvider
 
-    fun setAdapterItemClick(adapterItemClickListener:AdapterItemClickListener<ParcelModel>){
+    fun setAdapterItemClick(adapterItemClickListener:AdapterItemClickListener<ParcelModel>?){
         this.adapterItemClickListener = adapterItemClickListener
     }
 
@@ -40,12 +40,12 @@ class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(G
 
     fun getItemAt(adapterPosition: Int): ParcelModel = getItem(adapterPosition)
 
-    class ParcelViewHolder(var binding:ItemParcelBinding, var clickListener:AdapterItemClickListener<ParcelModel>) : RecyclerView.ViewHolder(binding.root) {
+    class ParcelViewHolder(var binding:ItemParcelBinding, var clickListener:AdapterItemClickListener<ParcelModel>?) : RecyclerView.ViewHolder(binding.root) {
         fun bind(parcel: ParcelModel){
             binding.run {
                 parcelModel = parcel
                 root.setOnClickListener {
-                    clickListener.onItemClick(parcel,adapterPosition)
+                    clickListener?.onItemClick(parcel,adapterPosition)
                 }
             }
         }

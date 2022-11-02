@@ -190,4 +190,16 @@ class HomeFragment : Fragment() {
     private fun initViewModel() {
         viewModel.getParcels()
     }
+
+    override fun onDestroyView() {
+        viewModel.parcelAdapter.setAdapterItemClick(null)
+        binding.unbind()
+        super.onDestroyView()
+    }
+
+    override fun onPause() {
+        viewModel.parcelAdapter.setAdapterItemClick(null)
+        binding.unbind()
+        super.onPause()
+    }
 }

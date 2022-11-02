@@ -43,6 +43,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="false"
                     android:maxLines="2"
+                    android:textStyle="bold"
                     android:text="@{eventModel.name}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +51,7 @@
 
                 <TextView
                     android:id="@+id/textViewEventBody"
-                    style="@style/TextViewNormal"
+                    style="@style/TextViewSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:singleLine="false"

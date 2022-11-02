@@ -16,9 +16,9 @@ import java.util.*
 class EventAdapter() :
     ListAdapter<EventModel, EventAdapter.EventViewHolder>(GeneralDiffCallback<EventModel>()) {
 
-    private lateinit var adapterItemClickListener: AdapterItemClickListener<EventModel>
+    private var adapterItemClickListener: AdapterItemClickListener<EventModel>? = null
 
-    fun setAdapterItemClick(adapterItemClickListener: AdapterItemClickListener<EventModel>) {
+    fun setAdapterItemClick(adapterItemClickListener: AdapterItemClickListener<EventModel>?) {
         this.adapterItemClickListener = adapterItemClickListener
     }
 
@@ -46,13 +46,13 @@ class EventAdapter() :
 
     class EventViewHolder(
         var binding: ItemEventBinding,
-        var clickListener: AdapterItemClickListener<EventModel>
+        var clickListener: AdapterItemClickListener<EventModel>?
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(event: EventModel) {
             binding.run {
                 eventModel = event
                 root.setOnClickListener {
-                    clickListener.onItemClick(event, adapterPosition)
+                    clickListener?.onItemClick(event, adapterPosition)
                 }
             }
         }

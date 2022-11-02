@@ -134,7 +134,7 @@ class ParcelDetailsFragment : Fragment() {
         }
     }
 
-    fun validateField() : Boolean{
+    private fun validateField() : Boolean{
         var valid = true
         if (binding.editTextTrackingNumber.text!!.isEmpty()){
             valid = false
@@ -149,5 +149,17 @@ class ParcelDetailsFragment : Fragment() {
             binding.textInputLayoutParcelName.error = null
         }
         return valid
+    }
+
+    override fun onPause() {
+        viewModel.eventAdapter.setAdapterItemClick(null)
+        binding.unbind()
+        super.onPause()
+    }
+
+    override fun onDestroyView() {
+        viewModel.eventAdapter.setAdapterItemClick(null)
+        binding.unbind()
+        super.onDestroyView()
     }
 }

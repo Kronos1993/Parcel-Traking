@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.kronos.core.extensions.fragmentBinding
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.copyText
@@ -22,7 +23,7 @@ class UserFragment : Fragment() {
 
     private val binding by fragmentBinding<FragmentUserBinding>(R.layout.fragment_user)
 
-    private val viewModel by activityViewModels<UserViewModel>()
+    private val viewModel by viewModels<UserViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -122,4 +123,13 @@ class UserFragment : Fragment() {
         viewModel.getUserLocal()
     }
 
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
+    }
+
+    override fun onPause() {
+        binding.unbind()
+        super.onPause()
+    }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,13 +20,15 @@ import com.kronos.domain.model.event.EventModel
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentNotificationsBinding
 import com.kronos.parcel.tracking.ui.parcel_details.state.ParcelDetailState
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class NotificationsFragment : Fragment() {
 
     private val binding by fragmentBinding<FragmentNotificationsBinding>(R.layout.fragment_notifications)
 
-    private val viewModel by activityViewModels<NotificationsViewModel>()
+    private val viewModel by viewModels<NotificationsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -149,5 +152,15 @@ class NotificationsFragment : Fragment() {
         viewModel.getEvents()
     }
 
+    override fun onDestroyView() {
+        viewModel.eventAdapter.setAdapterItemClick(null)
+        binding.unbind()
+        super.onDestroyView()
+    }
 
+    override fun onPause() {
+        viewModel.eventAdapter.setAdapterItemClick(null)
+        binding.unbind()
+        super.onPause()
+    }
 }
