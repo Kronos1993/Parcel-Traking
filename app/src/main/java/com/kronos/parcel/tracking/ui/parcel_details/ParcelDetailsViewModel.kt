@@ -44,7 +44,7 @@ class ParcelDetailsViewModel @Inject constructor(
     private val _eventList = MutableLiveData<List<EventModel>>()
     val eventList = _eventList.asLiveData()
 
-    val eventAdapter: EventAdapter = EventAdapter()
+    var eventAdapter: EventAdapter? = EventAdapter()
 
     private val _state = MutableLiveData<MainState>()
     val state = _state.asLiveData()

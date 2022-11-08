@@ -105,16 +105,16 @@ class HistoryFragment : Fragment() {
     }
 
     private fun handleParcelList(list: List<ParcelModel>) {
-        viewModel.parcelAdapter.submitList(list)
-        viewModel.parcelAdapter.notifyDataSetChanged()
+        viewModel.parcelAdapter?.submitList(list)
+        viewModel.parcelAdapter?.notifyDataSetChanged()
     }
 
     private fun initViews() {
         binding.recyclerViewParcelsHistory.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewParcelsHistory.setHasFixedSize(false)
         binding.recyclerViewParcelsHistory.adapter = viewModel.parcelAdapter
-        viewModel.parcelAdapter.setUrlProvider(viewModel.urlProvider)
-        viewModel.parcelAdapter.setAdapterItemClick(object : AdapterItemClickListener<ParcelModel> {
+        viewModel.parcelAdapter?.setUrlProvider(viewModel.urlProvider)
+        viewModel.parcelAdapter?.setAdapterItemClick(object : AdapterItemClickListener<ParcelModel> {
             override fun onItemClick(t: ParcelModel, pos: Int) {
                 var bundle = Bundle()
                 bundle.putSerializable(CURRENT_PARCEL, t)
@@ -137,11 +137,11 @@ class HistoryFragment : Fragment() {
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         viewModel.deleteParcel(
-                            viewModel.parcelAdapter.getItemAt(viewHolder.adapterPosition)
+                            viewModel.parcelAdapter!!.getItemAt(viewHolder.adapterPosition)
                         )
                     }
                     ItemTouchHelper.RIGHT -> {
-                        viewModel.restoreParcel(viewModel.parcelAdapter.getItemAt(viewHolder.adapterPosition))
+                        viewModel.restoreParcel(viewModel.parcelAdapter!!.getItemAt(viewHolder.adapterPosition))
                     }
                 }
             }
@@ -181,13 +181,13 @@ class HistoryFragment : Fragment() {
     }
 
     override fun onPause() {
-        viewModel.parcelAdapter.setAdapterItemClick(null)
+        viewModel.parcelAdapter = null
         binding.unbind()
         super.onPause()
     }
 
     override fun onDestroyView() {
-        viewModel.parcelAdapter.setAdapterItemClick(null)
+        viewModel.parcelAdapter = null
         binding.unbind()
         super.onDestroyView()
     }

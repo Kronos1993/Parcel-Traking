@@ -42,7 +42,7 @@ class HistoryViewModel  @Inject constructor(
     private val _parcelList = MutableLiveData<List<ParcelModel>>()
     val parcelList = _parcelList.asLiveData()
 
-    val parcelAdapter: ParcelAdapter = ParcelAdapter()
+    var parcelAdapter: ParcelAdapter? = ParcelAdapter()
 
     private val _state = MutableLiveData<MainState>()
     val state = _state.asLiveData()

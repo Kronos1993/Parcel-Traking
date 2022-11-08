@@ -101,15 +101,15 @@ class ParcelDetailsFragment : Fragment() {
     }
 
     private fun handleEventList(list: List<EventModel>) {
-        viewModel.eventAdapter.submitList(list)
-        viewModel.eventAdapter.notifyDataSetChanged()
+        viewModel.eventAdapter?.submitList(list)
+        viewModel.eventAdapter?.notifyDataSetChanged()
     }
 
     private fun initViews() {
         binding.recyclerViewCurrentParcelEvents.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCurrentParcelEvents.setHasFixedSize(false)
         binding.recyclerViewCurrentParcelEvents.adapter = viewModel.eventAdapter
-        viewModel.eventAdapter.setAdapterItemClick(object : AdapterItemClickListener<EventModel> {
+        viewModel.eventAdapter?.setAdapterItemClick(object : AdapterItemClickListener<EventModel> {
             override fun onItemClick(t: EventModel, pos: Int) {
             }
 
@@ -152,13 +152,13 @@ class ParcelDetailsFragment : Fragment() {
     }
 
     override fun onPause() {
-        viewModel.eventAdapter.setAdapterItemClick(null)
+        viewModel.eventAdapter = null
         binding.unbind()
         super.onPause()
     }
 
     override fun onDestroyView() {
-        viewModel.eventAdapter.setAdapterItemClick(null)
+        viewModel.eventAdapter = null
         binding.unbind()
         super.onDestroyView()
     }

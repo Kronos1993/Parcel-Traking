@@ -124,16 +124,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun handleParcelList(list: List<ParcelModel>) {
-        viewModel.parcelAdapter.submitList(list)
-        viewModel.parcelAdapter.notifyDataSetChanged()
+        viewModel.parcelAdapter?.submitList(list)
+        viewModel.parcelAdapter?.notifyDataSetChanged()
     }
 
     private fun initViews() {
         binding.recyclerViewCurrentParcels.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCurrentParcels.setHasFixedSize(false)
         binding.recyclerViewCurrentParcels.adapter = viewModel.parcelAdapter
-        viewModel.parcelAdapter.setUrlProvider(viewModel.urlProvider)
-        viewModel.parcelAdapter.setAdapterItemClick(object : AdapterItemClickListener<ParcelModel> {
+        viewModel.parcelAdapter?.setUrlProvider(viewModel.urlProvider)
+        viewModel.parcelAdapter?.setAdapterItemClick(object : AdapterItemClickListener<ParcelModel> {
             override fun onItemClick(t: ParcelModel, pos: Int) {
                 if (viewModel.state.value is HomeState.Refreshing) {
                     if (!(viewModel.state.value as HomeState.Refreshing).loading) {
@@ -162,7 +162,7 @@ class HomeFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewModel.toHistory(
-                    viewModel.parcelAdapter.getItemAt(viewHolder.adapterPosition)
+                    viewModel.parcelAdapter!!.getItemAt(viewHolder.adapterPosition)
                 )
             }
         }
@@ -192,13 +192,13 @@ class HomeFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        viewModel.parcelAdapter.setAdapterItemClick(null)
+        viewModel.parcelAdapter = null
         binding.unbind()
         super.onDestroyView()
     }
 
     override fun onPause() {
-        viewModel.parcelAdapter.setAdapterItemClick(null)
+        viewModel.parcelAdapter = null
         binding.unbind()
         super.onPause()
     }

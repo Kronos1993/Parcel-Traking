@@ -98,15 +98,15 @@ class NotificationsFragment : Fragment() {
     }
 
     private fun handleEventList(list: List<EventModel>) {
-        viewModel.eventAdapter.submitList(list)
-        viewModel.eventAdapter.notifyDataSetChanged()
+        viewModel.eventAdapter?.submitList(list)
+        viewModel.eventAdapter?.notifyDataSetChanged()
     }
 
     private fun initViews() {
         binding.recyclerViewEvents.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewEvents.setHasFixedSize(false)
         binding.recyclerViewEvents.adapter = viewModel.eventAdapter
-        viewModel.eventAdapter.setAdapterItemClick(object : AdapterItemClickListener<EventModel> {
+        viewModel.eventAdapter?.setAdapterItemClick(object : AdapterItemClickListener<EventModel> {
             override fun onItemClick(t: EventModel, pos: Int) {
             }
 
@@ -124,7 +124,7 @@ class NotificationsFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewModel.deleteEvent(
-                    viewModel.eventAdapter.getItemAt(viewHolder.adapterPosition)
+                    viewModel.eventAdapter!!.getItemAt(viewHolder.adapterPosition)
                 )
             }
         }
@@ -153,13 +153,13 @@ class NotificationsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        viewModel.eventAdapter.setAdapterItemClick(null)
+        viewModel.eventAdapter = null
         binding.unbind()
         super.onDestroyView()
     }
 
     override fun onPause() {
-        viewModel.eventAdapter.setAdapterItemClick(null)
+        viewModel.eventAdapter = null
         binding.unbind()
         super.onPause()
     }

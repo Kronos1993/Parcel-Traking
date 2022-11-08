@@ -44,7 +44,7 @@ class HomeViewModel @Inject constructor(
     private val _parcelList = MutableLiveData<List<ParcelModel>>()
     val parcelList = _parcelList.asLiveData()
 
-    val parcelAdapter: ParcelAdapter = ParcelAdapter()
+    var parcelAdapter: ParcelAdapter? = ParcelAdapter()
 
     private val _state = MutableLiveData<MainState>()
     val state = _state.asLiveData()
@@ -164,12 +164,12 @@ class HomeViewModel @Inject constructor(
     fun refreshParcels() {
         viewModelScope.launch {
             setState(HomeState.Refreshing(true))
-            parcelAdapter.currentList.let {
-                if (it.isNotEmpty()) {
+            parcelAdapter?.currentList.let {
+                if (it!=null && it.isNotEmpty()) {
                     var list = it.toMutableList()
                     it.forEachIndexed { index, parcelModel ->
                         parcelModel.loading = true
-                        parcelAdapter.notifyItemChanged(index)
+                        parcelAdapter?.notifyItemChanged(index)
                     }
                     refreshParcel(list,0,it.size)
                 } else {
@@ -221,7 +221,7 @@ class HomeViewModel @Inject constructor(
                     }
                     parcel.loading = false
                     viewModelScope.launch(Dispatchers.Main){
-                        parcelAdapter.notifyItemChanged(current)
+                        parcelAdapter?.notifyItemChanged(current)
                     }
                 }
                 call.await()
