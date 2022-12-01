@@ -28,7 +28,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun setAllEventReaded() {
+    fun setAllEventRead() {
         viewModelScope.launch(Dispatchers.IO) {
             var call = async {
                 eventLocalRepository.setAllEventRead()
