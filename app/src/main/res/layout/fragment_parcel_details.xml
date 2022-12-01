@@ -59,6 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/tracking_number"
+                    app:error_text="@{viewModel.trackingNumberError}"
                     app:layout_constraintTop_toBottomOf="@id/textViewParcelStatus"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
@@ -69,7 +70,7 @@
                         android:layout_height="match_parent"
                         android:drawableStart="@drawable/ic_hashtag"
                         android:drawablePadding="@dimen/margin_5"
-                        android:text="@{viewModel.parcel.trackingNumber}"
+                        android:text="@={viewModel.trackingNumber}"
                         android:imeOptions="actionNext"
                         android:inputType="text" />
 
@@ -81,6 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/tracking_name"
+                    app:error_text="@{viewModel.nameError}"
                     android:textColorHint="@color/hintColor"
                     app:errorTextAppearance="@color/alertColor"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +96,7 @@
                         android:drawableStart="@drawable/ic_edit"
                         android:drawablePadding="@dimen/margin_5"
                         android:imeOptions="actionDone"
-                        android:text="@{viewModel.parcel.name}"
+                        android:text="@={viewModel.name}"
                         android:inputType="textCapWords" />
 
                 </com.google.android.material.textfield.TextInputLayout>

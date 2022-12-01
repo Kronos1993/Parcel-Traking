@@ -6,21 +6,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.SwipeToDelete
-import com.kronos.core.extensions.fragmentBinding
+import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.show
 import com.kronos.domain.model.event.EventModel
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentNotificationsBinding
+import com.kronos.parcel.tracking.ui.home.ParcelAdapter
 import com.kronos.parcel.tracking.ui.parcel_details.state.ParcelDetailState
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.ref.WeakReference
 import java.util.*
 
 @AndroidEntryPoint
@@ -98,15 +99,17 @@ class NotificationsFragment : Fragment() {
     }
 
     private fun handleEventList(list: List<EventModel>) {
-        viewModel.eventAdapter?.submitList(list)
-        viewModel.eventAdapter?.notifyDataSetChanged()
+        viewModel.eventAdapter.get()?.submitList(list)
+        viewModel.eventAdapter.get()?.notifyDataSetChanged()
     }
 
     private fun initViews() {
         binding.recyclerViewEvents.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewEvents.setHasFixedSize(false)
-        binding.recyclerViewEvents.adapter = viewModel.eventAdapter
-        viewModel.eventAdapter?.setAdapterItemClick(object : AdapterItemClickListener<EventModel> {
+        if (viewModel.eventAdapter.get()==null)
+            viewModel.eventAdapter = WeakReference(EventAdapter())
+        binding.recyclerViewEvents.adapter = viewModel.eventAdapter.get()
+        viewModel.eventAdapter.get()?.setAdapterItemClick(object : AdapterItemClickListener<EventModel> {
             override fun onItemClick(t: EventModel, pos: Int) {
             }
 
@@ -124,7 +127,7 @@ class NotificationsFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewModel.deleteEvent(
-                    viewModel.eventAdapter!!.getItemAt(viewHolder.adapterPosition)
+                    viewModel.eventAdapter.get()!!.getItemAt(viewHolder.adapterPosition)
                 )
             }
         }
@@ -135,12 +138,22 @@ class NotificationsFragment : Fragment() {
                     requireContext(),
                     com.kronos.resources.R.drawable.ic_delete
                 )!!,
-                ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.snack_bar_error_background)),
+                ColorDrawable(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        com.kronos.resources.R.color.snack_bar_error_background
+                    )
+                ),
                 ContextCompat.getDrawable(
                     requireContext(),
                     com.kronos.resources.R.drawable.ic_unarchive
                 )!!,
-                ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.green)),
+                ColorDrawable(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        com.kronos.resources.R.color.green
+                    )
+                ),
                 itemTouchHelperCallback,
                 ItemTouchHelper.LEFT
             )
@@ -153,13 +166,11 @@ class NotificationsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        viewModel.eventAdapter = null
         binding.unbind()
         super.onDestroyView()
     }
 
     override fun onPause() {
-        viewModel.eventAdapter = null
         binding.unbind()
         super.onPause()
     }

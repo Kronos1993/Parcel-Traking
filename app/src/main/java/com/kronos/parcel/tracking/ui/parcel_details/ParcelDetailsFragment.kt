@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kronos.core.adapters.AdapterItemClickListener
-import com.kronos.core.extensions.fragmentBinding
+import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.show
 import com.kronos.domain.model.event.EventModel
@@ -18,8 +18,10 @@ import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentParcelDetailsBinding
 import com.kronos.parcel.tracking.ui.home.CURRENT_PARCEL
+import com.kronos.parcel.tracking.ui.notifications.EventAdapter
 import com.kronos.parcel.tracking.ui.parcel_details.state.ParcelDetailState
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.ref.WeakReference
 import java.util.*
 
 @AndroidEntryPoint
@@ -47,6 +49,7 @@ class ParcelDetailsFragment : Fragment() {
         viewModel.eventList.observe(this.viewLifecycleOwner, ::handleEventList)
         viewModel.loading.observe(this.viewLifecycleOwner, ::handleLoading)
         viewModel.state.observe(this.viewLifecycleOwner, ::handleState)
+        viewModel.observeTextChange()
     }
 
     private fun handleState(state: MainState) {
@@ -101,31 +104,30 @@ class ParcelDetailsFragment : Fragment() {
     }
 
     private fun handleEventList(list: List<EventModel>) {
-        viewModel.eventAdapter?.submitList(list)
-        viewModel.eventAdapter?.notifyDataSetChanged()
+        viewModel.eventAdapter.get()?.submitList(list)
+        viewModel.eventAdapter.get()?.notifyDataSetChanged()
     }
 
     private fun initViews() {
         binding.recyclerViewCurrentParcelEvents.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCurrentParcelEvents.setHasFixedSize(false)
-        binding.recyclerViewCurrentParcelEvents.adapter = viewModel.eventAdapter
-        viewModel.eventAdapter?.setAdapterItemClick(object : AdapterItemClickListener<EventModel> {
+        if (viewModel.eventAdapter.get()==null)
+            viewModel.eventAdapter = WeakReference(EventAdapter())
+        binding.recyclerViewCurrentParcelEvents.adapter = viewModel.eventAdapter.get()
+        viewModel.eventAdapter.get()?.setAdapterItemClick(object : AdapterItemClickListener<EventModel> {
             override fun onItemClick(t: EventModel, pos: Int) {
             }
 
         })
-        binding.buttonUpdateParcel.setOnClickListener{
-            if (validateField()){
-                viewModel.updateParcelFields(
-                    binding.editTextTrackingNumber.text.toString(),
-                    binding.editTextName.text.toString()
-                )
+        binding.buttonUpdateParcel.setOnClickListener {
+            if (viewModel.validateField()) {
+                viewModel.updateParcelFields()
             }
         }
     }
 
     private fun initViewModel() {
-        var bundle = arguments
+        val bundle = arguments
         if (bundle?.get(CURRENT_PARCEL) != null) {
             viewModel.postParcel(bundle.get(CURRENT_PARCEL) as ParcelModel)
             viewModel.getEvents()
@@ -134,31 +136,12 @@ class ParcelDetailsFragment : Fragment() {
         }
     }
 
-    private fun validateField() : Boolean{
-        var valid = true
-        if (binding.editTextTrackingNumber.text!!.isEmpty()){
-            valid = false
-            binding.textInputLayoutTrackingNumber.error = getString(com.kronos.resources.R.string.required_field)
-        }else{
-            binding.textInputLayoutTrackingNumber.error = null
-        }
-        if (binding.editTextName.text!!.isEmpty()){
-            valid = false
-            binding.textInputLayoutParcelName.error = getString(com.kronos.resources.R.string.required_field)
-        }else{
-            binding.textInputLayoutParcelName.error = null
-        }
-        return valid
-    }
-
     override fun onPause() {
-        viewModel.eventAdapter = null
         binding.unbind()
         super.onPause()
     }
 
     override fun onDestroyView() {
-        viewModel.eventAdapter = null
         binding.unbind()
         super.onDestroyView()
     }

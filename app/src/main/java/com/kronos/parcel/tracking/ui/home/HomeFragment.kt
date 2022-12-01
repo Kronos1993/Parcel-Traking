@@ -3,7 +3,6 @@ package com.kronos.parcel.tracking.ui.home
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.SwipeToDelete
-import com.kronos.core.extensions.fragmentBinding
+import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.show
 import com.kronos.domain.model.parcel.ParcelModel
@@ -23,6 +22,7 @@ import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentHomeBinding
 import com.kronos.parcel.tracking.ui.home.state.HomeState
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.ref.WeakReference
 import java.util.*
 
 const val CURRENT_PARCEL = "current_parcel"
@@ -54,12 +54,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun setListeners() {
+        viewModel.observeTextChange()
+
         binding.homeRefreshLayout.setOnRefreshListener {
             viewModel.refreshParcels()
         }
 
-
-        binding.fabAddNewParcel.setOnClickListener{
+        binding.fabAddNewParcel.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_dialog_add_parcel)
         }
     }
@@ -124,25 +125,28 @@ class HomeFragment : Fragment() {
     }
 
     private fun handleParcelList(list: List<ParcelModel>) {
-        viewModel.parcelAdapter?.submitList(list)
-        viewModel.parcelAdapter?.notifyDataSetChanged()
+        viewModel.parcelAdapter.get()?.submitList(list)
+        viewModel.parcelAdapter.get()?.notifyDataSetChanged()
     }
 
     private fun initViews() {
         binding.recyclerViewCurrentParcels.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCurrentParcels.setHasFixedSize(false)
-        binding.recyclerViewCurrentParcels.adapter = viewModel.parcelAdapter
-        viewModel.parcelAdapter?.setUrlProvider(viewModel.urlProvider)
-        viewModel.parcelAdapter?.setAdapterItemClick(object : AdapterItemClickListener<ParcelModel> {
+        if (viewModel.parcelAdapter.get()==null)
+            viewModel.parcelAdapter = WeakReference(ParcelAdapter())
+        binding.recyclerViewCurrentParcels.adapter = viewModel.parcelAdapter.get()
+        viewModel.parcelAdapter.get()?.setUrlProvider(viewModel.urlProvider)
+        viewModel.parcelAdapter.get()?.setAdapterItemClick(object :
+            AdapterItemClickListener<ParcelModel> {
             override fun onItemClick(t: ParcelModel, pos: Int) {
                 if (viewModel.state.value is HomeState.Refreshing) {
                     if (!(viewModel.state.value as HomeState.Refreshing).loading) {
-                        var bundle = Bundle()
+                        val bundle = Bundle()
                         bundle.putSerializable(CURRENT_PARCEL, t)
                         findNavController().navigate(R.id.navigation_parcel_details, bundle)
                     }
-                }else{
-                    var bundle = Bundle()
+                } else {
+                    val bundle = Bundle()
                     bundle.putSerializable(CURRENT_PARCEL, t)
                     findNavController().navigate(R.id.navigation_parcel_details, bundle)
                 }
@@ -162,7 +166,7 @@ class HomeFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewModel.toHistory(
-                    viewModel.parcelAdapter!!.getItemAt(viewHolder.adapterPosition)
+                    viewModel.parcelAdapter.get()!!.getItemAt(viewHolder.adapterPosition)
                 )
             }
         }
@@ -173,12 +177,22 @@ class HomeFragment : Fragment() {
                     requireContext(),
                     com.kronos.resources.R.drawable.ic_archive
                 )!!,
-                ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.green)),
+                ColorDrawable(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        com.kronos.resources.R.color.green
+                    )
+                ),
                 ContextCompat.getDrawable(
                     requireContext(),
                     com.kronos.resources.R.drawable.ic_archive
                 )!!,
-                ColorDrawable(ContextCompat.getColor(requireContext(),com.kronos.resources.R.color.green)),
+                ColorDrawable(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        com.kronos.resources.R.color.green
+                    )
+                ),
                 itemTouchHelperCallback,
                 ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
             )
@@ -192,13 +206,11 @@ class HomeFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        viewModel.parcelAdapter = null
         binding.unbind()
         super.onDestroyView()
     }
 
     override fun onPause() {
-        viewModel.parcelAdapter = null
         binding.unbind()
         super.onPause()
     }

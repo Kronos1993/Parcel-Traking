@@ -17,12 +17,12 @@ import com.kronos.logger.LoggerType
 import com.kronos.logger.interfaces.ILogger
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
-import com.kronos.parcel.tracking.ui.home.ParcelAdapter
 import com.kronos.parcel.tracking.ui.history.state.HistoryState
-import com.kronos.parcel.tracking.ui.home.state.HomeState
+import com.kronos.parcel.tracking.ui.home.ParcelAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 import java.util.*
 import javax.inject.Inject
 
@@ -42,12 +42,12 @@ class HistoryViewModel  @Inject constructor(
     private val _parcelList = MutableLiveData<List<ParcelModel>>()
     val parcelList = _parcelList.asLiveData()
 
-    var parcelAdapter: ParcelAdapter? = ParcelAdapter()
+    var parcelAdapter: WeakReference<ParcelAdapter?> = WeakReference(ParcelAdapter())
 
     private val _state = MutableLiveData<MainState>()
     val state = _state.asLiveData()
 
-    fun setState(state: MainState) {
+    private fun setState(state: MainState) {
         _state.value = state
     }
 
@@ -59,7 +59,7 @@ class HistoryViewModel  @Inject constructor(
     fun getParcels() {
         setState(HistoryState.Loading(true))
         viewModelScope.launch {
-            var list = parcelLocalRepository.listAllParcelHistory()
+            val list = parcelLocalRepository.listAllParcelHistory()
             postParcelList(list)
             setState(HistoryState.Loading(false))
         }
@@ -111,8 +111,8 @@ class HistoryViewModel  @Inject constructor(
 
     private fun decreaseArchivedStatistics() {
         viewModelScope.launch {
-            if (!userRepository.getUser().name.isNullOrEmpty()) {
-                var statisticsModel = statisticsLocalRepository.get()
+            if (userRepository.getUser().name.isNotEmpty()) {
+                val statisticsModel = statisticsLocalRepository.get()
                 statisticsModel.archived -=1
                 statisticsLocalRepository.saveStatistics(statisticsModel)
             }

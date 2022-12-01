@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.kronos.parcel.tracking.ui.home.HomeViewModel" />
@@ -78,6 +77,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/tracking_number"
+                app:errorEnabled="false"
+                app:error_text="@{viewModel.trackingNumberError}"
                 app:layout_constraintEnd_toEndOf="@id/guideline4"
                 app:layout_constraintStart_toStartOf="@id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
@@ -87,7 +88,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:imeOptions="actionNext"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:text="@={viewModel.trackingNumber}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,6 +99,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/tracking_name"
+                app:errorEnabled="false"
+                app:error_text="@{viewModel.nameError}"
                 android:textColorHint="@color/hintColor"
                 app:errorTextAppearance="@color/alertColor"
                 app:layout_constraintEnd_toEndOf="@id/guideline4"
@@ -108,7 +112,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:imeOptions="actionDone"
-                    android:inputType="textCapWords" />
+                    android:inputType="textCapWords"
+                    android:text="@={viewModel.name}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

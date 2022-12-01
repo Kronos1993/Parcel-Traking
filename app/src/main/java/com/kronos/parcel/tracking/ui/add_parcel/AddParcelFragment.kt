@@ -9,9 +9,8 @@ import android.view.Window
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.kronos.core.extensions.fragmentBinding
+import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentDialogAddParcelBinding
 import com.kronos.parcel.tracking.ui.home.HomeViewModel
@@ -40,12 +39,9 @@ class AddParcelFragment : BottomSheetDialogFragment() {
 
     private fun setListeners() {
         binding.buttonAddParcel.setOnClickListener {
-            if (validateField()){
+            if (homeViewModel.validateField()){
                 hideDialog()
-                homeViewModel.getNewParcel(
-                    binding.editTextTrackingNumber.text.toString(),
-                    binding.editTextName.text.toString()
-                )
+                homeViewModel.getNewParcel()
             }
         }
     }
@@ -80,24 +76,6 @@ class AddParcelFragment : BottomSheetDialogFragment() {
     override fun onDestroy() {
         binding.unbind()
         super.onDestroy()
-    }
-
-    fun validateField() : Boolean{
-        var valid = true
-        if (binding.editTextTrackingNumber.text!!.isEmpty()){
-            valid = false
-            binding.textInputLayoutTrackingNumber.error = getString(com.kronos.resources.R.string.required_field)
-        }else{
-            binding.textInputLayoutTrackingNumber.error = null
-        }
-        if (binding.editTextName.text!!.isEmpty()){
-            valid = false
-            binding.textInputLayoutParcelName.error = getString(com.kronos.resources.R.string.required_field)
-        }else{
-            binding.textInputLayoutParcelName.error = null
-        }
-
-        return valid
     }
 
 }

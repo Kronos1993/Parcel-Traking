@@ -1,6 +1,7 @@
 package com.kronos.parcel.tracking.ui.parcel_details
 
 import android.content.Context
+import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -23,6 +24,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 import java.util.*
 import javax.inject.Inject
 
@@ -39,17 +41,40 @@ class ParcelDetailsViewModel @Inject constructor(
     val parcel = _parcel.asLiveData()
 
     private val _old_tracking = MutableLiveData<String>()
-    val old_tracking = _old_tracking.asLiveData()
+    private val old_tracking = _old_tracking.asLiveData()
 
     private val _eventList = MutableLiveData<List<EventModel>>()
     val eventList = _eventList.asLiveData()
 
-    var eventAdapter: EventAdapter? = EventAdapter()
+    var eventAdapter: WeakReference<EventAdapter> = WeakReference(EventAdapter())
 
     private val _state = MutableLiveData<MainState>()
     val state = _state.asLiveData()
 
-    fun setState(state: MainState) {
+    var trackingNumber = ObservableField<String?>()
+    var trackingNumberError = ObservableField<String?>()
+    var name = ObservableField<String?>()
+    var nameError = ObservableField<String?>()
+
+    fun validateField() : Boolean{
+        var valid = true
+        if (trackingNumber.get().orEmpty().isEmpty()){
+            valid = false
+            trackingNumberError.set(context.getString(com.kronos.resources.R.string.required_field))
+        }else{
+            trackingNumberError.set(null)
+        }
+        if (name.get().orEmpty().isEmpty()){
+            valid = false
+            nameError.set(context.getString(com.kronos.resources.R.string.required_field))
+        }else{
+            nameError.set(null)
+        }
+
+        return valid
+    }
+
+    private fun setState(state: MainState) {
         _state.value = state
     }
 
@@ -60,6 +85,8 @@ class ParcelDetailsViewModel @Inject constructor(
     fun postParcel(parcel: ParcelModel) {
         _parcel.value = parcel
         _old_tracking.value = parcel.trackingNumber
+        trackingNumber.set(parcel.trackingNumber)
+        name.set(parcel.name)
     }
 
 
@@ -70,18 +97,18 @@ class ParcelDetailsViewModel @Inject constructor(
     fun getEvents() {
         setState(ParcelDetailState.Loading(true))
         viewModelScope.launch {
-            var list = eventLocalRepository.listAllByParcel(parcel.value?.trackingNumber.orEmpty())
+            val list = eventLocalRepository.listAllByParcel(parcel.value?.trackingNumber.orEmpty())
             postEventList(list)
             setState(ParcelDetailState.Loading(false))
         }
     }
 
-    fun updateParcelFields(parcelTrackingNumber:String,parcelName:String){
+    fun updateParcelFields(){
         viewModelScope.launch(Dispatchers.IO){
-            parcel.value!!.name = parcelName
-            parcel.value!!.trackingNumber = parcelTrackingNumber
-            parcel.value!!.dateUpdated = Calendar.getInstance().timeInMillis
-            var call = async {
+            parcel.value?.trackingNumber = trackingNumber.get().orEmpty()
+            parcel.value?.name = name.get().orEmpty()
+            parcel.value?.dateUpdated = Calendar.getInstance().timeInMillis
+            val call = async {
                 parcelLocalRepository.saveParcel(parcel.value!!)
                 eventLocalRepository.saveEvent(
                     EventModel(
@@ -106,7 +133,7 @@ class ParcelDetailsViewModel @Inject constructor(
 
     private fun updateEvents(){
         viewModelScope.launch{
-            var call = async {
+            val call = async {
                 eventList.value!!.forEach {
                     it.parcel = parcel.value!!.trackingNumber
                     eventLocalRepository.saveEvent(it)
@@ -121,5 +148,32 @@ class ParcelDetailsViewModel @Inject constructor(
         return urlProvider.getServerUrl() + parcel.imageUrl
     }
 
+    fun observeTextChange() {
+        trackingNumber.addOnPropertyChangedCallback(
+            object : Observable.OnPropertyChangedCallback() {
+                override fun onPropertyChanged(
+                    sender: Observable?,
+                    propertyId: Int
+                ) {
+                    if (trackingNumber.get()?.orEmpty()?.isNotEmpty() == true){
+                        trackingNumberError.set(null)
+                    }
+                }
+            }
+        )
+
+        name.addOnPropertyChangedCallback(
+            object : Observable.OnPropertyChangedCallback() {
+                override fun onPropertyChanged(
+                    sender: Observable?,
+                    propertyId: Int
+                ) {
+                    if (name.get()?.orEmpty()?.isNotEmpty() == true){
+                        nameError.set(null)
+                    }
+                }
+            }
+        )
+    }
 
 }

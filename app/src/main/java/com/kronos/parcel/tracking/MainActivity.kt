@@ -24,20 +24,20 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.kronos.core.extensions.binding.activityBinding
+import com.kronos.core.util.startActivityForResult
 import com.kronos.core.util.validatePermission
 import com.kronos.parcel.tracking.databinding.ActivityMainBinding
 import com.kronos.parcel.tracking.ui.history.HistoryViewModel
 import com.kronos.parcel.tracking.ui.home.HomeViewModel
 import com.kronos.parcel.tracking.ui.parcel_details.ParcelDetailsViewModel
-import com.kronos.core.util.startActivityForResult
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private val binding by activityBinding<ActivityMainBinding>(R.layout.activity_main)
     private val viewModel by viewModels<MainActivityViewModel>()
     private val viewModelHistory by viewModels<HistoryViewModel>()
     private val viewModelHome by viewModels<HomeViewModel>()
@@ -49,11 +49,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        checkPermission()
+        binding.run {
+            lifecycleOwner = this@MainActivity
+            setContentView(root)
+            checkPermission()
+        }
     }
 
     private fun checkPermission() {
@@ -145,7 +145,11 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_history, R.id.navigation_notifications,R.id.navigation_user, R.id.navigation_settings
+                R.id.navigation_home,
+                R.id.navigation_history,
+                R.id.navigation_notifications,
+                R.id.navigation_user,
+                R.id.navigation_settings
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -223,8 +227,10 @@ class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        when(val id: Int = item.itemId) {
-            R.id.navigation_settings-> findNavController(R.id.nav_host_fragment_activity_main).navigate(id)
+        when (val id: Int = item.itemId) {
+            R.id.navigation_settings -> findNavController(R.id.nav_host_fragment_activity_main).navigate(
+                id
+            )
         }
         return super.onOptionsItemSelected(item)
     }

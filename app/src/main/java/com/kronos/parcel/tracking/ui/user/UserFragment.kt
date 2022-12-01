@@ -5,9 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.kronos.core.extensions.fragmentBinding
+import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.copyText
 import com.kronos.core.util.show
@@ -115,7 +114,7 @@ class UserFragment : Fragment() {
         }
 
         binding.userLogged.imageCopy.setOnClickListener {
-            copyText(requireContext(),binding.userLogged.textViewUserAddress.text.toString())
+            copyText(requireContext(), binding.userLogged.textViewUserAddress.text.toString())
         }
     }
 

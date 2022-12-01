@@ -9,6 +9,7 @@ import com.kronos.domain.repository.event.EventLocalRepository
 import com.kronos.parcel.tracking.ui.parcel_details.state.ParcelDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +20,7 @@ class NotificationsViewModel  @Inject constructor(
     private val _eventList = MutableLiveData<List<EventModel>>()
     val eventList = _eventList.asLiveData()
 
-    var eventAdapter: EventAdapter? = EventAdapter()
+    var eventAdapter: WeakReference<EventAdapter> = WeakReference(EventAdapter())
 
     private val _state = MutableLiveData<ParcelDetailState>()
     val state = _state.asLiveData()

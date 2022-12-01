@@ -1,6 +1,8 @@
 package com.kronos.parcel.tracking.ui.home
 
 import android.content.Context
+import androidx.databinding.Observable
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kronos.core.extensions.asLiveData
@@ -26,6 +28,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 import java.util.*
 import javax.inject.Inject
 
@@ -44,16 +47,21 @@ class HomeViewModel @Inject constructor(
     private val _parcelList = MutableLiveData<List<ParcelModel>>()
     val parcelList = _parcelList.asLiveData()
 
-    var parcelAdapter: ParcelAdapter? = ParcelAdapter()
+    var parcelAdapter: WeakReference<ParcelAdapter?> = WeakReference(ParcelAdapter())
 
     private val _state = MutableLiveData<MainState>()
     val state = _state.asLiveData()
 
-    fun setState(state: MainState) {
+    var trackingNumber = ObservableField<String?>()
+    var name = ObservableField<String?>()
+    var trackingNumberError = ObservableField<String?>()
+    var nameError = ObservableField<String?>()
+
+    private fun setState(state: MainState) {
         _state.value = state
     }
 
-    fun postState(state: MainState) {
+    private fun postState(state: MainState) {
         _state.postValue(state)
     }
 
@@ -64,10 +72,28 @@ class HomeViewModel @Inject constructor(
     fun getParcels() {
         setState(HomeState.Loading(true))
         viewModelScope.launch {
-            var list = parcelLocalRepository.listAllParcelLocal()
+            val list = parcelLocalRepository.listAllParcelLocal()
             postParcelList(list)
             setState(HomeState.Loading(false))
         }
+    }
+
+    fun validateField() : Boolean{
+        var valid = true
+        if (trackingNumber.get().orEmpty().isEmpty()){
+            valid = false
+            trackingNumberError.set(context.getString(com.kronos.resources.R.string.required_field))
+        }else{
+            trackingNumberError.set(null)
+        }
+        if (name.get().orEmpty().isEmpty()){
+            valid = false
+            nameError.set(context.getString(com.kronos.resources.R.string.required_field))
+        }else{
+            nameError.set(null)
+        }
+
+        return valid
     }
 
     fun toHistory(itemAt: ParcelModel) {
@@ -138,15 +164,15 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getNewParcel(trackingNumber: String, trackingName: String) {
+    fun getNewParcel() {
         var parcel = ParcelModel(trackingNumber = "", status = "", imageUrl = "")
         setState(HomeState.Loading(true))
         viewModelScope.launch(Dispatchers.IO) {
             val call = async {
-                parcel = parcelRemoteRepository.searchParcel(trackingNumber.orEmpty())
+                parcel = parcelRemoteRepository.searchParcel(trackingNumber.get().orEmpty())
             }
             call.await()
-            parcel.name = trackingName
+            parcel.name = name.get().orEmpty()
             val save = async {
                 parcelLocalRepository.saveParcel(parcel)
             }
@@ -164,12 +190,12 @@ class HomeViewModel @Inject constructor(
     fun refreshParcels() {
         viewModelScope.launch {
             setState(HomeState.Refreshing(true))
-            parcelAdapter?.currentList.let {
+            parcelAdapter.get()?.currentList.let {
                 if (it!=null && it.isNotEmpty()) {
-                    var list = it.toMutableList()
+                    val list = it.toMutableList()
                     it.forEachIndexed { index, parcelModel ->
                         parcelModel.loading = true
-                        parcelAdapter?.notifyItemChanged(index)
+                        parcelAdapter.get()?.notifyItemChanged(index)
                     }
                     refreshParcel(list,0,it.size)
                 } else {
@@ -180,12 +206,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun refreshParcel(parcels: MutableList<ParcelModel>, current: Int,total:Int) {
+    private fun refreshParcel(parcels: MutableList<ParcelModel>, current: Int, total:Int) {
         if (current<parcels.size){
-            var parcel = parcels[current]
+            val parcel = parcels[current]
             viewModelScope.launch(Dispatchers.IO) {
                 lateinit var parcelUpdate: ParcelModel
-                var oldState = parcel.status
+                val oldState = parcel.status
                 val call = async {
                     parcelUpdate = parcelRemoteRepository.searchParcel(parcel.trackingNumber)
                     if (parcelUpdate.status != "not found" && parcel.status != parcelUpdate.status) {
@@ -213,7 +239,7 @@ class HomeViewModel @Inject constructor(
                         save.await()
                         logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} refreshed")
                     } else {
-                        var currentError = Hashtable<String, String>()
+                        val currentError = Hashtable<String, String>()
                         currentError["error"] = parcelUpdate.fail
                         postState(HomeState.Error(currentError))
                         refreshParcel(parcels,current+1,total)
@@ -221,7 +247,7 @@ class HomeViewModel @Inject constructor(
                     }
                     parcel.loading = false
                     viewModelScope.launch(Dispatchers.Main){
-                        parcelAdapter?.notifyItemChanged(current)
+                        parcelAdapter.get()?.notifyItemChanged(current)
                     }
                 }
                 call.await()
@@ -232,8 +258,8 @@ class HomeViewModel @Inject constructor(
 
     private fun increaseTotalParcelStatistics() {
         viewModelScope.launch {
-            if (!userRepository.getUser().name.isNullOrEmpty()) {
-                var statisticsModel = statisticsLocalRepository.get()
+            if (userRepository.getUser().name.isNotEmpty()) {
+                val statisticsModel = statisticsLocalRepository.get()
                 statisticsModel.added += 1
                 statisticsLocalRepository.saveStatistics(statisticsModel)
             }
@@ -242,12 +268,40 @@ class HomeViewModel @Inject constructor(
 
     private fun increaseReceivedStatistics() {
         viewModelScope.launch {
-            if (!userRepository.getUser().name.isNullOrEmpty()) {
-                var statisticsModel = statisticsLocalRepository.get()
+            if (userRepository.getUser().name.isNotEmpty()) {
+                val statisticsModel = statisticsLocalRepository.get()
                 statisticsModel.received += 1
                 statisticsLocalRepository.saveStatistics(statisticsModel)
             }
         }
+    }
+
+    fun observeTextChange() {
+        trackingNumber.addOnPropertyChangedCallback(
+            object : Observable.OnPropertyChangedCallback() {
+                override fun onPropertyChanged(
+                    sender: Observable?,
+                    propertyId: Int
+                ) {
+                    if (trackingNumber.get()?.orEmpty()?.isNotEmpty() == true){
+                        trackingNumberError.set(null)
+                    }
+                }
+            }
+        )
+
+        name.addOnPropertyChangedCallback(
+            object : Observable.OnPropertyChangedCallback() {
+                override fun onPropertyChanged(
+                    sender: Observable?,
+                    propertyId: Int
+                ) {
+                    if (name.get()?.orEmpty()?.isNotEmpty() == true){
+                        nameError.set(null)
+                    }
+                }
+            }
+        )
     }
 
 }

@@ -1,4 +1,4 @@
-package com.kronos.core.extensions
+package com.kronos.core.extensions.binding
 
 import android.app.Activity
 import android.view.LayoutInflater
