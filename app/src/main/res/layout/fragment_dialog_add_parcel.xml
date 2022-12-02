@@ -58,18 +58,25 @@
 
 
             <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline7"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.15" />
+
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline5"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.3" />
+                app:layout_constraintGuide_percent="0.55" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline6"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.7" />
+                app:layout_constraintGuide_percent="0.95" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutTrackingNumber"
@@ -118,6 +125,21 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonScanBarCode"
+                style="@style/ButtonRound"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/barcode_scan"
+                app:icon="@drawable/ic_qr_code_scanner"
+                app:iconGravity="textEnd"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline5"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutParcelName" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonAddParcel"
                 style="@style/ButtonRound"
                 android:layout_width="0dp"
@@ -126,7 +148,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="@string/add"
                 app:icon="@drawable/ic_add"
-                app:iconGravity="textStart"
+                app:iconGravity="textEnd"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"

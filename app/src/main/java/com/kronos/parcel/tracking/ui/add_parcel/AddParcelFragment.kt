@@ -6,10 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanIntentResult
+import com.journeyapps.barcodescanner.ScanOptions
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentDialogAddParcelBinding
@@ -18,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
 
 @AndroidEntryPoint
 class AddParcelFragment : BottomSheetDialogFragment() {
@@ -43,6 +49,10 @@ class AddParcelFragment : BottomSheetDialogFragment() {
                 hideDialog()
                 homeViewModel.getNewParcel()
             }
+        }
+
+        binding.buttonScanBarCode.setOnClickListener {
+            barcodeLauncher.launch(homeViewModel.createBarcodeOptions())
         }
     }
 
@@ -72,6 +82,16 @@ class AddParcelFragment : BottomSheetDialogFragment() {
             }
         }
     }
+
+    // Register the launcher and result handler
+    private val barcodeLauncher: ActivityResultLauncher<ScanOptions> =
+        registerForActivityResult(ScanContract()) { result: ScanIntentResult ->
+            if (result.contents == null) {
+                Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_LONG).show()
+            } else {
+                homeViewModel.trackingNumber.set(result.contents)
+            }
+        }
 
     override fun onDestroy() {
         binding.unbind()

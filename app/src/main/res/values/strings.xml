@@ -19,6 +19,8 @@
     <string name="cancel">Cancel</string>
     <string name="loading_dialog_text">Loading</string>
     <string name="add">Add</string>
+    <string name="barcode_scan">Scan Code</string>
+    <string name="tracking_number_barcode_scan">Scan tracking number barcode</string>
     <string name="tracking_name">Name</string>
     <string name="tracking_number">Tracking Number</string>
     <string name="parcel_added_event">Parcel %1$s added</string>

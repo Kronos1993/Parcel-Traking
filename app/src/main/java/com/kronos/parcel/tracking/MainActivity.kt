@@ -64,16 +64,19 @@ class MainActivity : AppCompatActivity() {
                 validatePermission(
                     this,
                     Manifest.permission.READ_EXTERNAL_STORAGE
-                ) &&
-                        validatePermission(
+                ) && validatePermission(
                             this,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
+                ) && validatePermission(
+                            this,
+                            Manifest.permission.CAMERA
+                )
             if (!grantedAll) {
                 ActivityCompat.requestPermissions(
                     this, arrayOf(
                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.CAMERA
                     ),
                     1
                 )
