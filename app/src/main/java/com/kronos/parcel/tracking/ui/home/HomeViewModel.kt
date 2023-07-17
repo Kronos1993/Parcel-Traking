@@ -184,6 +184,8 @@ class HomeViewModel @Inject constructor(
             if (parcel.status.contains("Entregado"))
                 increaseReceivedStatistics()
             logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} added")
+            name.set(null)
+            trackingNumber.set(null)
             postState(HomeState.Loading(false))
             postState(HomeState.Search)
         }
@@ -244,7 +246,7 @@ class HomeViewModel @Inject constructor(
                         val currentError = Hashtable<String, String>()
                         currentError["error"] = parcelUpdate.fail
                         postState(HomeState.Error(currentError))
-                        refreshParcel(parcels,current+1,total)
+                        //refreshParcel(parcels,current+1,total)
                         logger.write(this::class.java.name,LoggerType.ERROR,"Parcel ${parcelUpdate.trackingNumber} error: ${parcelUpdate.fail}")
                     }
                     parcel.loading = false

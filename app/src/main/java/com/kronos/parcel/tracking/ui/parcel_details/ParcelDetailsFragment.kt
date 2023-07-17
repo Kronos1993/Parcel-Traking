@@ -3,11 +3,16 @@ package com.kronos.parcel.tracking.ui.parcel_details
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanIntentResult
+import com.journeyapps.barcodescanner.ScanOptions
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.util.LoadingDialog
@@ -21,6 +26,8 @@ import com.kronos.parcel.tracking.ui.home.CURRENT_PARCEL
 import com.kronos.parcel.tracking.ui.notifications.EventAdapter
 import com.kronos.parcel.tracking.ui.parcel_details.state.ParcelDetailState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -124,6 +131,10 @@ class ParcelDetailsFragment : Fragment() {
                 viewModel.updateParcelFields()
             }
         }
+
+        binding.buttonScanBarCode.setOnClickListener {
+            barcodeLauncher.launch(viewModel.createBarcodeOptions())
+        }
     }
 
     private fun initViewModel() {
@@ -145,4 +156,14 @@ class ParcelDetailsFragment : Fragment() {
         binding.unbind()
         super.onDestroyView()
     }
+
+    // Register the launcher and result handler
+    private val barcodeLauncher: ActivityResultLauncher<ScanOptions> =
+        registerForActivityResult(ScanContract()) { result: ScanIntentResult ->
+            if (result.contents == null) {
+                Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_LONG).show()
+            } else {
+                viewModel.trackingNumber.set(result.contents)
+            }
+        }
 }

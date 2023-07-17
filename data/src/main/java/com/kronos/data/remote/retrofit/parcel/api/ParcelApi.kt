@@ -10,7 +10,7 @@ interface ParcelApi {
     @GET("/Tracking/SearchTracking")
     fun searchParcel(
         @Query("tracking") trackingNumber: String,
-    ): Call<ParcelDto>
+    ): Call<ParcelDto?>
 
 }
 

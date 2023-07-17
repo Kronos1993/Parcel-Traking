@@ -33,7 +33,7 @@ class ParcelRemoteDatasourceImpl @Inject constructor(
     }
 
     override fun searchParcelAsync(tracking: String, callback: Any) {
-        parcelApi.searchParcel(tracking).enqueue(callback as Callback<ParcelDto>)
+        parcelApi.searchParcel(tracking).enqueue(callback as Callback<ParcelDto?>)
     }
 
 }

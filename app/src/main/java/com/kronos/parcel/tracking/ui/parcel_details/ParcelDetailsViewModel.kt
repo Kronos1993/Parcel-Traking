@@ -1,10 +1,12 @@
 package com.kronos.parcel.tracking.ui.parcel_details
 
 import android.content.Context
+import android.hardware.Camera
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.journeyapps.barcodescanner.ScanOptions
 import com.kronos.core.extensions.asLiveData
 import com.kronos.core.extensions.formatDate
 import com.kronos.core.view_model.ParentViewModel
@@ -174,6 +176,17 @@ class ParcelDetailsViewModel @Inject constructor(
                 }
             }
         )
+    }
+
+    fun createBarcodeOptions(): ScanOptions {
+        val options = ScanOptions()
+        options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES)
+        options.setPrompt(context.getString(R.string.tracking_number_barcode_scan))
+        options.setOrientationLocked(false);
+        options.setCameraId(Camera.CameraInfo.CAMERA_FACING_BACK) // Use a specific camera of the device
+        options.setBeepEnabled(false)
+        options.setBarcodeImageEnabled(true)
+        return options
     }
 
 }
