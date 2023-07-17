@@ -11,6 +11,8 @@ import com.kronos.core.util.copyText
 import com.kronos.data.remote.retrofit.UrlProvider
 import com.kronos.parcel.tracking.databinding.ItemParcelBinding
 import com.kronos.domain.model.parcel.ParcelModel
+import com.kronos.parcel.tracking.R
+
 class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(GeneralDiffCallback<ParcelModel>()) {
 
     private var adapterItemClickListener:AdapterItemClickListener<ParcelModel>?=null
@@ -35,7 +37,10 @@ class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(G
         holder.binding.textViewParcelTrackingNumber.setOnClickListener {
             copyText(holder.binding.textViewParcelTrackingNumber.context,holder.binding.textViewParcelTrackingNumber.text.toString())
         }
-        Glide.with(holder.itemView).load(urlProvider.getServerUrl() +  currentParcel.imageUrl).into(holder.binding.imageStatus)
+        if(!currentParcel.imageUrl.isNullOrEmpty())
+            Glide.with(holder.itemView).load(urlProvider.getServerUrl() +  currentParcel.imageUrl).placeholder(R.drawable.ic_not_found).into(holder.binding.imageStatus)
+        else
+            Glide.with(holder.itemView).load(R.drawable.ic_not_found).into(holder.binding.imageStatus)
     }
 
     fun getItemAt(adapterPosition: Int): ParcelModel = getItem(adapterPosition)
