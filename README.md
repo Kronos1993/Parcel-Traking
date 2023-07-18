@@ -68,7 +68,7 @@ This app is open-source.
 
 ## Contact
 
-For any inquiries or support, please contact the project maintainers at [contact@zipcargotracker.com](mailto:contact@zipcargotracker.com).
+For any inquiries or support, please contact the project maintainers at [contact@zipcargotracker.com](mailto:mguerral1993@gmail.com).
 
 ---
 
