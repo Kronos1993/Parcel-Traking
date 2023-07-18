@@ -7,6 +7,7 @@ import com.kronos.data.remote.retrofit.parcel.dto.ParcelDto
 import com.kronos.data.remote.retrofit.parcel.mapper.toParcelModel
 import com.kronos.domain.model.parcel.ParcelModel
 import retrofit2.Callback
+import java.io.EOFException
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -24,6 +25,9 @@ class ParcelRemoteDatasourceImpl @Inject constructor(
                         ParcelModel(trackingNumber = tracking, status = "not found", imageUrl = "")
                     }
                 }
+            }catch (e:EOFException){
+                e.printStackTrace()
+                ParcelModel(trackingNumber = tracking, status = "not found", imageUrl = "")
             }catch (e:Exception){
                 e.printStackTrace()
                 ParcelModel(trackingNumber = tracking, status = "not found", imageUrl = "", fail = e.message.orEmpty())
