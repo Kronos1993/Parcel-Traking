@@ -15,7 +15,7 @@
 
     <string name="permission_dialog_message">Storage permission required</string>
     <string name="permission_dialog_title">Permissions required</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="loading_dialog_text">Loading</string>
     <string name="add">Add</string>
@@ -56,5 +56,6 @@
     <string name="password">password</string>
     <string name="action_sign_in">Login</string>
     <string name="action_register">Create Box</string>
+    <string name="content_status_image_description">Status image</string>
 
 </resources>
