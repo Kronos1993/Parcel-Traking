@@ -58,7 +58,8 @@
                     app:layout_constraintBottom_toTopOf="@id/guideline8H"
                     app:layout_constraintEnd_toStartOf="@+id/guideline8v"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/content_status_image_description" />
 
                 <TextView
                     android:id="@+id/textViewParcelTrackingNumber"
