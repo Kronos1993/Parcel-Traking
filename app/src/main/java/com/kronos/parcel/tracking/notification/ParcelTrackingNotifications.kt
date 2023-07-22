@@ -4,13 +4,14 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.kronos.core.notification.INotifications
 import com.kronos.core.notification.NotificationType
 import com.kronos.parcel.tracking.MainActivity
 import com.kronos.parcel.tracking.NOTIFICATION_CHANNEL
-import com.kronos.parcel.tracking.ParcelTrackingApplication
+import com.kronos.parcel.tracking.R
 import javax.inject.Inject
 
 
@@ -23,8 +24,7 @@ class ParcelTrackingNotifications @Inject constructor() : INotifications {
         iconDrawable: Int,
         context: Context
     ) {
-        val intent = Intent(context, MainActivity::class.java)
-        var pendingIntent: PendingIntent? = null
+        var intent = Intent(context, MainActivity::class.java)
 
         if (notificationsId == NotificationType.GENERAL) {
             /*intent = new Intent(context, MainActivity.class);
@@ -35,16 +35,15 @@ class ParcelTrackingNotifications @Inject constructor() : INotifications {
             bundle.putBoolean("private", false);
             intent.putExtras(bundle);*/
         } else if (notificationsId == NotificationType.PARCEL_STATUS) {
-            /*intent = new Intent(context, MainActivity.class);
-               Bundle bundle = new Bundle();
-                //bundle.putInt("go_to", R.id.nav_general_notification);
-                intent.putExtras(bundle);
-                intent.setAction("notificaciones");
-                bundle.putBoolean("private", false);
-                intent.putExtras(bundle);*/
+            intent = Intent(context, MainActivity::class.java)
+            val bundle = Bundle()
+            bundle.putInt("go_to", R.id.navigation_notifications)
+            intent.putExtras(bundle)
+            intent.action = "notificaciones"
         }
 
-        pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_MUTABLE);
+        val pendingIntent: PendingIntent? =
+            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_MUTABLE)
 
         val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
         val notification: Notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL)
@@ -65,7 +64,7 @@ class ParcelTrackingNotifications @Inject constructor() : INotifications {
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
             .setGroup(group)
             .setAutoCancel(true)
-            //.setContentIntent(pendingIntent)
+            .setContentIntent(pendingIntent)
             .build()
 
         notificationManager.notify(notificationsId.ordinal, notification)
