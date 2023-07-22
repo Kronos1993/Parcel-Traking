@@ -107,7 +107,7 @@ class ParcelDetailsFragment : Fragment() {
     }
 
     private fun handleParcel(parcel: ParcelModel) {
-        Glide.with(requireContext()).load(viewModel.getImageUrl(parcel)).into(binding.imageStatus)
+        Glide.with(requireContext()).load(viewModel.getImageUrl(parcel)).placeholder(R.drawable.ic_not_found).into(binding.imageStatus)
     }
 
     private fun handleEventList(list: List<EventModel>) {

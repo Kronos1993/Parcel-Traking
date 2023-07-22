@@ -54,7 +54,7 @@
                     app:layout_constraintEnd_toEndOf="@id/guideline95"
                     app:layout_constraintStart_toStartOf="@id/guideline05"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="@string/content_status_image_description" />
 
                 <TextView
                     android:id="@+id/textViewParcelStatus"
