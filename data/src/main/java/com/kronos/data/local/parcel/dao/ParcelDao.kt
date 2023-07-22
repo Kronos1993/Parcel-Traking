@@ -20,7 +20,7 @@ interface ParcelDao {
     @Query("SELECT * FROM PARCEL WHERE HISTORY = 1")
     suspend fun listHistory(): List<ParcelEntity>
 
-    @Query("SELECT * FROM PARCEL WHERE STATUS like '%tránsito%'")
+    @Query("SELECT * FROM PARCEL WHERE STATUS like '%tránsito%' OR STATUS like '%Aduanas%'")
     suspend fun listAllParcelInTransit(): List<ParcelEntity>
 
     @Query("SELECT * FROM PARCEL WHERE DATE_ADDED >= :after")
