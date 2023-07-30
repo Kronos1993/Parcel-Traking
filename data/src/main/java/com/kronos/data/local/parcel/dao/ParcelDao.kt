@@ -11,13 +11,13 @@ interface ParcelDao {
     @Query("SELECT * FROM PARCEL WHERE TRACKING_NUMBER = :trackingNumber")
     suspend fun getParcelByTrackingNumber(trackingNumber: String): ParcelEntity
 
-    @Query("SELECT * FROM PARCEL WHERE HISTORY = 0")
+    @Query("SELECT * FROM PARCEL WHERE HISTORY = 0 ORDER BY DATE_ADDED DESC")
     suspend fun listParcels(): List<ParcelEntity>
 
     @Query("SELECT * FROM PARCEL ORDER BY DATE_ADDED DESC")
     suspend fun listAll(): List<ParcelEntity>
 
-    @Query("SELECT * FROM PARCEL WHERE HISTORY = 1")
+    @Query("SELECT * FROM PARCEL WHERE HISTORY = 1 ORDER BY DATE_ADDED DESC")
     suspend fun listHistory(): List<ParcelEntity>
 
     @Query("SELECT * FROM PARCEL WHERE STATUS like '%tránsito%' OR STATUS like '%Aduanas%'")
