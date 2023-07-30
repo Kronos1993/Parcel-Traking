@@ -46,8 +46,8 @@ class AddParcelFragment : BottomSheetDialogFragment() {
     private fun setListeners() {
         binding.buttonAddParcel.setOnClickListener {
             if (homeViewModel.validateField()){
-                hideDialog()
                 homeViewModel.getNewParcel()
+                hideDialog()
             }
         }
 
@@ -71,6 +71,8 @@ class AddParcelFragment : BottomSheetDialogFragment() {
     private fun setUpDialog() {
         this.isCancelable = false
         binding.imageView.setOnClickListener {
+            homeViewModel.trackingNumber.set(null)
+            homeViewModel.name.set(null)
             hideDialog()
         }
     }

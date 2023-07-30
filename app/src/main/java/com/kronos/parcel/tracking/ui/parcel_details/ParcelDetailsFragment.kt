@@ -164,6 +164,7 @@ class ParcelDetailsFragment : Fragment() {
                 Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_LONG).show()
             } else {
                 viewModel.trackingNumber.set(result.contents)
+                binding.invalidateAll()
             }
         }
 }
