@@ -110,7 +110,7 @@
                         android:layout_height="match_parent"
                         android:drawableStart="@drawable/ic_edit"
                         android:drawablePadding="@dimen/margin_5"
-                        android:imeOptions="actionDone"
+                        android:imeOptions="actionNext"
                         android:text="@={viewModel.name}"
                         android:inputType="textCapWords" />
 
