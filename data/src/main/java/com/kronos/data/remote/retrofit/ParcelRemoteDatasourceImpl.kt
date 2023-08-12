@@ -22,15 +22,15 @@ class ParcelRemoteDatasourceImpl @Inject constructor(
                     if (it.isSuccessful && it.body() != null) {
                         it.body()!!.toParcelModel(tracking)
                     } else {
-                        ParcelModel(trackingNumber = tracking, status = "not found", imageUrl = "")
+                        ParcelModel(trackingNumber = tracking, notes = "", status = "not found", imageUrl = "")
                     }
                 }
             }catch (e:EOFException){
                 e.printStackTrace()
-                ParcelModel(trackingNumber = tracking, status = "not found", imageUrl = "")
+                ParcelModel(trackingNumber = tracking, notes = "", status = "not found", imageUrl = "")
             }catch (e:Exception){
                 e.printStackTrace()
-                ParcelModel(trackingNumber = tracking, status = "not found", imageUrl = "", fail = e.message.orEmpty())
+                ParcelModel(trackingNumber = tracking, notes = "", status = "not found", imageUrl = "", fail = e.message.orEmpty())
             }
         Log.e("ParcelRemoteDatasource", "searchParcel: $result")
         return result

@@ -18,6 +18,7 @@ import com.kronos.logger.interfaces.ILogger
 import com.kronos.parcel.tracking.job.ParcelTrackingNotificationJob
 import com.kronos.parcel.tracking.job.notificationJobId
 import dagger.hilt.android.HiltAndroidApp
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -36,7 +37,10 @@ class ParcelTrackingApplication:Application(){
         super.onCreate()
         createNotificationChanel()
         scheduleJob(applicationContext, 3600000L)
-        logger.configure()
+        try {
+            logger.configure()
+        }catch (e: Exception){
+        }
     }
 
     private fun createNotificationChanel() {

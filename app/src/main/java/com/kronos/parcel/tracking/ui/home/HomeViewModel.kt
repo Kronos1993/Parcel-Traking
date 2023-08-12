@@ -167,7 +167,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getNewParcel() {
-        var parcel = ParcelModel(trackingNumber = "", status = "", imageUrl = "")
+        var parcel = ParcelModel(trackingNumber = "", notes = "", status = "", imageUrl = "")
         setState(HomeState.Loading(true))
         viewModelScope.launch(Dispatchers.IO) {
             val call = async {

@@ -15,6 +15,7 @@ data class ParcelEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "ID") val id: Int,
     @ColumnInfo(name = "TRACKING_NUMBER") val trackingNumber: String,
+    @ColumnInfo(name = "NOTES") val notes: String,
     @ColumnInfo(name = "NAME") val name: String,
     @ColumnInfo(name = "HISTORY", defaultValue = "0") val history: Boolean,
     @ColumnInfo(name = "DATE_ADDED") val dateAdded: Long,

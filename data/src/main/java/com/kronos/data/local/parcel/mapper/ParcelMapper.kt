@@ -8,6 +8,7 @@ internal fun ParcelEntity.toDomain(): ParcelModel =
     ParcelModel(
         id = id,
         trackingNumber = trackingNumber,
+        notes = notes,
         status = status.orEmpty(),
         imageUrl = imageUrl.orEmpty(),
         name = name.orEmpty(),
@@ -20,6 +21,7 @@ internal fun ParcelModel.toEntity(): ParcelEntity =
     ParcelEntity(
         id = id,
         trackingNumber = trackingNumber,
+        notes = notes,
         status = status.orEmpty(),
         imageUrl = imageUrl.orEmpty(),
         name = name.orEmpty(),

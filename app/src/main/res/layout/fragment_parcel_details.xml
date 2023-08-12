@@ -63,6 +63,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.parcel.status}"
                     android:textAlignment="center"
+                    android:textAllCaps="true"
                     app:layout_constraintEnd_toEndOf="@id/guideline95"
                     app:layout_constraintStart_toStartOf="@id/guideline05"
                     app:layout_constraintTop_toBottomOf="@+id/imageStatus" />
@@ -86,7 +87,7 @@
                         android:drawablePadding="@dimen/margin_5"
                         android:text="@={viewModel.trackingNumber}"
                         android:imeOptions="actionNext"
-                        android:inputType="text" />
+                        android:inputType="textCapCharacters" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -115,6 +116,30 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutParcelNotes"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/notes"
+                    android:textColorHint="@color/hintColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayoutParcelName">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextNotes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_notes"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:imeOptions="actionDone"
+                        android:text="@={viewModel.notes}"
+                        android:inputType="textCapSentences|textImeMultiLine|textMultiLine" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
                 <TextView
                     android:id="@+id/textView"
                     style="@style/TextViewSmall"
@@ -122,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/added"
                     app:layout_constraintStart_toStartOf="@id/guideline05"
-                    app:layout_constraintTop_toBottomOf="@id/textInputLayoutParcelName" />
+                    app:layout_constraintTop_toBottomOf="@id/textInputLayoutParcelNotes" />
 
                 <TextView
                     android:id="@+id/textViewParcelTime"

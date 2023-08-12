@@ -13,7 +13,7 @@ class ParcelLocalDatasourceImpl @Inject constructor(
     @ApplicationDatabaseFactory private val databaseFactory: LocalDatabaseFactory,
 ) : ParcelLocalDataSource {
     override suspend fun saveParcel(parcel: ParcelModel): ParcelModel {
-        var result = ParcelModel(trackingNumber = "", status = "", imageUrl = "")
+        var result = ParcelModel(trackingNumber = "", notes = "", status = "", imageUrl = "")
 
         try {
             val parcelEntity = parcel.toEntity()

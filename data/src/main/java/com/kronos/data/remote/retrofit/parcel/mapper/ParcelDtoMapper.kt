@@ -6,6 +6,7 @@ import com.kronos.domain.model.parcel.ParcelModel
 fun ParcelDto.toParcelModel(trackingNumber:String): ParcelModel =
     ParcelModel(
         trackingNumber = trackingNumber,
+        notes = "",
         status = status,
         imageUrl = imageUrl
     )

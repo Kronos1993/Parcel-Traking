@@ -37,7 +37,7 @@ class HistoryViewModel  @Inject constructor(
     var logger:ILogger,
 ) : ParentViewModel() {
 
-    var parcel = ParcelModel(trackingNumber = "", status = "", imageUrl = "")
+    var parcel = ParcelModel(trackingNumber = "", notes = "", status = "", imageUrl = "")
 
     private val _parcelList = MutableLiveData<List<ParcelModel>>()
     val parcelList = _parcelList.asLiveData()
