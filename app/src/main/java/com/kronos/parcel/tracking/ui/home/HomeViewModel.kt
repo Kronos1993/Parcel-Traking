@@ -104,7 +104,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             parcelLocalRepository.saveParcel(itemAt)
             logParcelToHistory(itemAt)
-            logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${itemAt.trackingNumber} to history")
+            logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${itemAt.trackingNumber} to history on ${Date().formatDate("dd-MM-yyyy")}")
             getParcels()
         }
     }
@@ -183,7 +183,7 @@ class HomeViewModel @Inject constructor(
             increaseTotalParcelStatistics()
             if (parcel.status.contains("Entregado"))
                 increaseReceivedStatistics()
-            logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} added")
+            logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} added on ${Date().formatDate("dd-MM-yyyy")}")
             name.set(null)
             trackingNumber.set(null)
             postState(HomeState.Loading(false))
@@ -241,13 +241,13 @@ class HomeViewModel @Inject constructor(
                             parcelLocalRepository.saveParcel(parcel)
                         }
                         save.await()
-                        logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} refreshed")
+                        logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} refreshed on ${Date().formatDate("dd-MM-yyyy")}")
                     } else {
                         val currentError = Hashtable<String, String>()
                         currentError["error"] = parcelUpdate.fail
                         postState(HomeState.Error(currentError))
                         //refreshParcel(parcels,current+1,total)
-                        logger.write(this::class.java.name,LoggerType.ERROR,"Parcel ${parcelUpdate.trackingNumber} error: ${parcelUpdate.fail}")
+                        logger.write(this::class.java.name,LoggerType.ERROR,"Parcel ${parcelUpdate.trackingNumber} error: ${parcelUpdate.fail} on ${Date().formatDate("dd-MM-yyyy")}")
                     }
                     parcel.loading = false
                     viewModelScope.launch(Dispatchers.Main){

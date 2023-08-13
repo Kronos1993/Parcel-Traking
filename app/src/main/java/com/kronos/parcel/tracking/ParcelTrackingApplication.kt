@@ -10,15 +10,18 @@ import android.content.ComponentName
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import com.kronos.core.extensions.formatDate
 import com.kronos.core.notification.INotifications
 import com.kronos.domain.repository.event.EventLocalRepository
 import com.kronos.domain.repository.parcel.ParcelLocalRepository
 import com.kronos.domain.repository.parcel.ParcelRemoteRepository
+import com.kronos.logger.LoggerType
 import com.kronos.logger.interfaces.ILogger
 import com.kronos.parcel.tracking.job.ParcelTrackingNotificationJob
 import com.kronos.parcel.tracking.job.notificationJobId
 import dagger.hilt.android.HiltAndroidApp
 import java.lang.Exception
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -39,6 +42,7 @@ class ParcelTrackingApplication:Application(){
         scheduleJob(applicationContext, 3600000L)
         try {
             logger.configure()
+            logger.write(this::class.java.name, LoggerType.INFO,"App open on ${Date().formatDate("dd-MM-yyyy")}")
         }catch (e: Exception){
         }
     }

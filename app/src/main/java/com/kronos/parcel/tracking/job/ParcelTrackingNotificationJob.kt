@@ -3,6 +3,7 @@ package com.kronos.parcel.tracking.job
 import android.app.job.JobParameters
 import android.app.job.JobService
 import android.util.Log
+import com.kronos.core.extensions.formatDate
 import com.kronos.core.notification.INotifications
 import com.kronos.core.notification.NotificationType
 import com.kronos.data.remote.retrofit.parcel.dto.ParcelDto
@@ -21,6 +22,7 @@ import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 import javax.inject.Inject
 
 const val notificationJobId = 1
@@ -50,7 +52,7 @@ class ParcelTrackingNotificationJob : JobService() {
         Log.d(TAG, "onStartJob")
         Log.d(TAG, "Current job started: ${params.jobId}")
         Log.d(TAG, "Current Job Params: ${params.jobId}")
-        logger.write(this::class.java.name, LoggerType.INFO, "Current job started: ${params.jobId}")
+        logger.write(this::class.java.name, LoggerType.INFO, "Current job started: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}")
         logger.write(this::class.java.name, LoggerType.INFO, "Current Job Params: ${params.jobId}")
         doWork(params)
         return true
@@ -59,7 +61,7 @@ class ParcelTrackingNotificationJob : JobService() {
     override fun onStopJob(params: JobParameters): Boolean {
         Log.d(TAG, "onStopJob")
         Log.d(TAG, "Current job stopped: ${params.jobId}")
-        logger.write(this::class.java.name, LoggerType.INFO, "Current job stopped: ${params.jobId}")
+        logger.write(this::class.java.name, LoggerType.INFO, "Current job stopped: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}")
         return true
     }
 
@@ -69,7 +71,7 @@ class ParcelTrackingNotificationJob : JobService() {
         logger.write(
             this::class.java.name,
             LoggerType.INFO,
-            "Current Do Work Params: ${params.jobId}"
+            "Current Do Work Params: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}"
         )
         if (params != null && params.jobId == notificationJobId) {
             refreshParcels(params)
@@ -81,7 +83,7 @@ class ParcelTrackingNotificationJob : JobService() {
             logger.write(
                 this::class.java.name,
                 LoggerType.INFO,
-                "Current Do Work Params: Refreshing parcels"
+                "Current Do Work Params: Refreshing parcels on ${Date().formatDate("dd-MM-yyyy")}"
             )
             var list = parcelLocalRepository.listAllParcelLocal()
             refreshParcel(list, 0, list.size,params)
@@ -121,7 +123,7 @@ class ParcelTrackingNotificationJob : JobService() {
                             logger.write(
                                 this::class.java.name,
                                 LoggerType.INFO,
-                                "Current Do Work Params: ${parcel.name} updated"
+                                "Current Do Work Params: ${parcel.name} updated on ${Date().formatDate("dd-MM-yyyy")}"
                             )
                             if (parcelUpdate.fail.isEmpty()) {
                                 runBlocking(Dispatchers.IO) {
@@ -130,7 +132,7 @@ class ParcelTrackingNotificationJob : JobService() {
                                         logger.write(
                                             this::class.java.name,
                                             LoggerType.INFO,
-                                            "Current Do Work Params: ${parcel.name} saved"
+                                            "Current Do Work Params: ${parcel.name} saved on ${Date().formatDate("dd-MM-yyyy")}"
                                         )
                                     }
                                     save.await()
@@ -139,7 +141,7 @@ class ParcelTrackingNotificationJob : JobService() {
                                 logger.write(
                                     this::class.java.name,
                                     LoggerType.INFO,
-                                    "Current Do Work Params: error ocurred ${parcelUpdate.name} : ${parcelUpdate.fail}"
+                                    "Current Do Work Params: error ocurred ${parcelUpdate.name} : ${parcelUpdate.fail} on ${Date().formatDate("dd-MM-yyyy")}"
                                 )
                             }
                         }
@@ -154,7 +156,7 @@ class ParcelTrackingNotificationJob : JobService() {
                     logger.write(
                         this::class.java.name,
                         LoggerType.INFO,
-                        "Current Do Work Params: error ocurred ${t.message}"
+                        "Current Do Work Params: error ocurred ${t.message} on ${Date().formatDate("dd-MM-yyyy")}"
                     )
                     refreshParcel(parcels, total, total,params)
                 }
@@ -165,7 +167,7 @@ class ParcelTrackingNotificationJob : JobService() {
             logger.write(
                 this::class.java.name,
                 LoggerType.INFO,
-                "Current Do Work Params:finishing job"
+                "Current Do Work Params:finishing job on ${Date().formatDate("dd-MM-yyyy")}"
             )
             jobFinished(params,true)
         }

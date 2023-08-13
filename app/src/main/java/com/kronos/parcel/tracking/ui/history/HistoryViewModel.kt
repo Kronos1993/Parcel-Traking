@@ -71,7 +71,7 @@ class HistoryViewModel  @Inject constructor(
         viewModelScope.launch {
             parcelLocalRepository.saveParcel(itemAt)
             logParcelUnarchive(itemAt)
-            logger.write(this::class.java.name, LoggerType.INFO,"Parcel ${itemAt.trackingNumber} to main list")
+            logger.write(this::class.java.name, LoggerType.INFO,"Parcel ${itemAt.trackingNumber} to main list on ${Date().formatDate("dd-MM-yyyy")}")
             decreaseArchivedStatistics()
             getParcels()
         }
@@ -102,7 +102,7 @@ class HistoryViewModel  @Inject constructor(
         viewModelScope.launch {
             parcelLocalRepository.deleteParcel(parcel)
             eventLocalRepository.deleteEvent(parcel.trackingNumber)
-            logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} removed")
+            logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${parcel.trackingNumber} removed on ${Date().formatDate("dd-MM-yyyy")}")
             decreaseArchivedStatistics()
             getParcels()
             setState(HistoryState.Loading(false))
