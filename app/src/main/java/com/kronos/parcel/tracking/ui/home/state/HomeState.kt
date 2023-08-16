@@ -8,4 +8,5 @@ sealed class HomeState : MainState() {
     data class Loading(val loading: Boolean) : HomeState()
     data class Refreshing(val loading: Boolean) : HomeState()
     data class Error(val error: Hashtable<String, String>) : HomeState()
+    object Idle : HomeState()
 }

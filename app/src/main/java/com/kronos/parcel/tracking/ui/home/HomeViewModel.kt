@@ -2,6 +2,7 @@ package com.kronos.parcel.tracking.ui.home
 
 import android.content.Context
 import android.hardware.Camera
+import android.os.Bundle
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +11,7 @@ import com.journeyapps.barcodescanner.ScanOptions
 import com.kronos.core.extensions.asLiveData
 import com.kronos.core.extensions.formatDate
 import com.kronos.core.notification.INotifications
+import com.kronos.core.notification.NotificationGroup
 import com.kronos.core.notification.NotificationType
 import com.kronos.core.view_model.ParentViewModel
 import com.kronos.data.remote.retrofit.UrlProvider
@@ -59,6 +61,13 @@ class HomeViewModel @Inject constructor(
     var trackingNumberError = ObservableField<String?>()
     var nameError = ObservableField<String?>()
 
+    private val _bundle = MutableLiveData<Bundle?>()
+    val bundle = _bundle.asLiveData()
+
+    fun setBundle(bundle: Bundle?) {
+        _bundle.value = bundle
+    }
+
     private fun setState(state: MainState) {
         _state.value = state
     }
@@ -77,6 +86,7 @@ class HomeViewModel @Inject constructor(
             val list = parcelLocalRepository.listAllParcelLocal()
             postParcelList(list)
             setState(HomeState.Loading(false))
+            setState(HomeState.Idle)
         }
     }
 
@@ -224,7 +234,7 @@ class HomeViewModel @Inject constructor(
                             context.getString(R.string.notification_title).format(parcel.name),
                             context.getString(R.string.notification_details)
                                 .format(parcel.trackingNumber, parcel.status, parcelUpdate.status),
-                            NotificationType.GENERAL.name,
+                            NotificationGroup.GENERAL,
                             NotificationType.PARCEL_STATUS,
                             com.kronos.resources.R.drawable.ic_notifications,
                             context
@@ -257,6 +267,8 @@ class HomeViewModel @Inject constructor(
                 call.await()
                 refreshParcel(parcels,current+1,total)
             }
+        }else{
+            postState(HomeState.Idle)
         }
     }
 
