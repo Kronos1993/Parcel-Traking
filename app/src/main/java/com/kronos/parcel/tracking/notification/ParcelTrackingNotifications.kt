@@ -8,6 +8,7 @@ import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.kronos.core.notification.INotifications
+import com.kronos.core.notification.NotificationGroup
 import com.kronos.core.notification.NotificationType
 import com.kronos.parcel.tracking.MainActivity
 import com.kronos.parcel.tracking.NOTIFICATION_CHANNEL
@@ -19,7 +20,7 @@ class ParcelTrackingNotifications @Inject constructor() : INotifications {
     override fun createNotification(
         title: String,
         description: String,
-        group: String,
+        group: NotificationGroup,
         notificationsId: NotificationType,
         iconDrawable: Int,
         context: Context
@@ -62,7 +63,7 @@ class ParcelTrackingNotifications @Inject constructor() : INotifications {
             )
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-            .setGroup(group)
+            .setGroup(group.name)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .build()

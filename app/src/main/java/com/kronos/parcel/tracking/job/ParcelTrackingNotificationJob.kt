@@ -5,6 +5,7 @@ import android.app.job.JobService
 import android.util.Log
 import com.kronos.core.extensions.formatDate
 import com.kronos.core.notification.INotifications
+import com.kronos.core.notification.NotificationGroup
 import com.kronos.core.notification.NotificationType
 import com.kronos.data.remote.retrofit.parcel.dto.ParcelDto
 import com.kronos.data.remote.retrofit.parcel.mapper.toParcelModel
@@ -112,7 +113,7 @@ class ParcelTrackingNotificationJob : JobService() {
                                             parcel.status,
                                             parcelUpdate.status
                                         ),
-                                    NotificationType.GENERAL.name,
+                                    NotificationGroup.GENERAL,
                                     NotificationType.PARCEL_STATUS,
                                     com.kronos.resources.R.drawable.ic_notifications,
                                     applicationContext
