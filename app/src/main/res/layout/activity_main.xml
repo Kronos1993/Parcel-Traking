@@ -36,7 +36,7 @@
                 app:elevation="0dp"
                 app:itemIconTint="@color/white"
                 app:itemTextColor="@color/white"
-                app:labelVisibilityMode="labeled"
+                app:labelVisibilityMode="selected"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
