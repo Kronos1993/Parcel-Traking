@@ -163,18 +163,9 @@ class MainActivity : AppCompatActivity() {
         observeNavigation(navController)
         viewModel.getEventCount()
         viewModelHome.refreshParcels()
-        needsNavigate()
-    }
-
-    private fun needsNavigate() {
         var argument = intent.extras
         if(argument!=null){
-            if (argument.get("go_to")!=null)
-                when (argument.getInt("go_to")){
-                    R.id.navigation_notifications->{
-                        findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notifications)
-                    }
-                }
+            viewModelHome.setBundle(intent.extras!!)
         }
     }
 
