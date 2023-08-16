@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,16 +15,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.binding.fragmentBinding
+import com.kronos.core.notification.INotifications
+import com.kronos.core.notification.NotificationGroup
+import com.kronos.core.notification.NotificationType
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.show
 import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentHomeBinding
+import com.kronos.parcel.tracking.notification.ParcelTrackingNotifications
 import com.kronos.parcel.tracking.ui.home.state.HomeState
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 import java.util.*
+import javax.inject.Inject
 
 const val CURRENT_PARCEL = "current_parcel"
 
@@ -33,6 +39,9 @@ class HomeFragment : Fragment() {
     private val binding by fragmentBinding<FragmentHomeBinding>(R.layout.fragment_home)
 
     private val viewModel by activityViewModels<HomeViewModel>()
+
+    @Inject
+    lateinit var notificationManager : INotifications
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -130,6 +139,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initViews() {
+        binding.homeRefreshLayout.isRefreshing = false
         binding.recyclerViewCurrentParcels.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCurrentParcels.setHasFixedSize(false)
         if (viewModel.parcelAdapter.get()==null)
@@ -139,13 +149,7 @@ class HomeFragment : Fragment() {
         viewModel.parcelAdapter.get()?.setAdapterItemClick(object :
             AdapterItemClickListener<ParcelModel> {
             override fun onItemClick(t: ParcelModel, pos: Int) {
-                if (viewModel.state.value is HomeState.Refreshing) {
-                    if (!(viewModel.state.value as HomeState.Refreshing).loading) {
-                        val bundle = Bundle()
-                        bundle.putSerializable(CURRENT_PARCEL, t)
-                        findNavController().navigate(R.id.navigation_parcel_details, bundle)
-                    }
-                } else {
+                if (viewModel.state.value is HomeState.Idle) {
                     val bundle = Bundle()
                     bundle.putSerializable(CURRENT_PARCEL, t)
                     findNavController().navigate(R.id.navigation_parcel_details, bundle)
@@ -165,9 +169,13 @@ class HomeFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewModel.toHistory(
-                    viewModel.parcelAdapter.get()!!.getItemAt(viewHolder.adapterPosition)
-                )
+                if (viewModel.state.value is HomeState.Idle) {
+                    viewModel.toHistory(
+                        viewModel.parcelAdapter.get()!!.getItemAt(viewHolder.adapterPosition)
+                    )
+                }else{
+                    viewModel.parcelAdapter.get()?.notifyItemChanged(viewHolder.adapterPosition)
+                }
             }
         }
 
@@ -198,7 +206,21 @@ class HomeFragment : Fragment() {
             )
         )
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewCurrentParcels)
+        needsNavigate()
+    }
 
+    private fun needsNavigate() {
+        if(viewModel.bundle.value!=null){
+            if (viewModel.bundle.value!!.get("go_to")!=null){
+                val destiny = viewModel.bundle.value!!.getInt("go_to")
+                viewModel.setBundle(null)
+                when (destiny){
+                    R.id.navigation_notifications->{
+                        findNavController().navigate(R.id.navigation_notifications)
+                    }
+                }
+            }
+        }
     }
 
     private fun initViewModel() {
