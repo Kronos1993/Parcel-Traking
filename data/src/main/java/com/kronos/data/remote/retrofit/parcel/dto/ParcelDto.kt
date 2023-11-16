@@ -17,9 +17,9 @@ data class ParcelDto(
     @SerializedName("Nelcon")
     var nelcon:String = "",
     @SerializedName("Manager")
-    var status:String = "",
+    var status:String? = "",
     @SerializedName("ImageUrl")
-    var imageUrl:String = "",
+    var imageUrl:String? = "",
 
     var tracking:String = "",
 )

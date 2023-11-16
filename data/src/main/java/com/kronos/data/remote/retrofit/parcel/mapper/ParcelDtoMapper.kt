@@ -7,6 +7,6 @@ fun ParcelDto.toParcelModel(trackingNumber:String): ParcelModel =
     ParcelModel(
         trackingNumber = trackingNumber,
         notes = "",
-        status = status,
-        imageUrl = imageUrl
+        status = status.let { it ?: "not found" },
+        imageUrl = imageUrl.let { it ?: "not found" }
     )
