@@ -37,8 +37,23 @@ class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(G
         holder.binding.textViewParcelTrackingNumber.setOnClickListener {
             copyText(holder.binding.textViewParcelTrackingNumber.context,holder.binding.textViewParcelTrackingNumber.text.toString())
         }
-        if(!currentParcel.imageUrl.isNullOrEmpty())
-            Glide.with(holder.itemView).load(urlProvider.getServerUrl() +  currentParcel.imageUrl).placeholder(R.drawable.ic_not_found).into(holder.binding.imageStatus)
+        if(currentParcel.imageUrl != null){
+            if (currentParcel.imageUrl == "not found")
+                Glide.with(holder.itemView).load(R.drawable.ic_not_found).into(holder.binding.imageStatus)
+            else
+                Glide.with(holder.itemView).load(
+                    when (currentParcel.status) {
+                        "Carga recibida en Miami" -> R.mipmap.carga_recibida
+                        "Carga entregada a agente Aereo" -> R.mipmap.entregada_agente_aereo
+                        "Carga en Proceso de Aduanas" -> R.mipmap.proceso_aduanas
+                        "Carga en Bodega Central" -> R.mipmap.carga_transito_camion
+                        "Carga disponible para entrega en sucursal" -> R.mipmap.disponible_entrega
+                        "not found" -> R.drawable.ic_not_found
+                        else -> R.mipmap.entregado
+                    }
+                ).placeholder(R.drawable.ic_not_found).into(holder.binding.imageStatus)
+
+        }
         else
             Glide.with(holder.itemView).load(R.drawable.ic_not_found).into(holder.binding.imageStatus)
     }

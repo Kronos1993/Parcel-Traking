@@ -7,10 +7,15 @@ import retrofit2.http.Query
 
 interface ParcelApi {
 
-    @GET("/Tracking/SearchTracking")
+    @GET("Tracking/SearchTracking")
     fun searchParcel(
         @Query("tracking") trackingNumber: String,
     ): Call<ParcelDto?>
+
+    @GET("Tracking/SearchTracking")
+    fun searchParcelString(
+        @Query("tracking") trackingNumber: String,
+    ): Call<String>
 
 }
 

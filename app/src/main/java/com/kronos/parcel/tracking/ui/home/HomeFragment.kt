@@ -135,7 +135,7 @@ class HomeFragment : Fragment() {
 
     private fun handleParcelList(list: List<ParcelModel>) {
         viewModel.parcelAdapter.get()?.submitList(list)
-        viewModel.parcelAdapter.get()?.notifyDataSetChanged()
+        viewModel.parcelAdapter.get()?.notifyItemChanged(0,list.size)
     }
 
     private fun initViews() {

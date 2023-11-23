@@ -10,16 +10,22 @@ import com.google.gson.annotations.SerializedName
 //models the object from zipcargo ws
 
 data class ParcelDto(
-    @SerializedName("WMessage")
-    var wmessage:String = "",
-    @SerializedName("QMessage")
-    var qmessage:String = "",
+    @SerializedName("Date")
+    var date:String? = "",
     @SerializedName("Nelcon")
-    var nelcon:String = "",
+    var nelcon:String? = "",
     @SerializedName("Manager")
-    var status:String? = "",
+    var manager:String? = "",
     @SerializedName("ImageUrl")
     var imageUrl:String? = "",
+    @SerializedName("PackageStatusOrder")
+    var packageStatus:Int = -1,
+    @SerializedName("WMessage")
+    var wmessage:String? = "",
+    @SerializedName("QMessage")
+    var qmessage:String? = "",
+    @SerializedName("Status")
+    var status:String? = "",
 
     var tracking:String = "",
 )

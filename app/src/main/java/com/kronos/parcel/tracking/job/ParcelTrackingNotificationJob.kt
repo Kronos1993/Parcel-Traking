@@ -94,10 +94,10 @@ class ParcelTrackingNotificationJob : JobService() {
     fun refreshParcel(parcels: List<ParcelModel>, current: Int, total: Int,params: JobParameters) {
         if (current < parcels.size) {
             var parcel = parcels[current]
-            var callback = object : Callback<ParcelDto> {
+            var callback = object : Callback<ParcelDto?> {
                 override fun onResponse(
-                    call: Call<ParcelDto>,
-                    response: Response<ParcelDto>
+                    call: Call<ParcelDto?>,
+                    response: Response<ParcelDto?>
                 ) {
                     if (response.isSuccessful && response.body() != null) {
                         response.body().let {
@@ -153,7 +153,7 @@ class ParcelTrackingNotificationJob : JobService() {
                     }
                 }
 
-                override fun onFailure(call: Call<ParcelDto>, t: Throwable) {
+                override fun onFailure(call: Call<ParcelDto?>, t: Throwable) {
                     logger.write(
                         this::class.java.name,
                         LoggerType.INFO,
