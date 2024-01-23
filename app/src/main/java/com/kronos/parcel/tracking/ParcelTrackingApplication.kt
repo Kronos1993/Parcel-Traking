@@ -39,7 +39,7 @@ class ParcelTrackingApplication:Application(){
     override fun onCreate() {
         super.onCreate()
         createNotificationChanel()
-        scheduleJob(applicationContext, 5000L/*3600000L*/)
+        scheduleJob(applicationContext, 3600000L)
         try {
             logger.configure()
             logger.write(this::class.java.name, LoggerType.INFO,"App open on ${Date().formatDate("dd-MM-yyyy")}")
