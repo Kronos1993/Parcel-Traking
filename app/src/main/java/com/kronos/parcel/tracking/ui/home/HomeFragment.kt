@@ -206,23 +206,7 @@ class HomeFragment : Fragment() {
             )
         )
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewCurrentParcels)
-        needsNavigate()
     }
-
-    private fun needsNavigate() {
-        if(viewModel.bundle.value!=null){
-            if (viewModel.bundle.value!!.get("go_to")!=null){
-                val destiny = viewModel.bundle.value!!.getInt("go_to")
-                viewModel.setBundle(null)
-                when (destiny){
-                    R.id.navigation_notifications->{
-                        findNavController().navigate(R.id.navigation_notifications)
-                    }
-                }
-            }
-        }
-    }
-
     private fun initViewModel() {
         viewModel.getParcels()
     }

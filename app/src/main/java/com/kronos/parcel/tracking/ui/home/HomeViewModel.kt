@@ -61,13 +61,6 @@ class HomeViewModel @Inject constructor(
     var trackingNumberError = ObservableField<String?>()
     var nameError = ObservableField<String?>()
 
-    private val _bundle = MutableLiveData<Bundle?>()
-    val bundle = _bundle.asLiveData()
-
-    fun setBundle(bundle: Bundle?) {
-        _bundle.value = bundle
-    }
-
     private fun setState(state: MainState) {
         _state.value = state
     }

@@ -37,9 +37,9 @@ class ParcelTrackingNotifications @Inject constructor() : INotifications {
             intent.putExtras(bundle);*/
         } else if (notificationsId == NotificationType.PARCEL_STATUS) {
             intent = Intent(context, MainActivity::class.java)
-            val bundle = Bundle()
+            /*val bundle = Bundle()
             bundle.putInt("go_to", R.id.navigation_notifications)
-            intent.putExtras(bundle)
+            intent.putExtras(bundle)*/
             intent.action = "notificaciones"
         }
 

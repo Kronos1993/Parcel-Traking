@@ -149,7 +149,8 @@ class ParcelTrackingNotificationJob : JobService() {
                         var next = current + 1
                         refreshParcel(parcels, next, total,params)
                     } else {
-                        refreshParcel(parcels, total, total,params)
+                        var next = current + 1
+                        refreshParcel(parcels, next, total,params)
                     }
                 }
 
@@ -159,7 +160,8 @@ class ParcelTrackingNotificationJob : JobService() {
                         LoggerType.INFO,
                         "Current Do Work Params: error ocurred ${t.message} on ${Date().formatDate("dd-MM-yyyy")}"
                     )
-                    refreshParcel(parcels, total, total,params)
+                    var next = current + 1
+                    refreshParcel(parcels, next, total,params)
                 }
 
             }

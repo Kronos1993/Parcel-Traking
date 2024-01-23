@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -165,7 +166,23 @@ class MainActivity : AppCompatActivity() {
         viewModelHome.refreshParcels()
         var argument = intent.extras
         if(argument!=null){
-            viewModelHome.setBundle(intent.extras!!)
+            viewModel.setBundle(intent.extras!!)
+        }
+        needsNavigate()
+    }
+
+
+    private fun needsNavigate() {
+        if(viewModel.bundle.value!=null){
+            if (viewModel.bundle.value!!.get("go_to")!=null){
+                val destiny = viewModel.bundle.value!!.getInt("go_to")
+                viewModel.setBundle(null)
+                when (destiny){
+                    R.id.navigation_notifications->{
+                        findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_notifications)
+                    }
+                }
+            }
         }
     }
 

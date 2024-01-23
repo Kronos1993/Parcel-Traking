@@ -1,6 +1,7 @@
 package com.kronos.parcel.tracking
 
 import android.content.Context
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kronos.core.extensions.asLiveData
@@ -21,6 +22,13 @@ class MainActivityViewModel @Inject constructor(
 
     private val _eventCount = MutableLiveData<Int>()
     val eventCount = _eventCount.asLiveData()
+
+    private val _bundle = MutableLiveData<Bundle?>()
+    val bundle = _bundle.asLiveData()
+
+    fun setBundle(bundle: Bundle?) {
+        _bundle.value = bundle
+    }
 
     fun getEventCount() {
         viewModelScope.launch {
