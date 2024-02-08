@@ -7,4 +7,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kronos.core">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
 </manifest>

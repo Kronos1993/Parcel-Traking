@@ -34,8 +34,9 @@ class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(G
     override fun onBindViewHolder(holder: ParcelViewHolder, position: Int) {
         val currentParcel = getItem(position)
         holder.bind(currentParcel)
-        holder.binding.textViewParcelTrackingNumber.setOnClickListener {
+        holder.binding.textViewParcelTrackingNumber.setOnLongClickListener {
             copyText(holder.binding.textViewParcelTrackingNumber.context,holder.binding.textViewParcelTrackingNumber.text.toString())
+            true
         }
         if(currentParcel.imageUrl != null){
             if (currentParcel.imageUrl == "not found")
