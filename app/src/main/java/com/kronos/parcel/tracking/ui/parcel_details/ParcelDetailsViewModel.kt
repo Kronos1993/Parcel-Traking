@@ -118,7 +118,7 @@ class ParcelDetailsViewModel @Inject constructor(
                 eventLocalRepository.saveEvent(
                     EventModel(
                         0,
-                        context.getString(R.string.parcel_updated_event).format(old_tracking.value),
+                        context.getString(R.string.parcel_updated_event).format(parcel.value?.name),
                         context.getString(R.string.parcel_data_updated_event_details).format(
                             Date(parcel.value!!.dateUpdated).formatDate(context.getString(R.string.date_format))
                         ),

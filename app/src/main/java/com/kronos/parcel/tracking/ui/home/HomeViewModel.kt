@@ -107,7 +107,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             parcelLocalRepository.saveParcel(itemAt)
             logParcelToHistory(itemAt)
-            logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${itemAt.trackingNumber} to history on ${Date().formatDate("dd-MM-yyyy")}")
+            logger.write(this::class.java.name,LoggerType.INFO,"Parcel ${itemAt.name} to history on ${Date().formatDate("dd-MM-yyyy")}")
             getParcels()
         }
     }
