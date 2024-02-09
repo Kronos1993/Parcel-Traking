@@ -14,6 +14,10 @@
         android:layout_height="match_parent"
         tools:context=".ui.parcel_details.ParcelDetailsFragment">
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -48,14 +52,16 @@
 
                 <ImageView
                     android:id="@+id/imageStatus"
-                    android:layout_width="@dimen/size_40"
-                    android:layout_height="@dimen/size_40"
+                    android:layout_width="@dimen/size_60"
+                    android:layout_height="@dimen/size_60"
                     android:layout_margin="@dimen/margin_5"
+                    android:layout_marginTop="8dp"
+                    android:contentDescription="@string/content_status_image_description"
                     app:handle_parcel_status="@{!viewModel.parcel.imageUrl.empty &amp;&amp; viewModel.parcel.imageUrl!=null ? viewModel.parcel.imageUrl : viewModel.parcel.status}"
                     app:layout_constraintEnd_toEndOf="@id/guideline95"
+                    app:layout_constraintHorizontal_bias="0.496"
                     app:layout_constraintStart_toStartOf="@id/guideline05"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/content_status_image_description" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textViewParcelStatus"
@@ -244,7 +250,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewCurrentParcelEvents"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="match_parent"
                     android:layout_margin="@dimen/margin_10"
                     app:handle_visibility="@{viewModel.eventList.size()>0}"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -257,6 +263,8 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
     </FrameLayout>
 
 </layout>
