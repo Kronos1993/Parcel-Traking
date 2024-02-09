@@ -55,6 +55,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_margin="@dimen/margin_5"
+                    app:handle_parcel_status="@{!parcelModel.imageUrl.empty &amp;&amp; parcelModel.imageUrl!=null ? parcelModel.imageUrl : parcelModel.status}"
                     app:layout_constraintBottom_toTopOf="@id/guideline8H"
                     app:layout_constraintEnd_toStartOf="@+id/guideline8v"
                     app:layout_constraintStart_toStartOf="parent"
