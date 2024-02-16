@@ -9,6 +9,7 @@ import com.kronos.core.notification.NotificationGroup
 import com.kronos.core.notification.NotificationType
 import com.kronos.data.remote.retrofit.parcel.dto.ParcelDto
 import com.kronos.data.remote.retrofit.parcel.mapper.toParcelModel
+import com.kronos.domain.model.event.EventModel
 import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.domain.repository.event.EventLocalRepository
 import com.kronos.domain.repository.parcel.ParcelLocalRepository
@@ -130,6 +131,7 @@ class ParcelTrackingNotificationJob : JobService() {
                                 runBlocking(Dispatchers.IO) {
                                     var save = async {
                                         parcelLocalRepository.saveParcel(parcel)
+                                        logParcelUpdate(parcel,parcelUpdate)
                                         logger.write(
                                             this::class.java.name,
                                             LoggerType.INFO,
@@ -174,6 +176,25 @@ class ParcelTrackingNotificationJob : JobService() {
             )
             jobFinished(params,true)
         }
+    }
+
+    suspend private fun logParcelUpdate(parcel:ParcelModel,parcelUpdate:ParcelModel) {
+        eventLocalRepository.saveEvent(
+            EventModel(
+                0,
+                applicationContext.getString(R.string.parcel_updated_event).format(parcel.name),
+                applicationContext.getString(R.string.notification_details)
+                    .format(
+                        parcel.trackingNumber,
+                        parcel.status,
+                        parcelUpdate.status
+                    ),
+                false,
+                parcel.trackingNumber,
+                Calendar.getInstance().timeInMillis,
+                Calendar.getInstance().timeInMillis,
+            )
+        )
     }
 
 
