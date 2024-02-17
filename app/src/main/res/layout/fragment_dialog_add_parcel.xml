@@ -119,7 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:imeOptions="actionDone"
-                    android:inputType="textCapWords"
+                    android:inputType="textCapSentences"
                     android:text="@={viewModel.name}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
