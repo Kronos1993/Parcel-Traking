@@ -131,7 +131,8 @@ class ParcelDetailsViewModel @Inject constructor(
             }
             logger.write(this::class.java.name, LoggerType.INFO,"Parcel ${parcel.value!!.trackingNumber} updated on ${Date().formatDate("dd-MM-yyyy")}")
             call.await()
-            updateEvents()
+            //updateEvents()
+            getEvents()
             postState(MainState.NewEvent)
         }
     }

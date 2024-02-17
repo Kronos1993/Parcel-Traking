@@ -54,6 +54,10 @@ class AddParcelFragment : BottomSheetDialogFragment() {
         binding.buttonScanBarCode.setOnClickListener {
             barcodeLauncher.launch(homeViewModel.createBarcodeOptions())
         }
+
+        binding.imageView.setOnClickListener {
+            hideDialog()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

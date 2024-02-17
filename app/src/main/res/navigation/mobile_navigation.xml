@@ -14,11 +14,10 @@
             android:id="@+id/action_navigation_home_to_dialog_add_parcel"
             app:destination="@id/dialog_add_parcel"
             app:popUpTo="@id/navigation_home"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_navigation_home_to_navigation_parce_details"
-            app:destination="@id/navigation_parcel_details"
-            app:popUpTo="@id/navigation_home" />
+            app:destination="@id/navigation_parcel_details"/>
     </fragment>
 
     <dialog

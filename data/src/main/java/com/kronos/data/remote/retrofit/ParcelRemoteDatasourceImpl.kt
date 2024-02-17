@@ -33,7 +33,7 @@ class ParcelRemoteDatasourceImpl @Inject constructor(
                 }
             }catch (e:EOFException){
                 e.printStackTrace()
-                ParcelModel(trackingNumber = tracking, notes = "", status = "not found", imageUrl = "", fail = e.message.orEmpty())
+                ParcelModel(trackingNumber = tracking, notes = "", status = "not found", imageUrl = "", fail = "Parcel not found")
             }catch (e:Exception){
                 e.printStackTrace()
                 ParcelModel(trackingNumber = tracking, notes = "", status = "not found", imageUrl = "", fail = e.message.orEmpty())

@@ -120,6 +120,12 @@ class ParcelTrackingNotificationJob : JobService() {
                                     applicationContext
                                 )
                                 parcel.status = parcelUpdate.status
+                                runBlocking(Dispatchers.IO) {
+                                    var save = async {
+                                        logParcelUpdate(parcel,parcelUpdate)
+                                    }
+                                    save.await()
+                                }
                             }
                             parcel.dateUpdated = parcelUpdate.dateUpdated
                             logger.write(
@@ -131,7 +137,6 @@ class ParcelTrackingNotificationJob : JobService() {
                                 runBlocking(Dispatchers.IO) {
                                     var save = async {
                                         parcelLocalRepository.saveParcel(parcel)
-                                        logParcelUpdate(parcel,parcelUpdate)
                                         logger.write(
                                             this::class.java.name,
                                             LoggerType.INFO,
