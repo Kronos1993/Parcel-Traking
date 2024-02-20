@@ -99,7 +99,7 @@ class ParcelDetailsViewModel @Inject constructor(
     }
 
     fun getEvents() {
-        setState(ParcelDetailState.Loading(true))
+        postState(ParcelDetailState.Loading(true))
         viewModelScope.launch {
             val list = eventLocalRepository.listAllByParcel(parcel.value?.trackingNumber.orEmpty())
             postEventList(list)
