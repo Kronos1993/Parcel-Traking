@@ -12,9 +12,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.binding.fragmentBinding
+import com.kronos.core.util.ActionDialog
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.show
 import com.kronos.domain.model.parcel.ParcelModel
@@ -142,8 +144,9 @@ class HistoryFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
-                        viewModel.deleteParcel(
-                            viewModel.parcelAdapter.get()!!.getItemAt(viewHolder.adapterPosition)
+                        showDeleteDialog(
+                            viewModel.parcelAdapter.get()!!.getItemAt(viewHolder.adapterPosition),
+                            viewHolder.adapterPosition
                         )
                     }
                     ItemTouchHelper.RIGHT -> {
@@ -180,6 +183,25 @@ class HistoryFragment : Fragment() {
             )
         )
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewParcelsHistory)
+    }
+
+    private fun showDeleteDialog(parcel:ParcelModel,position:Int){
+        val mainListener:SweetAlertDialog.OnSweetClickListener = SweetAlertDialog.OnSweetClickListener {
+            viewModel.deleteParcel(parcel)
+            it.dismiss()
+        }
+        val secondaryListener:SweetAlertDialog.OnSweetClickListener = SweetAlertDialog.OnSweetClickListener {
+            it.dismiss()
+            viewModel.parcelAdapter.get()?.notifyItemChanged(position)
+        }
+        ActionDialog.createActionDialog(
+            requireContext(),
+            R.string.delete_dialog_title,
+            R.string.delete_dialog_body,
+            R.string.delete_dialog_yes,
+            mainListener,
+            R.string.delete_dialog_no,
+            secondaryListener).show()
     }
 
     private fun initViewModel() {

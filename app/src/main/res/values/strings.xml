@@ -59,4 +59,9 @@
     <string name="action_register">Create Box</string>
     <string name="content_status_image_description">Status image</string>
 
+    <string name="delete_dialog_title">Delete item</string>
+    <string name="delete_dialog_body">Are you sure?</string>
+    <string name="delete_dialog_yes">Yes</string>
+    <string name="delete_dialog_no">No</string>
+
 </resources>
