@@ -81,203 +81,88 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="TextViewError" parent="Theme.ZipCargoTraking">
-        <item name="android:background">@drawable/rounded_text_view_stroke</item>
-        <item name="backgroundTint">@color/backgroundColorPrimary</item>
-        <item name="android:textColor">@color/white</item>
+    <style name="Widget.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/backgroundCardColor</item>
+        <item name="cardElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardCornerRadius">@dimen/card_radius_6</item>
+        <item name="android:layout_margin">@dimen/margin_5</item>
+        <item name="contentPadding">@dimen/margin_5</item>
+    </style>
+
+    <style name="Widget.CardView.NoBackground" parent="CardView">
+        <item name="cardElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardCornerRadius">@dimen/card_radius_6</item>
+        <item name="android:layout_margin">@dimen/margin_5</item>
+        <item name="contentPadding">@dimen/margin_5</item>
+    </style>
+
+    <style name="Widget.TextView.TextViewRound" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:layout_marginStart">@dimen/margin_10</item>
+        <item name="android:layout_marginEnd">@dimen/margin_10</item>
         <item name="android:maxLines">1</item>
-        <item name="android:padding">@dimen/margin_10</item>
         <item name="android:gravity">center</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:layout_marginStart">@dimen/margin_8</item>
-        <item name="android:layout_marginEnd">@dimen/margin_8</item>
-    </style>
-
-    <style name="TextViewWarning" parent="Theme.ZipCargoTraking">
-        <item name="android:background">@drawable/rounded_text_view_stroke</item>
-        <item name="android:backgroundTint">@color/warning</item>
-        <item name="android:textColor">@color/white</item>
         <item name="android:padding">@dimen/margin_10</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:gravity">center</item>
-        <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
-        <item name="android:layout_marginStart">@dimen/margin_8</item>
-        <item name="android:layout_marginEnd">@dimen/margin_8</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
-    <style name="TextViewStroke" parent="Theme.ZipCargoTraking">
-        <item name="android:background">@drawable/rounded_text_view_stroke</item>
-        <item name="android:textColor">@color/primaryText</item>
-        <item name="android:padding">@dimen/margin_10</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:layout_marginStart">@dimen/margin_8</item>
-        <item name="android:layout_marginEnd">@dimen/margin_8</item>
-    </style>
-
-    <style name="TextViewHeader" parent="Theme.ZipCargoTraking">
-        <item name="android:textColor">@color/blackText</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textSize">@dimen/text_18</item>
-        <item name="android:layout_marginTop">@dimen/margin_3</item>
-        <item name="android:layout_marginStart">@dimen/margin_8</item>
-        <item name="android:layout_marginEnd">@dimen/margin_8</item>
-    </style>
-
-    <style name="TextViewNormal" parent="Theme.ZipCargoTraking">
-        <item name="android:textColor">@color/blackText</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textSize">@dimen/text_15</item>
-        <item name="android:layout_marginTop">@dimen/margin_3</item>
-        <item name="android:layout_marginStart">@dimen/margin_8</item>
-        <item name="android:layout_marginEnd">@dimen/margin_8</item>
-    </style>
-
-    <style name="TextViewSmall" parent="Theme.ZipCargoTraking">
-        <item name="android:textColor">@color/blackText</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textSize">@dimen/text_12</item>
-        <item name="android:layout_marginTop">@dimen/margin_3</item>
-        <item name="android:layout_marginStart">@dimen/margin_8</item>
-        <item name="android:layout_marginEnd">@dimen/margin_8</item>
-    </style>
-
-    <style name="TextViewNormalDialog" parent="Theme.ZipCargoTraking">
-        <item name="android:textColor">@color/dialog_text_color</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textSize">@dimen/text_16</item>
-        <item name="android:layout_marginTop">@dimen/margin_5</item>
-        <item name="android:layout_marginStart">@dimen/margin_8</item>
-        <item name="android:layout_marginEnd">@dimen/margin_8</item>
-    </style>
-
-
-    <style name="TextViewNormalRed" parent="Theme.ZipCargoTraking">
-        <item name="android:textColor">@color/alertColor</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:layout_marginStart">@dimen/margin_8</item>
-        <item name="android:layout_marginEnd">@dimen/margin_8</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginTop">@dimen/margin_5</item>
-    </style>
-
-    <style name="TextViewNormalWhite" parent="Theme.ZipCargoTraking">
-        <item name="android:textColor">@color/whiteText</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:layout_marginStart">@dimen/margin_8</item>
-        <item name="android:layout_marginEnd">@dimen/margin_8</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textSize">@dimen/text_12</item>
-        <item name="android:layout_marginTop">@dimen/margin_5</item>
-    </style>
-
-    <style name="TextViewNormalBlack" parent="Theme.ZipCargoTraking">
-        <item name="android:textColor">@color/blackText</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:layout_marginStart">@dimen/margin_8</item>
-        <item name="android:layout_marginEnd">@dimen/margin_8</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginTop">@dimen/margin_5</item>
-    </style>
-
-    <style name="TextViewNormalBlue" parent="Theme.ZipCargoTraking">
-        <item name="android:textColor">@color/blueText</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:layout_marginStart">@dimen/margin_8</item>
-        <item name="android:layout_marginEnd">@dimen/margin_8</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginTop">@dimen/margin_5</item>
-    </style>
-
-    <style name="TextViewNormalPrimary" parent="Theme.ZipCargoTraking">
-        <!--<item name="android:textColor">@color/purple_text_color</item>-->
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
+    <style name="Widget.TextView.TextViewDisplay1" parent="Widget.MaterialComponents.TextView">
         <item name="android:textColor">@color/primary_text_color</item>
         <item name="android:layout_marginStart">@dimen/margin_8</item>
         <item name="android:layout_marginEnd">@dimen/margin_8</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textSize">@dimen/text_12</item>
-        <item name="android:layout_marginTop">@dimen/margin_5</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
-    <style name="TextViewNormalBlackButton" parent="Theme.ZipCargoTraking">
-        <!--<item name="android:textColor">@color/purple_text_color</item>-->
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:textColor">@color/colorSecondaryVariant</item>
+    <style name="Widget.TextView.TextViewHeader" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/primary_text_color</item>
         <item name="android:layout_marginStart">@dimen/margin_8</item>
         <item name="android:layout_marginEnd">@dimen/margin_8</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textSize">@dimen/text_12</item>
-        <item name="android:layout_marginTop">@dimen/margin_5</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
+        <item name="fontFamily">@font/roboto_bold</item>
     </style>
 
-    <style name="TextViewNormalGreen" parent="Theme.ZipCargoTraking">
-        <item name="android:textColor">@color/green</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
+    <style name="Widget.TextView.TextViewSubHeader" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/primary_text_color</item>
         <item name="android:layout_marginStart">@dimen/margin_8</item>
         <item name="android:layout_marginEnd">@dimen/margin_8</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginTop">@dimen/margin_5</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="fontFamily">@font/roboto_medium</item>
     </style>
 
-    <style name="TextViewNormalOrange" parent="Theme.ZipCargoTraking">
-        <item name="android:textColor">@color/warning</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
+    <style name="Widget.TextView.TextViewSmall" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/primary_text_color</item>
         <item name="android:layout_marginStart">@dimen/margin_8</item>
         <item name="android:layout_marginEnd">@dimen/margin_8</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginTop">@dimen/margin_5</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="fontFamily">@font/roboto_light</item>
     </style>
 
-    <style name="ButtonRound" parent="Theme.ZipCargoTraking">
-        <!--<item name="android:background">@drawable/btn_round</item>-->
-        <item name="android:backgroundTint">@color/button_color</item>
-        <item name="cornerRadius">@dimen/radius_5000</item>
-        <item name="android:textColor">@color/whiteText</item>
-        <item name="android:layout_marginStart">@dimen/margin_5</item>
-        <item name="android:layout_marginEnd">@dimen/margin_5</item>
+    <style name="Widget.TextView.TextViewNormal" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:layout_marginStart">@dimen/margin_8</item>
+        <item name="android:layout_marginEnd">@dimen/margin_8</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
-    <style name="ButtonRoundRed" parent="Theme.ZipCargoTraking">
-        <!--<item name="android:background">@drawable/btn_round</item>-->
-        <item name="android:backgroundTint">@color/button_red_color</item>
-        <item name="cornerRadius">@dimen/radius_5000</item>
-        <item name="android:textColor">@color/whiteText</item>
-        <item name="android:layout_marginStart">@dimen/margin_5</item>
-        <item name="android:layout_marginEnd">@dimen/margin_5</item>
+    <style name="Widget.NormalButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">@dimen/margin_10</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
     </style>
 
-    <style name="ButtonRoundBlue" parent="Theme.ZipCargoTraking">
-        <!--<item name="android:background">@drawable/btn_round</item>-->
-        <item name="android:backgroundTint">@color/button_blue_color</item>
-        <item name="cornerRadius">@dimen/radius_5000</item>
-        <item name="android:textColor">@color/whiteText</item>
-        <item name="android:layout_marginStart">@dimen/margin_5</item>
-        <item name="android:layout_marginEnd">@dimen/margin_5</item>
+    <style name="Widget.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/outlined_button_color</item>
+        <item name="cornerRadius">@dimen/margin_10</item>
+        <item name="strokeColor">@color/outlined_button_color</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="iconTint">@color/outlined_button_color</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
     </style>
 
     <style name="FloatingActionButton" parent="Theme.ZipCargoTraking">
@@ -292,14 +177,6 @@
         <item name="android:layout_marginStart">@dimen/margin_10</item>
         <item name="android:layout_marginEnd">@dimen/margin_10</item>
         <item name="android:layout_marginTop">@dimen/margin_10</item>
-        <item name="android:textColorHint">@color/hintColor</item>
-    </style>
-
-    <style name="TextInputEditText" parent="Widget.AppCompat.EditText">
-        <item name="android:textColorHint">@color/hintColor</item>
-        <item name="android:textColor">@color/primary_text_color</item>
-        <item name="android:drawablePadding">@dimen/margin_10</item>
-        <item name="android:drawableTint" tools:targetApi="m">@color/icon_green</item>
     </style>
 
     <style name="RatingBarStyle" parent="Widget.AppCompat.RatingBar.Small">

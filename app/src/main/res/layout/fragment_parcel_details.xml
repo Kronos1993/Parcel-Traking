@@ -50,7 +50,7 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.95" />
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imageStatus"
                     android:layout_width="@dimen/size_60"
                     android:layout_height="@dimen/size_60"
@@ -63,9 +63,9 @@
                     app:layout_constraintStart_toStartOf="@id/guideline05"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewParcelStatus"
-                    style="@style/TextViewNormal"
+                    style="@style/Widget.TextView.TextViewNormal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.parcel.status}"
@@ -147,18 +147,18 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textView"
-                    style="@style/TextViewSmall"
+                    style="@style/Widget.TextView.TextViewSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/added"
                     app:layout_constraintStart_toStartOf="@id/guideline05"
                     app:layout_constraintTop_toBottomOf="@id/textInputLayoutParcelNotes" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewParcelTime"
-                    style="@style/TextViewSmall"
+                    style="@style/Widget.TextView.TextViewSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="@+id/textView"
@@ -174,18 +174,18 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.5" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textView2"
-                    style="@style/TextViewSmall"
+                    style="@style/Widget.TextView.TextViewSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/updated"
                     app:layout_constraintStart_toStartOf="@+id/guideline5"
                     app:layout_constraintTop_toTopOf="@+id/textViewParcelTime" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewParcelUpdated"
-                    style="@style/TextViewSmall"
+                    style="@style/Widget.TextView.TextViewSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="@+id/textView2"
@@ -196,7 +196,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonScanBarCode"
-                    style="@style/ButtonRound"
+                    style="@style/Widget.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/barcode_scan"
@@ -210,7 +210,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonUpdateParcel"
-                    style="@style/ButtonRound"
+                    style="@style/Widget.NormalButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -230,9 +230,9 @@
                     app:barrierDirection="bottom"
                     app:constraint_referenced_ids="buttonScanBarCode,buttonUpdateParcel,textViewParcelTime,textViewParcelUpdated,textView,textView2"/>
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_no_events"
-                    style="@style/TextViewNormal"
+                    style="@style/Widget.TextView.TextViewNormal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"

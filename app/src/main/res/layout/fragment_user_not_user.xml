@@ -18,7 +18,7 @@
             android:layout_height="match_parent">
 
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageView2"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -95,7 +95,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonLogin"
-                    style="@style/ButtonRound"
+                    style="@style/Widget.NormalButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
@@ -114,7 +114,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonRegister"
-                    style="@style/ButtonRound"
+                    style="@style/Widget.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

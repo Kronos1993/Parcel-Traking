@@ -16,9 +16,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.notifications.NotificationsFragment">
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_no_events"
-        style="@style/TextViewNormal"
+        style="@style/Widget.TextView.TextViewNormal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

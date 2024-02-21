@@ -8,7 +8,7 @@
             type="com.kronos.domain.model.parcel.ParcelModel" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardViewParcel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,15 +33,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ProgressBar
+                <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="@dimen/margin_24"
-                    android:layout_height="@dimen/margin_24"
-                    android:layout_marginTop="@dimen/margin_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    style="@style/Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall"
                     app:handle_visibility="@{parcelModel.loading}"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewParcelTrackingNumber"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/textViewParcelTrackingNumber" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline8v"
@@ -50,11 +51,12 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent=".2" />
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imageStatus"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_margin="@dimen/margin_5"
+                    android:adjustViewBounds="true"
                     app:handle_parcel_status="@{!parcelModel.imageUrl.empty &amp;&amp; parcelModel.imageUrl!=null ? parcelModel.imageUrl : parcelModel.status}"
                     app:layout_constraintBottom_toTopOf="@id/guideline8H"
                     app:layout_constraintEnd_toStartOf="@+id/guideline8v"
@@ -62,9 +64,9 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:contentDescription="@string/content_status_image_description" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewParcelTrackingNumber"
-                    style="@style/TextViewNormal"
+                    style="@style/Widget.TextView.TextViewNormal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{parcelModel.name}"
@@ -73,9 +75,9 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline8v"
                     app:layout_constraintTop_toTopOf="@+id/imageStatus" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewParcelName"
-                    style="@style/TextViewSmall"
+                    style="@style/Widget.TextView.TextViewSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{parcelModel.trackingNumber}"
@@ -83,9 +85,9 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline8v"
                     app:layout_constraintTop_toBottomOf="@id/textViewParcelTrackingNumber" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewParcelStatus"
-                    style="@style/TextViewNormal"
+                    style="@style/Widget.TextView.TextViewNormal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{parcelModel.status}"
@@ -100,11 +102,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:barrierDirection="bottom"
-                    app:constraint_referenced_ids="textViewParcelStatus,textViewParcelName,textViewParcelTrackingNumber,imageStatus"/>
+                    app:constraint_referenced_ids="textViewParcelStatus,textViewParcelName,textViewParcelTrackingNumber"/>
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textView"
-                    style="@style/TextViewSmall"
+                    style="@style/Widget.TextView.TextViewSmall"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -113,9 +115,9 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/guideline8H" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewParcelTime"
-                    style="@style/TextViewSmall"
+                    style="@style/Widget.TextView.TextViewSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
@@ -132,9 +134,9 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.5" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textView2"
-                    style="@style/TextViewSmall"
+                    style="@style/Widget.TextView.TextViewSmall"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -143,9 +145,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/guideline8H"/>
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewParcelUpdated"
-                    style="@style/TextViewSmall"
+                    style="@style/Widget.TextView.TextViewSmall"
                     android:textStyle="bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -158,5 +160,5 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

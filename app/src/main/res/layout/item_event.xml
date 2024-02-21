@@ -25,9 +25,9 @@
                 android:layout_height="match_parent"
                 android:background="@color/transparent">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewEventAdded"
-                    style="@style/TextViewNormal"
+                    style="@style/Widget.TextView.TextViewNormal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
@@ -36,9 +36,9 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewEventName"
-                    style="@style/TextViewNormal"
+                    style="@style/Widget.TextView.TextViewNormal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:singleLine="false"
@@ -49,9 +49,9 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewEventAdded" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewEventBody"
-                    style="@style/TextViewSmall"
+                    style="@style/Widget.TextView.TextViewSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:singleLine="false"
