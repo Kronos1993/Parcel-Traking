@@ -110,7 +110,7 @@ class ParcelTrackingNotificationJob : JobService() {
                                         .format(parcel.name),
                                     applicationContext.getString(R.string.notification_details)
                                         .format(
-                                            parcel.trackingNumber,
+                                            parcel.name,
                                             parcel.status,
                                             parcelUpdate.status
                                         ),

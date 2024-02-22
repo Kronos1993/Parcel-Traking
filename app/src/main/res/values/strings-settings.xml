@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="sync_preference_key">sync</string>
+    <string name="time_preference_key">time</string>
+
+    <string name="sync_header">Sync</string>
+    <string name="sync_title">Sync parcels periodically</string>
+    <string name="job_title">Sync time(in hours)</string>
+
+
+    <string-array name="times_entries">
+        <item>1H </item>
+        <item>2H</item>
+        <item>4H</item>
+        <item>6H</item>
+        <item>8H</item>
+        <item>24H</item>
+    </string-array>
+
+    <string-array name="times_values">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>24</item>
+    </string-array>
+
+</resources>

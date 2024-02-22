@@ -77,11 +77,7 @@ class ParcelDetailsViewModel @Inject constructor(
         return valid
     }
 
-    private fun setState(state: MainState) {
-        _state.value = state
-    }
-
-    fun postState(state: MainState) {
+    private fun postState(state: MainState) {
         _state.postValue(state)
     }
 
