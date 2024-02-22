@@ -66,11 +66,13 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewParcelTrackingNumber"
-                    style="@style/Widget.TextView.TextViewNormal"
+                    style="@style/Widget.TextView.TextViewSubHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{parcelModel.name}"
                     android:textStyle="bold"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     app:layout_constraintEnd_toStartOf="@+id/progressBar"
                     app:layout_constraintStart_toStartOf="@+id/guideline8v"
                     app:layout_constraintTop_toTopOf="@+id/imageStatus" />
