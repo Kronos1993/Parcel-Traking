@@ -13,6 +13,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:itemTextAppearance">@style/menuItem</item>
+        <item name="bottomNavigationStyle">@style/Widget.BottomNavigationView</item>
     </style>
 
 
@@ -166,8 +167,9 @@
     </style>
 
     <style name="FloatingActionButton" parent="Theme.ZipCargoTraking">
-        <item name="tint">@color/icon_color</item>
-        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/black</item>
     </style>
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
@@ -200,5 +202,9 @@
         <item name="android:indeterminateDrawable">@drawable/circle_progress_bar</item>
     </style>
 
+    <style name="Widget.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="colorSurface">@color/colorPrimary</item>
+        <item name="colorOnSurfaceVariant">@color/colorPrimaryVariant</item>
+    </style>
 
 </resources>
