@@ -139,7 +139,7 @@ class HomeViewModel @Inject constructor(
                     0,
                     context.getString(R.string.notification_title).format(item.name),
                     context.getString(R.string.notification_details)
-                        .format(item.trackingNumber, oldStatus, newStatus),
+                        .format(item.name, oldStatus, newStatus),
                     false,
                     item.trackingNumber,
                     Calendar.getInstance().timeInMillis,
@@ -226,7 +226,7 @@ class HomeViewModel @Inject constructor(
                         notification.createNotification(
                             context.getString(R.string.notification_title).format(parcel.name),
                             context.getString(R.string.notification_details)
-                                .format(parcel.trackingNumber, parcel.status, parcelUpdate.status),
+                                .format(parcel.name, parcel.status, parcelUpdate.status),
                             NotificationGroup.GENERAL,
                             NotificationType.PARCEL_STATUS,
                             com.kronos.resources.R.drawable.ic_notifications,
