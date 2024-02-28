@@ -75,7 +75,7 @@ class ParcelTrackingNotificationJob : JobService() {
             LoggerType.INFO,
             "Current Do Work Params: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}"
         )
-        if (params != null && params.jobId == notificationJobId) {
+        if (params.jobId == notificationJobId) {
             refreshParcels(params)
         }
     }
@@ -190,7 +190,7 @@ class ParcelTrackingNotificationJob : JobService() {
                 applicationContext.getString(R.string.parcel_updated_event).format(parcel.name),
                 applicationContext.getString(R.string.notification_details)
                     .format(
-                        parcel.trackingNumber,
+                        parcel.name,
                         parcel.status,
                         parcelUpdate.status
                     ),
