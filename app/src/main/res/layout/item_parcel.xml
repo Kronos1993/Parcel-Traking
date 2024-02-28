@@ -94,6 +94,8 @@
                     android:layout_height="wrap_content"
                     android:text="@{parcelModel.status}"
                     android:textStyle="bold"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     app:layout_constraintBottom_toTopOf="@id/guideline8H"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline8v"
