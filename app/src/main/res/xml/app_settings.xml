@@ -3,17 +3,19 @@
     <PreferenceCategory app:title="@string/sync_header">
 
         <SwitchPreferenceCompat
-            app:key="sync"
+            app:key="@string/sync_preference_key"
             app:defaultValue="false"
             app:title="@string/sync_title" />
 
         <ListPreference
+
             app:defaultValue="4"
             app:entries="@array/times_entries"
             app:entryValues="@array/times_values"
-            app:key="time"
+            app:key="@string/time_preference_key"
             app:title="@string/job_title"
-            app:useSimpleSummaryProvider="true" />
+            app:useSimpleSummaryProvider="true"
+            app:dependency="sync"/>
 
     </PreferenceCategory>
 
