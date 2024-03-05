@@ -2,7 +2,6 @@ package com.kronos.parcel.tracking.ui.home
 
 import android.content.Context
 import android.hardware.Camera
-import android.os.Bundle
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -33,7 +32,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Hashtable
 import javax.inject.Inject
 
 @HiltViewModel
@@ -292,7 +293,7 @@ class HomeViewModel @Inject constructor(
                     sender: Observable?,
                     propertyId: Int
                 ) {
-                    if (trackingNumber.get()?.orEmpty()?.isNotEmpty() == true){
+                    if (trackingNumber.get().orEmpty().isNotEmpty()){
                         trackingNumberError.set(null)
                     }
                 }
@@ -305,7 +306,7 @@ class HomeViewModel @Inject constructor(
                     sender: Observable?,
                     propertyId: Int
                 ) {
-                    if (name.get()?.orEmpty()?.isNotEmpty() == true){
+                    if (name.get().orEmpty().isNotEmpty()){
                         nameError.set(null)
                     }
                 }

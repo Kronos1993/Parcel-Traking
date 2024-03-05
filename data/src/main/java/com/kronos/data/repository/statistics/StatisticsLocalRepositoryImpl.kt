@@ -8,8 +8,8 @@ import javax.inject.Inject
 class StatisticsLocalRepositoryImpl @Inject constructor(
     private val statisticsLocalDataSource: StatisticsLocalDataSource
 ) : StatisticsLocalRepository {
-    override suspend fun saveStatistics(staistics:StatisticsModel) {
-        statisticsLocalDataSource.saveStatistics(staistics)
+    override suspend fun saveStatistics(statisticsModel:StatisticsModel) {
+        statisticsLocalDataSource.saveStatistics(statisticsModel)
     }
 
     override suspend fun delete() {

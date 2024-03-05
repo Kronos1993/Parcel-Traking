@@ -71,9 +71,8 @@ class ParcelTrackingApplication:Application(){
     private fun scheduleJob(context: Context, periodic: Long) {
 
         val componentName = ComponentName(context, ParcelTrackingNotificationJob::class.java)
-        var jobInfo: JobInfo? = null
 
-        jobInfo = JobInfo.Builder(notificationJobId, componentName)
+        val jobInfo: JobInfo? = JobInfo.Builder(notificationJobId, componentName)
             .setPersisted(true)
             .setPeriodic(periodic)
             .build()

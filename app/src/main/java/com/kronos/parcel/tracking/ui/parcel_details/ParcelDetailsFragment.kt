@@ -111,7 +111,7 @@ class ParcelDetailsFragment : Fragment() {
 
     private fun handleEventList(list: List<EventModel>) {
         viewModel.eventAdapter.get()?.submitList(list)
-        viewModel.eventAdapter.get()?.notifyDataSetChanged()
+        viewModel.eventAdapter.get()?.notifyItemRangeChanged(0,list.size)
     }
 
     private fun initViews() {
