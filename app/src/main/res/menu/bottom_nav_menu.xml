@@ -13,8 +13,8 @@
 
     <item
         android:id="@+id/navigation_user"
-        android:icon="@drawable/ic_user"
-        android:title="@string/title_user" />
+        android:icon="@drawable/ic_line_chart"
+        android:title="@string/title_statistics" />
 
     <item
         android:id="@+id/navigation_notifications"

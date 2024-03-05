@@ -1,7 +1,6 @@
 package com.kronos.parcel.tracking.ui.user
 
 import android.content.Context
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kronos.core.extensions.asLiveData
@@ -17,11 +16,9 @@ import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.ui.user.state.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.util.*
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,7 +42,7 @@ class UserViewModel @Inject constructor(
     private val _statistics = MutableLiveData<StatisticsModel>()
     val statistics = _statistics.asLiveData()
 
-    fun setState(state: MainState) {
+    private fun setState(state: MainState) {
         _state.value = state
     }
 
@@ -53,9 +50,9 @@ class UserViewModel @Inject constructor(
         _state.postValue(state)
     }
 
-    fun getBoxUser(username: String, password: String) {
+    /*fun getBoxUser(username: String, password: String) {
         saveUser(UserModel("Marcos Octavio","Guerra Liso","+50760351870","mg@gmail.com","1970 82nd Ave, Doral, Miami, Florida"))
-    }
+    }*/
 
     fun saveUser(user: UserModel) {
         setState(UserState.Loading(true))
@@ -80,13 +77,13 @@ class UserViewModel @Inject constructor(
     }
 
     fun getUserLocal() {
-        userLogged.value = View.GONE
-        userNotLogged.value = View.VISIBLE
+        //userLogged.value = View.GONE
+        //userNotLogged.value = View.VISIBLE
         setState(UserState.Loading(true))
         viewModelScope.launch {
-            var user = userLocalRepository.getUser()
+            val user = userLocalRepository.getUser()
             setState(UserState.Loading(false))
-            if (user!=null && user.name.isNotEmpty()){
+            if (user.name.isNotEmpty()){
                 _user.value = user
                 getStatisticsLocal()
                 logger.write(this::class.java.name,LoggerType.INFO,"User ${user.name} loaded")
@@ -102,9 +99,9 @@ class UserViewModel @Inject constructor(
         setState(UserState.Loading(true))
         var stats = StatisticsModel()
         viewModelScope.launch{
-            var call = async {
+            val call = async {
                 stats = statisticsLocalRepository.get()
-                var calendar = Calendar.getInstance()
+                val calendar = Calendar.getInstance()
                 calendar.set(Calendar.DAY_OF_MONTH, 1)
                 calendar.set(Calendar.HOUR_OF_DAY, 0)
                 calendar.set(Calendar.MINUTE, 0)

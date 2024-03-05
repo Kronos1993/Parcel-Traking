@@ -21,7 +21,7 @@
         <include
             android:id="@+id/user_not_logged"
             layout="@layout/fragment_user_not_user"
-            android:visibility="@{viewModel.userNotLogged}"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
         <include
             android:id="@+id/user_logged"
             layout="@layout/fragment_user_data"
-            android:visibility="@{viewModel.userLogged}"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

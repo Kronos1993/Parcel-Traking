@@ -2,20 +2,18 @@ package com.kronos.parcel.tracking.ui.user
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.util.LoadingDialog
-import com.kronos.core.util.copyText
 import com.kronos.core.util.show
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentUserBinding
 import com.kronos.parcel.tracking.ui.user.state.UserState
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.util.Hashtable
 
 @AndroidEntryPoint
 class UserFragment : Fragment() {
@@ -51,7 +49,7 @@ class UserFragment : Fragment() {
             is UserState.Error -> {
                 handleError(state.error)
             }
-            is UserState.UserLogged -> {
+           /* is UserState.UserLogged -> {
                 viewModel.user.value.let {
                     viewModel.userLogged.value = View.VISIBLE
                     viewModel.userNotLogged.value = View.GONE
@@ -60,7 +58,7 @@ class UserFragment : Fragment() {
             is UserState.UserNotLogged -> {
                 viewModel.userLogged.value = View.GONE
                 viewModel.userNotLogged.value = View.VISIBLE
-            }
+            }*/
         }
     }
 
@@ -105,7 +103,7 @@ class UserFragment : Fragment() {
         binding.userLogged.lifecycleOwner = this@UserFragment.viewLifecycleOwner
         binding.userNotLogged.viewModel = viewModel
         binding.userNotLogged.lifecycleOwner = this@UserFragment.viewLifecycleOwner
-        binding.userNotLogged.buttonLogin.setOnClickListener {
+        /*binding.userNotLogged.buttonLogin.setOnClickListener {
             viewModel.getBoxUser("", "")
         }
 
@@ -115,7 +113,7 @@ class UserFragment : Fragment() {
 
         binding.userLogged.imageCopy.setOnClickListener {
             copyText(requireContext(), binding.userLogged.textViewUserAddress.text.toString())
-        }
+        }*/
     }
 
     private fun initViewModel() {

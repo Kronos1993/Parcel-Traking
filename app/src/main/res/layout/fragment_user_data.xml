@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -16,7 +15,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -25,6 +24,7 @@
                 android:layout_height="@dimen/margin_24"
                 android:layout_margin="@dimen/margin_12"
                 android:src="@drawable/ic_logout"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/icon_color" />
@@ -43,6 +43,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/textViewUserName"
                 style="@style/Widget.TextView.TextViewNormal"
+                android:visibility="gone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@{viewModel.user.name + ' ' + viewModel.user.lastname}"
@@ -55,6 +56,7 @@
                 android:id="@+id/cardViewUserData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_margin="@dimen/margin_10"
                 app:cardBackgroundColor="@color/backgroundCardColor"
                 app:cardCornerRadius="@dimen/card_radius"
@@ -138,7 +140,7 @@
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Statistics"
+                        android:text="@string/statistics"
                         android:textAlignment="center"
                         style="@style/Widget.TextView.TextViewNormal"
                         android:textAllCaps="true"
@@ -160,7 +162,7 @@
                         style="@style/Widget.TextView.TextViewNormal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Added: "
+                        android:text="@string/parcel_added"
                         android:textAlignment="textEnd"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
@@ -183,7 +185,7 @@
                         style="@style/Widget.TextView.TextViewNormal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Added Last Month: "
+                        android:text="@string/parcel_added_last_month"
                         android:textAlignment="textEnd"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
@@ -206,7 +208,7 @@
                         style="@style/Widget.TextView.TextViewNormal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Archived: "
+                        android:text="@string/parcel_archived"
                         android:textAlignment="textEnd"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
@@ -229,7 +231,7 @@
                         style="@style/Widget.TextView.TextViewNormal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="In Transit: "
+                        android:text="@string/parcel_in_transit"
                         android:textAlignment="textEnd"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
@@ -252,7 +254,7 @@
                         style="@style/Widget.TextView.TextViewNormal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Received: "
+                        android:text="@string/parcel_received"
                         android:textAlignment="textEnd"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
