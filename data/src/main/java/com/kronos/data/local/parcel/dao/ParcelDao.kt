@@ -23,6 +23,9 @@ interface ParcelDao {
     @Query("SELECT * FROM PARCEL WHERE STATUS like '%tránsito%' OR STATUS like '%Aduanas%' OR STATUS like '%Bodega%'")
     suspend fun listAllParcelInTransit(): List<ParcelEntity>
 
+    @Query("SELECT * FROM PARCEL WHERE STATUS like '%entregado al cliente%' AND HISTORY != 1")
+    suspend fun listAllParcelReceived(): List<ParcelEntity>
+
     @Query("SELECT * FROM PARCEL WHERE DATE_ADDED >= :after")
     suspend fun listParcelAddedAfter(after:Long): List<ParcelEntity>
     

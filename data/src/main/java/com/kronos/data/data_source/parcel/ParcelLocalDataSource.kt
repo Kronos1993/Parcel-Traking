@@ -11,6 +11,6 @@ interface ParcelLocalDataSource {
     suspend fun listParcelAddedAfter(after:Long): List<ParcelModel>
     suspend fun listAll(): List<ParcelModel>
     suspend fun listAllParcelInTransit(): List<ParcelModel>
-
+    suspend fun listAllParcelReceived(): List<ParcelModel>
 
 }

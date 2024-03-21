@@ -124,4 +124,20 @@ class ParcelLocalDatasourceImpl @Inject constructor(
         return result
     }
 
+    override suspend fun listAllParcelReceived(): List<ParcelModel> {
+        var result = listOf<ParcelModel>()
+
+        try {
+            val internalDb = databaseFactory.loadLocalDatabase() as ApplicationDatabase
+            result = internalDb.parcelDao().listAllParcelReceived().map {
+                it.toDomain()
+            }
+
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+
+        return result
+    }
+
 }

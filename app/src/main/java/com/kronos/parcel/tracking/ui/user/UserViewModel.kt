@@ -108,6 +108,7 @@ class UserViewModel @Inject constructor(
                 stats.addedLastMonth = parcelLocalRepository.listParcelAddedAfter(calendar.timeInMillis).size
                 stats.archived = parcelLocalRepository.listAllParcelHistory().size
                 stats.inTransit = parcelLocalRepository.listAllParcelInTransit().size
+                stats.received = parcelLocalRepository.listAllParcelReceived().size
             }
             call.await()
             _statistics.value = stats
