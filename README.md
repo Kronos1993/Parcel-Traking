@@ -1,6 +1,6 @@
-# Parcel Tracking App (ZipCargo Tracker)
+<img alt="App Logo" height="96" src="delivery.png" width="96"/>
 
-![ZipCargo Tracker Logo](delivery.png)
+# Parcel Tracking App (ZipCargo Tracker)
 
 The Parcel Tracking App (ZipCargo Tracker) is an Android application that allows users to track their packages once they arrive at the ZipCargo box in Miami. The app follows the Clean Architecture principles and utilizes MVVM design pattern for a modular, maintainable, and testable codebase. It uses Retrofit for API communication, Dependency Injection for managing dependencies, and consists of several modules: app, data, core, resources, logger, and domain.
 
