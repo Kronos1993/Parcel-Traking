@@ -111,6 +111,7 @@ class ParcelDetailsViewModel @Inject constructor(
             parcel.value?.dateUpdated = Calendar.getInstance().timeInMillis
             val call = async {
                 parcelLocalRepository.saveParcel(parcel.value!!)
+                updateEvents()
                 eventLocalRepository.saveEvent(
                     EventModel(
                         0,
@@ -157,7 +158,7 @@ class ParcelDetailsViewModel @Inject constructor(
                     sender: Observable?,
                     propertyId: Int
                 ) {
-                    if (trackingNumber.get()?.orEmpty()?.isNotEmpty() == true){
+                    if (trackingNumber.get().orEmpty().isNotEmpty()){
                         trackingNumberError.set(null)
                     }
                 }
@@ -182,7 +183,7 @@ class ParcelDetailsViewModel @Inject constructor(
         val options = ScanOptions()
         options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES)
         options.setPrompt(context.getString(R.string.tracking_number_barcode_scan))
-        options.setOrientationLocked(false);
+        options.setOrientationLocked(false)
         options.setCameraId(Camera.CameraInfo.CAMERA_FACING_BACK) // Use a specific camera of the device
         options.setBeepEnabled(false)
         options.setBarcodeImageEnabled(true)

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,19 +15,16 @@ import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.notification.INotifications
-import com.kronos.core.notification.NotificationGroup
-import com.kronos.core.notification.NotificationType
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.show
 import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentHomeBinding
-import com.kronos.parcel.tracking.notification.ParcelTrackingNotifications
 import com.kronos.parcel.tracking.ui.home.state.HomeState
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.Hashtable
 import javax.inject.Inject
 
 const val CURRENT_PARCEL = "current_parcel"
@@ -41,7 +37,7 @@ class HomeFragment : Fragment() {
     private val viewModel by activityViewModels<HomeViewModel>()
 
     @Inject
-    lateinit var notificationManager : INotifications
+    lateinit var notificationManager: INotifications
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +62,11 @@ class HomeFragment : Fragment() {
         viewModel.observeTextChange()
 
         binding.homeRefreshLayout.setOnRefreshListener {
-            viewModel.refreshParcels()
+            if (viewModel.state.value == HomeState.Idle) {
+                viewModel.refreshParcels()
+            } else {
+                binding.homeRefreshLayout.isRefreshing = false
+            }
         }
 
         binding.fabAddNewParcel.setOnClickListener {
@@ -85,12 +85,15 @@ class HomeFragment : Fragment() {
             is HomeState.Loading -> {
                 handleLoading(homeState.loading)
             }
+
             is HomeState.Refreshing -> {
                 binding.homeRefreshLayout.isRefreshing = homeState.loading
             }
+
             is HomeState.Search -> {
                 viewModel.getParcels()
             }
+
             is HomeState.Error -> {
                 handleError(homeState.error)
             }
@@ -135,14 +138,14 @@ class HomeFragment : Fragment() {
 
     private fun handleParcelList(list: List<ParcelModel>) {
         viewModel.parcelAdapter.get()?.submitList(list)
-        viewModel.parcelAdapter.get()?.notifyItemChanged(0,list.size)
+        viewModel.parcelAdapter.get()?.notifyItemChanged(0, list.size)
     }
 
     private fun initViews() {
         binding.homeRefreshLayout.isRefreshing = false
         binding.recyclerViewCurrentParcels.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCurrentParcels.setHasFixedSize(false)
-        if (viewModel.parcelAdapter.get()==null)
+        if (viewModel.parcelAdapter.get() == null)
             viewModel.parcelAdapter = WeakReference(ParcelAdapter())
         binding.recyclerViewCurrentParcels.adapter = viewModel.parcelAdapter.get()
         viewModel.parcelAdapter.get()?.setUrlProvider(viewModel.urlProvider)
@@ -173,7 +176,7 @@ class HomeFragment : Fragment() {
                     viewModel.toHistory(
                         viewModel.parcelAdapter.get()!!.getItemAt(viewHolder.adapterPosition)
                     )
-                }else{
+                } else {
                     viewModel.parcelAdapter.get()?.notifyItemChanged(viewHolder.adapterPosition)
                 }
             }
@@ -207,6 +210,7 @@ class HomeFragment : Fragment() {
         )
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewCurrentParcels)
     }
+
     private fun initViewModel() {
         viewModel.getParcels()
     }

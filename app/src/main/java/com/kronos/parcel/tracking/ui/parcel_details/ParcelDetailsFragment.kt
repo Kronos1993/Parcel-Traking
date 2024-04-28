@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
@@ -26,10 +25,8 @@ import com.kronos.parcel.tracking.ui.home.CURRENT_PARCEL
 import com.kronos.parcel.tracking.ui.notifications.EventAdapter
 import com.kronos.parcel.tracking.ui.parcel_details.state.ParcelDetailState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.Hashtable
 
 @AndroidEntryPoint
 class ParcelDetailsFragment : Fragment() {
@@ -52,7 +49,6 @@ class ParcelDetailsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.parcel.observe(this.viewLifecycleOwner, ::handleParcel)
         viewModel.eventList.observe(this.viewLifecycleOwner, ::handleEventList)
         viewModel.loading.observe(this.viewLifecycleOwner, ::handleLoading)
         viewModel.state.observe(this.viewLifecycleOwner, ::handleState)
@@ -104,9 +100,6 @@ class ParcelDetailsFragment : Fragment() {
                 com.kronos.resources.R.color.colorSecondaryVariant
             )!!.dismiss()
         }
-    }
-
-    private fun handleParcel(parcel: ParcelModel) {
     }
 
     private fun handleEventList(list: List<EventModel>) {

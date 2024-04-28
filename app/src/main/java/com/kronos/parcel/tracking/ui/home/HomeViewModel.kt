@@ -208,6 +208,7 @@ class HomeViewModel @Inject constructor(
                     refreshParcel(list,0,it.size)
                 } else {
                     postState(HomeState.Refreshing(false))
+                    postState(HomeState.Idle)
                 }
             }
             postState(HomeState.Refreshing(false))
@@ -318,7 +319,7 @@ class HomeViewModel @Inject constructor(
         val options = ScanOptions()
         options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES)
         options.setPrompt(context.getString(R.string.tracking_number_barcode_scan))
-        options.setOrientationLocked(false);
+        options.setOrientationLocked(false)
         options.setCameraId(Camera.CameraInfo.CAMERA_FACING_BACK) // Use a specific camera of the device
         options.setBeepEnabled(false)
         options.setBarcodeImageEnabled(true)
