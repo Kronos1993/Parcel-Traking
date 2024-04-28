@@ -40,9 +40,9 @@
                     android:indeterminate="true"
                     style="@style/Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall"
                     app:handle_visibility="@{parcelModel.loading}"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewParcelTrackingNumber"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewParcelName"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textViewParcelTrackingNumber" />
+                    app:layout_constraintTop_toTopOf="@+id/textViewParcelName" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline8v"
@@ -65,7 +65,7 @@
                     android:contentDescription="@string/content_status_image_description" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/textViewParcelTrackingNumber"
+                    android:id="@+id/textViewParcelName"
                     style="@style/Widget.TextView.TextViewSubHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -78,18 +78,18 @@
                     app:layout_constraintTop_toTopOf="@+id/imageStatus" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/textViewParcelName"
+                    android:id="@+id/textViewParcelTrackingNumber"
                     style="@style/Widget.TextView.TextViewSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{parcelModel.trackingNumber}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline8v"
-                    app:layout_constraintTop_toBottomOf="@id/textViewParcelTrackingNumber" />
+                    app:layout_constraintTop_toBottomOf="@id/textViewParcelName" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewParcelStatus"
-                    style="@style/Widget.TextView.TextViewNormal"
+                    style="@style/Widget.TextView.TextViewSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{parcelModel.status}"
@@ -99,7 +99,7 @@
                     app:layout_constraintBottom_toTopOf="@id/guideline8H"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline8v"
-                    app:layout_constraintTop_toBottomOf="@id/textViewParcelName" />
+                    app:layout_constraintTop_toBottomOf="@id/textViewParcelTrackingNumber" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/guideline8H"
