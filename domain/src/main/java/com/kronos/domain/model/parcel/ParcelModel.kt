@@ -16,4 +16,5 @@ data class ParcelModel(
     var statusDate: String = "",
     val fail: String = "",
     var loading: Boolean = false,
+    var price: Double = 0.0
 ):Serializable

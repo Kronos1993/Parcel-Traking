@@ -11,10 +11,11 @@ internal fun ParcelEntity.toDomain(): ParcelModel =
         notes = notes,
         status = status.orEmpty(),
         imageUrl = imageUrl.orEmpty(),
-        name = name.orEmpty(),
+        name = name,
         history = history,
         dateAdded = dateAdded,
-        dateUpdated = dateUpdated
+        dateUpdated = dateUpdated,
+        price = price?:0.0
     )
 
 internal fun ParcelModel.toEntity(): ParcelEntity =
@@ -22,11 +23,12 @@ internal fun ParcelModel.toEntity(): ParcelEntity =
         id = id,
         trackingNumber = trackingNumber,
         notes = notes,
-        status = status.orEmpty(),
-        imageUrl = imageUrl.orEmpty(),
-        name = name.orEmpty(),
+        status = status,
+        imageUrl = imageUrl,
+        name = name,
         history = history,
         dateAdded = dateAdded,
-        dateUpdated = dateUpdated
+        dateUpdated = dateUpdated,
+        price = price
     )
 

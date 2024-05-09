@@ -22,5 +22,6 @@ data class ParcelEntity(
     @ColumnInfo(name = "DATE_UPDATED") val dateUpdated: Long,
     @ColumnInfo(name = "STATUS") val status: String? = null,
     @ColumnInfo(name = "IMAGE_URL") val imageUrl: String? = null,
+    @ColumnInfo(name = "PRICE") val price: Double? = null,
 )
 

@@ -124,6 +124,31 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutParcelPrice"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/parcel_price_label"
+                    app:error_text="@{viewModel.priceError}"
+                    android:textColorHint="@color/hintColor"
+                    app:errorTextAppearance="@color/alertColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayoutParcelName">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextParcelPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_money_symbol"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:imeOptions="actionNext"
+                        android:text="@={viewModel.price}"
+                        android:inputType="numberDecimal" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayoutParcelNotes"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
@@ -132,7 +157,7 @@
                     android:textColorHint="@color/hintColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayoutParcelName">
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayoutParcelPrice">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextNotes"

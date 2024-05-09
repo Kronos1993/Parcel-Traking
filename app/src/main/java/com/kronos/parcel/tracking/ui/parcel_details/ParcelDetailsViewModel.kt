@@ -57,6 +57,8 @@ class ParcelDetailsViewModel @Inject constructor(
     var trackingNumberError = ObservableField<String?>()
     var name = ObservableField<String?>()
     var nameError = ObservableField<String?>()
+    var price = ObservableField<String?>()
+    var priceError = ObservableField<String?>()
     var notes = ObservableField<String?>()
 
     fun validateField() : Boolean{
@@ -87,6 +89,7 @@ class ParcelDetailsViewModel @Inject constructor(
         trackingNumber.set(parcel.trackingNumber)
         name.set(parcel.name)
         notes.set(parcel.notes)
+        price.set(parcel.price.toString())
     }
 
 
@@ -109,6 +112,7 @@ class ParcelDetailsViewModel @Inject constructor(
             parcel.value?.name = name.get().orEmpty()
             parcel.value?.notes = notes.get().orEmpty()
             parcel.value?.dateUpdated = Calendar.getInstance().timeInMillis
+            parcel.value?.price = price.get()?.toDouble()?:0.0
             val call = async {
                 parcelLocalRepository.saveParcel(parcel.value!!)
                 updateEvents()

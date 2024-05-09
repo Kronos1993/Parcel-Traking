@@ -27,6 +27,7 @@
     <string name="tracking_number_barcode_scan">Scan tracking number barcode</string>
     <string name="tracking_name">Name</string>
     <string name="tracking_number">Tracking Number</string>
+    <string name="parcel_price_label">Price</string>
     <string name="notes">Notes</string>
     <string name="parcel_added_event">Parcel %1$s added</string>
     <string name="parcel_added_event_details">Parcel %1$s was added on %2$s</string>
