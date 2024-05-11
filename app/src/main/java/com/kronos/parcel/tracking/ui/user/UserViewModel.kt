@@ -18,6 +18,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -50,9 +51,9 @@ class UserViewModel @Inject constructor(
         _state.postValue(state)
     }
 
-    /*fun getBoxUser(username: String, password: String) {
+    fun getBoxUser(username: String, password: String) {
         saveUser(UserModel("Marcos Octavio","Guerra Liso","+50760351870","mg@gmail.com","1970 82nd Ave, Doral, Miami, Florida"))
-    }*/
+    }
 
     fun saveUser(user: UserModel) {
         setState(UserState.Loading(true))
@@ -90,7 +91,7 @@ class UserViewModel @Inject constructor(
                 setState(UserState.UserLogged)
             }
             else {
-                setState(UserState.UserNotLogged)
+                getBoxUser("","")
             }
         }
     }
@@ -105,10 +106,27 @@ class UserViewModel @Inject constructor(
                 calendar.set(Calendar.DAY_OF_MONTH, 1)
                 calendar.set(Calendar.HOUR_OF_DAY, 0)
                 calendar.set(Calendar.MINUTE, 0)
-                stats.addedLastMonth = parcelLocalRepository.listParcelAddedAfter(calendar.timeInMillis).size
+
+                val allItems = parcelLocalRepository.listAllParcelReceived()
+                val itemLastMonth = parcelLocalRepository.listParcelAddedAfter(calendar.timeInMillis)
+
+                stats.addedLastMonth = itemLastMonth.size
                 stats.archived = parcelLocalRepository.listAllParcelHistory().size
                 stats.inTransit = parcelLocalRepository.listAllParcelInTransit().size
-                stats.received = parcelLocalRepository.listAllParcelReceived().size
+                stats.received = allItems.size
+
+                var countAll = 0.0
+                allItems.forEach {
+                    countAll+=it.price
+                }
+                var countLastMonth = 0.0
+                itemLastMonth.forEach {
+                    countLastMonth+=it.price
+                }
+                val formatter = DecimalFormat("#.##")
+                stats.moneyExpended = formatter.format(countAll).toDouble()
+                stats.moneyExpendedLastMonth = formatter.format(countLastMonth).toDouble()
+
             }
             call.await()
             _statistics.value = stats

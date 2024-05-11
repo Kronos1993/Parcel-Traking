@@ -1,7 +1,6 @@
 package com.kronos.domain.model.statistics
 
 import java.io.Serializable
-import java.util.*
 
 data class StatisticsModel(
     var id: Int = 0,
@@ -10,4 +9,6 @@ data class StatisticsModel(
     var archived: Int = 0,
     var inTransit: Int = 0,
     var received: Int = 0,
+    var moneyExpended: Double = 0.0,
+    var moneyExpendedLastMonth: Double = 0.0,
 ):Serializable

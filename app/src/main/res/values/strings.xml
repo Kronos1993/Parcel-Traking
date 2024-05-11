@@ -54,7 +54,9 @@
     <string name="delete_dialog_yes">Yes</string>
     <string name="delete_dialog_no">No</string>
     <string name="parcel_added">Added:</string>
+    <string name="parcel_money_expended">Expended:</string>
     <string name="parcel_added_last_month">Added Last Month:</string>
+    <string name="parcel_money_expended_last_month">Expended Last Month:</string>
     <string name="parcel_archived">Archived:</string>
     <string name="parcel_in_transit">In Transit:</string>
     <string name="parcel_received">Received:</string>

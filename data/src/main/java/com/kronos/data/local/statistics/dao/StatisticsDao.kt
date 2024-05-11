@@ -15,7 +15,7 @@ interface StatisticsDao {
     suspend fun get(column: String): Int
 
     @Query("SELECT * FROM STATISTIC")
-    suspend fun get(): StatisticsEntity
+    suspend fun get(): StatisticsEntity?
 
     @Query("DELETE FROM STATISTIC")
     suspend fun delete()

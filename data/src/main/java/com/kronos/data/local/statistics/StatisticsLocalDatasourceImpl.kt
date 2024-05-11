@@ -42,7 +42,9 @@ class StatisticsLocalDatasourceImpl @Inject constructor(
 
         try {
             val internalDb = databaseFactory.loadLocalDatabase() as ApplicationDatabase
-            result = internalDb.statisticsDao().get().toDomain()
+            val statistic = internalDb.statisticsDao().get()
+            if (statistic!=null)
+                result = statistic.toDomain()
 
         } catch (ex: Exception) {
             ex.printStackTrace()

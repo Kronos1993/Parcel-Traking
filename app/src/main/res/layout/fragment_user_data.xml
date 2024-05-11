@@ -181,6 +181,29 @@
                         app:layout_constraintTop_toTopOf="@+id/textViewParcelAdded" />
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewMoneyExpended"
+                        style="@style/Widget.TextView.TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/parcel_money_expended"
+                        android:textAlignment="textEnd"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewParcelAdded" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewMoneyExpendedValue"
+                        style="@style/Widget.TextView.TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(viewModel.statistics.moneyExpended)}"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewMoneyExpended"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toTopOf="@+id/textViewMoneyExpended" />
+
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/textViewParcelLastMonth"
                         style="@style/Widget.TextView.TextViewNormal"
                         android:layout_width="0dp"
@@ -189,7 +212,7 @@
                         android:textAlignment="textEnd"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewParcelAdded" />
+                        app:layout_constraintTop_toBottomOf="@+id/textViewMoneyExpended" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/textViewParcelLastMonthValue"
@@ -204,6 +227,30 @@
                         app:layout_constraintTop_toTopOf="@+id/textViewParcelLastMonth" />
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewMoneyExpendedLastMonth"
+                        style="@style/Widget.TextView.TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/parcel_money_expended_last_month"
+                        android:textAlignment="textEnd"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewParcelLastMonth" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewMoneyExpendedLastMonthValue"
+                        style="@style/Widget.TextView.TextViewNormal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(viewModel.statistics.moneyExpendedLastMonth)}"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewMoneyExpendedLastMonth"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toTopOf="@+id/textViewMoneyExpendedLastMonth" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/textViewParcelArchived"
                         style="@style/Widget.TextView.TextViewNormal"
                         android:layout_width="0dp"
@@ -212,7 +259,7 @@
                         android:textAlignment="textEnd"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewParcelLastMonth" />
+                        app:layout_constraintTop_toBottomOf="@+id/textViewMoneyExpendedLastMonth" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/textViewParcelArchivedValue"
