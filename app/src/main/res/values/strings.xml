@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyParcel Traking</string>
+    <string name="app_name">Parcel Traking</string>
     <string name="title_parcel_shipped">My parcels</string>
     <string name="title_history">History</string>
     <string name="title_notifications">Notifications</string>
