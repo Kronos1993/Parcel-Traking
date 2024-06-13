@@ -220,7 +220,6 @@ class HomeViewModel @Inject constructor(
             val parcel = parcels[current]
             viewModelScope.launch(Dispatchers.IO) {
                 lateinit var parcelUpdate: ParcelModel
-                val oldState = parcel.status
                 val call = async {
                     parcelUpdate = parcelRemoteRepository.searchParcel(parcel.trackingNumber)
                     if (parcelUpdate.status != "not found" && parcel.status != parcelUpdate.status) {
@@ -234,7 +233,7 @@ class HomeViewModel @Inject constructor(
                             com.kronos.resources.R.drawable.ic_notifications,
                             context
                         )
-                        logParcelStatusUpdated(parcel, oldState, parcelUpdate.status)
+                        logParcelStatusUpdated(parcel, parcel.status, parcelUpdate.status)
                         parcel.status = parcelUpdate.status
                         if (parcelUpdate.status.contains("Entregado")) {
                             increaseReceivedStatistics()

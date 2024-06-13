@@ -107,13 +107,14 @@ class UserViewModel @Inject constructor(
                 calendar.set(Calendar.HOUR_OF_DAY, 0)
                 calendar.set(Calendar.MINUTE, 0)
 
-                val allItems = parcelLocalRepository.listAllParcelReceived()
+                val allItems = parcelLocalRepository.listAll()
+                val allReceivedItems = parcelLocalRepository.listAllParcelReceived()
                 val itemLastMonth = parcelLocalRepository.listParcelAddedAfter(calendar.timeInMillis)
 
                 stats.addedLastMonth = itemLastMonth.size
                 stats.archived = parcelLocalRepository.listAllParcelHistory().size
                 stats.inTransit = parcelLocalRepository.listAllParcelInTransit().size
-                stats.received = allItems.size
+                stats.received = allReceivedItems.size
 
                 var countAll = 0.0
                 allItems.forEach {
