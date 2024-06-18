@@ -4,14 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.diff.GeneralDiffCallback
 import com.kronos.core.util.copyText
 import com.kronos.data.remote.retrofit.UrlProvider
-import com.kronos.parcel.tracking.databinding.ItemParcelBinding
 import com.kronos.domain.model.parcel.ParcelModel
-import com.kronos.parcel.tracking.R
+import com.kronos.parcel.tracking.databinding.ItemParcelBinding
 
 class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(GeneralDiffCallback<ParcelModel>()) {
 
@@ -34,20 +32,20 @@ class ParcelAdapter : ListAdapter<ParcelModel, ParcelAdapter.ParcelViewHolder>(G
     override fun onBindViewHolder(holder: ParcelViewHolder, position: Int) {
         val currentParcel = getItem(position)
         holder.bind(currentParcel)
-        holder.binding.textViewParcelTrackingNumber.setOnLongClickListener {
-            copyText(holder.binding.textViewParcelTrackingNumber.context,holder.binding.textViewParcelTrackingNumber.text.toString())
-            true
-        }
     }
 
     fun getItemAt(adapterPosition: Int): ParcelModel = getItem(adapterPosition)
 
-    class ParcelViewHolder(var binding:ItemParcelBinding, var clickListener:AdapterItemClickListener<ParcelModel>?) : RecyclerView.ViewHolder(binding.root) {
+    class ParcelViewHolder(var binding:ItemParcelBinding, private var clickListener:AdapterItemClickListener<ParcelModel>?) : RecyclerView.ViewHolder(binding.root) {
         fun bind(parcel: ParcelModel){
             binding.run {
                 parcelModel = parcel
                 root.setOnClickListener {
                     clickListener?.onItemClick(parcel,adapterPosition)
+                }
+                root.setOnLongClickListener {
+                    copyText(binding.textViewParcelTrackingNumber.context,binding.textViewParcelTrackingNumber.text.toString())
+                    true
                 }
             }
         }
