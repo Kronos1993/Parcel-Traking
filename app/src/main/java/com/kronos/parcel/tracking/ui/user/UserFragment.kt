@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.kronos.core.extensions.binding.fragmentBinding
-import com.kronos.core.util.LoadingDialog
+import com.kronos.core.util.getProgressDialog
 import com.kronos.core.util.show
 import com.kronos.parcel.tracking.MainState
 import com.kronos.parcel.tracking.R
@@ -21,6 +22,7 @@ class UserFragment : Fragment() {
     private val binding by fragmentBinding<FragmentUserBinding>(R.layout.fragment_user)
 
     private val viewModel by viewModels<UserViewModel>()
+    private var progressDialog: SweetAlertDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,10 +31,19 @@ class UserFragment : Fragment() {
     ) = binding.run {
         viewModel = this@UserFragment.viewModel
         lifecycleOwner = this@UserFragment.viewLifecycleOwner
+        progressDialog = getProgressDialog(
+            requireContext(),
+            com.kronos.resources.R.string.loading_dialog_text,
+            com.kronos.resources.R.color.colorPrimary
+        )
+        root
+    }
+
+    override fun onStart() {
+        super.onStart()
         observeViewModel()
         initViews()
         initViewModel()
-        root
     }
 
     private fun observeViewModel() {
@@ -84,17 +95,9 @@ class UserFragment : Fragment() {
 
     private fun handleLoading(b: Boolean) {
         if (b) {
-            LoadingDialog.getProgressDialog(
-                requireContext(),
-                R.string.loading_dialog_text,
-                com.kronos.resources.R.color.colorSecondaryVariant
-            )!!.show()
+            progressDialog?.show()
         } else {
-            LoadingDialog.getProgressDialog(
-                requireContext(),
-                R.string.loading_dialog_text,
-                com.kronos.resources.R.color.colorSecondaryVariant
-            )!!.dismiss()
+            progressDialog?.dismiss()
         }
     }
 

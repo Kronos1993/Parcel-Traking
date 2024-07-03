@@ -11,11 +11,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.notification.INotifications
-import com.kronos.core.util.LoadingDialog
+import com.kronos.core.util.getProgressDialog
 import com.kronos.core.util.show
 import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.parcel.tracking.MainState
@@ -35,6 +36,7 @@ class HomeFragment : Fragment() {
     private val binding by fragmentBinding<FragmentHomeBinding>(R.layout.fragment_home)
 
     private val viewModel by activityViewModels<HomeViewModel>()
+    private var progressDialog: SweetAlertDialog? = null
 
     @Inject
     lateinit var notificationManager: INotifications
@@ -46,6 +48,11 @@ class HomeFragment : Fragment() {
     ) = binding.run {
         viewModel = this@HomeFragment.viewModel
         lifecycleOwner = this@HomeFragment.viewLifecycleOwner
+        progressDialog = getProgressDialog(
+            requireContext(),
+            com.kronos.resources.R.string.loading_dialog_text,
+            com.kronos.resources.R.color.colorPrimary
+        )
         root
     }
 
@@ -122,17 +129,9 @@ class HomeFragment : Fragment() {
 
     private fun handleLoading(b: Boolean) {
         if (b) {
-            LoadingDialog.getProgressDialog(
-                requireContext(),
-                R.string.loading_dialog_text,
-                com.kronos.resources.R.color.colorSecondaryVariant
-            )!!.show()
+            progressDialog?.show()
         } else {
-            LoadingDialog.getProgressDialog(
-                requireContext(),
-                R.string.loading_dialog_text,
-                com.kronos.resources.R.color.colorSecondaryVariant
-            )!!.dismiss()
+            progressDialog?.dismiss()
         }
     }
 

@@ -21,7 +21,6 @@
     <string name="permission_dialog_title">Permissions required</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="loading_dialog_text">Loading</string>
     <string name="add">Add</string>
     <string name="barcode_scan">Scan Code</string>
     <string name="tracking_number_barcode_scan">Scan tracking number barcode</string>

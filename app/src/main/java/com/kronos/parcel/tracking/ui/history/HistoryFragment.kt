@@ -17,7 +17,7 @@ import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.util.ActionDialog
-import com.kronos.core.util.LoadingDialog
+import com.kronos.core.util.getProgressDialog
 import com.kronos.core.util.show
 import com.kronos.domain.model.parcel.ParcelModel
 import com.kronos.parcel.tracking.MainState
@@ -28,7 +28,7 @@ import com.kronos.parcel.tracking.ui.home.CURRENT_PARCEL
 import com.kronos.parcel.tracking.ui.home.ParcelAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.Hashtable
 
 @AndroidEntryPoint
 class HistoryFragment : Fragment() {
@@ -36,7 +36,8 @@ class HistoryFragment : Fragment() {
     private val binding by fragmentBinding<FragmentHistoryBinding>(R.layout.fragment_history)
 
     private val viewModel by activityViewModels<HistoryViewModel>()
-
+    private var progressDialog: SweetAlertDialog? = null
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,6 +45,11 @@ class HistoryFragment : Fragment() {
     ) = binding.run {
         viewModel = this@HistoryFragment.viewModel
         lifecycleOwner = this@HistoryFragment.viewLifecycleOwner
+        progressDialog = getProgressDialog(
+            requireContext(),
+            com.kronos.resources.R.string.loading_dialog_text,
+            com.kronos.resources.R.color.colorPrimary
+        )
         root
     }
 
@@ -94,17 +100,9 @@ class HistoryFragment : Fragment() {
 
     private fun handleLoading(b: Boolean) {
         if (b) {
-            LoadingDialog.getProgressDialog(
-                requireContext(),
-                R.string.loading_dialog_text,
-                com.kronos.resources.R.color.colorSecondaryVariant
-            )!!.show()
+            progressDialog?.show()
         } else {
-            LoadingDialog.getProgressDialog(
-                requireContext(),
-                R.string.loading_dialog_text,
-                com.kronos.resources.R.color.colorSecondaryVariant
-            )!!.dismiss()
+            progressDialog?.dismiss()
         }
     }
 

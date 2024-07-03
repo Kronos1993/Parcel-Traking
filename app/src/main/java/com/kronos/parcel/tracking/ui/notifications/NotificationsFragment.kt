@@ -10,19 +10,19 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.binding.fragmentBinding
-import com.kronos.core.util.LoadingDialog
+import com.kronos.core.util.getProgressDialog
 import com.kronos.core.util.show
 import com.kronos.domain.model.event.EventModel
 import com.kronos.parcel.tracking.R
 import com.kronos.parcel.tracking.databinding.FragmentNotificationsBinding
-import com.kronos.parcel.tracking.ui.home.ParcelAdapter
 import com.kronos.parcel.tracking.ui.parcel_details.state.ParcelDetailState
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.Hashtable
 
 @AndroidEntryPoint
 class NotificationsFragment : Fragment() {
@@ -30,6 +30,7 @@ class NotificationsFragment : Fragment() {
     private val binding by fragmentBinding<FragmentNotificationsBinding>(R.layout.fragment_notifications)
 
     private val viewModel by viewModels<NotificationsViewModel>()
+    private var progressDialog: SweetAlertDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,10 +39,19 @@ class NotificationsFragment : Fragment() {
     ) = binding.run {
         viewModel = this@NotificationsFragment.viewModel
         lifecycleOwner = this@NotificationsFragment.viewLifecycleOwner
+        progressDialog = getProgressDialog(
+            requireContext(),
+            com.kronos.resources.R.string.loading_dialog_text,
+            com.kronos.resources.R.color.colorPrimary
+        )
+        root
+    }
+
+    override fun onStart() {
+        super.onStart()
         observeViewModel()
         initViews()
         initViewModel()
-        root
     }
 
     private fun observeViewModel() {
@@ -84,17 +94,9 @@ class NotificationsFragment : Fragment() {
 
     private fun handleLoading(b: Boolean) {
         if (b) {
-            LoadingDialog.getProgressDialog(
-                requireContext(),
-                R.string.loading_dialog_text,
-                com.kronos.resources.R.color.colorSecondaryVariant
-            )!!.show()
+            progressDialog?.show()
         } else {
-            LoadingDialog.getProgressDialog(
-                requireContext(),
-                R.string.loading_dialog_text,
-                com.kronos.resources.R.color.colorSecondaryVariant
-            )!!.dismiss()
+            progressDialog?.dismiss()
         }
     }
 
