@@ -27,7 +27,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,7 +37,7 @@ class ParcelDetailsViewModel @Inject constructor(
     private var parcelLocalRepository: ParcelLocalRepository,
     private var eventLocalRepository: EventLocalRepository,
     private var urlProvider: UrlProvider,
-    var logger:ILogger,
+    var logger: ILogger,
 ) : ParentViewModel() {
 
     private val _parcel = MutableLiveData<ParcelModel>()
@@ -61,18 +62,18 @@ class ParcelDetailsViewModel @Inject constructor(
     var priceError = ObservableField<String?>()
     var notes = ObservableField<String?>()
 
-    fun validateField() : Boolean{
+    fun validateField(): Boolean {
         var valid = true
-        if (trackingNumber.get().orEmpty().isEmpty()){
+        if (trackingNumber.get().orEmpty().isEmpty()) {
             valid = false
             trackingNumberError.set(context.getString(com.kronos.resources.R.string.required_field))
-        }else{
+        } else {
             trackingNumberError.set(null)
         }
-        if (name.get().orEmpty().isEmpty()){
+        if (name.get().orEmpty().isEmpty()) {
             valid = false
             nameError.set(context.getString(com.kronos.resources.R.string.required_field))
-        }else{
+        } else {
             nameError.set(null)
         }
 
@@ -106,13 +107,17 @@ class ParcelDetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateParcelFields(){
-        viewModelScope.launch(Dispatchers.IO){
+    fun updateParcelFields() {
+        viewModelScope.launch(Dispatchers.IO) {
             parcel.value?.trackingNumber = trackingNumber.get().orEmpty()
             parcel.value?.name = name.get().orEmpty()
             parcel.value?.notes = notes.get().orEmpty()
             parcel.value?.dateUpdated = Calendar.getInstance().timeInMillis
-            parcel.value?.price = price.get()?.toDouble()?:0.0
+            parcel.value?.price =
+                if (price.get().orEmpty().isNotEmpty())
+                    price.get()?.toDouble() ?: 0.0
+                else
+                    0.0
             val call = async {
                 parcelLocalRepository.saveParcel(parcel.value!!)
                 updateEvents()
@@ -130,7 +135,11 @@ class ParcelDetailsViewModel @Inject constructor(
                     )
                 )
             }
-            logger.write(this::class.java.name, LoggerType.INFO,"Parcel ${parcel.value!!.trackingNumber} updated on ${Date().formatDate("dd-MM-yyyy")}")
+            logger.write(
+                this::class.java.name,
+                LoggerType.INFO,
+                "Parcel ${parcel.value!!.trackingNumber} updated on ${Date().formatDate("dd-MM-yyyy")}"
+            )
             call.await()
             //updateEvents()
             getEvents()
@@ -138,8 +147,8 @@ class ParcelDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun updateEvents(){
-        viewModelScope.launch{
+    private fun updateEvents() {
+        viewModelScope.launch {
             val call = async {
                 eventList.value!!.forEach {
                     it.parcel = parcel.value!!.trackingNumber
@@ -151,7 +160,7 @@ class ParcelDetailsViewModel @Inject constructor(
         }
     }
 
-    fun getImageUrl(parcel: ParcelModel):String{
+    fun getImageUrl(parcel: ParcelModel): String {
         return urlProvider.getServerUrl() + parcel.imageUrl
     }
 
@@ -162,7 +171,7 @@ class ParcelDetailsViewModel @Inject constructor(
                     sender: Observable?,
                     propertyId: Int
                 ) {
-                    if (trackingNumber.get().orEmpty().isNotEmpty()){
+                    if (trackingNumber.get().orEmpty().isNotEmpty()) {
                         trackingNumberError.set(null)
                     }
                 }
@@ -175,7 +184,7 @@ class ParcelDetailsViewModel @Inject constructor(
                     sender: Observable?,
                     propertyId: Int
                 ) {
-                    if (name.get()?.orEmpty()?.isNotEmpty() == true){
+                    if (name.get()?.orEmpty()?.isNotEmpty() == true) {
                         nameError.set(null)
                     }
                 }
