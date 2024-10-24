@@ -9,14 +9,10 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.CardView"
         android:id="@+id/cardViewParcel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_5"
-        app:cardBackgroundColor="@color/backgroundCardColor"
-        app:cardCornerRadius="@dimen/card_radius"
-        app:cardElevation="@dimen/cardview_default_elevation"
-        app:contentPadding="@dimen/margin_10">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

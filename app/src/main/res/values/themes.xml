@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ZipCargoTraking" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.ZipCargoTraking" parent="Theme.Material3.DayNight">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
@@ -82,7 +82,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="Widget.CardView" parent="Widget.MaterialComponents.CardView">
+    <style name="Widget.CardView" parent="Widget.Material3.CardView.Filled">
         <item name="cardBackgroundColor">@color/backgroundCardColor</item>
         <item name="cardElevation">@dimen/cardview_default_elevation</item>
         <item name="cardCornerRadius">@dimen/card_radius_6</item>
@@ -90,7 +90,7 @@
         <item name="contentPadding">@dimen/margin_5</item>
     </style>
 
-    <style name="Widget.CardView.NoBackground" parent="CardView">
+    <style name="Widget.CardView.NoBackground" parent="Widget.Material3.CardView.Filled">
         <item name="cardElevation">@dimen/cardview_default_elevation</item>
         <item name="cardCornerRadius">@dimen/card_radius_6</item>
         <item name="android:layout_margin">@dimen/margin_5</item>
@@ -136,6 +136,7 @@
 
     <style name="Widget.TextView.TextViewSmall" parent="Widget.MaterialComponents.TextView">
         <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:layout_marginTop">@dimen/margin_8</item>
         <item name="android:layout_marginStart">@dimen/margin_8</item>
         <item name="android:layout_marginEnd">@dimen/margin_8</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
@@ -150,14 +151,14 @@
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
-    <style name="Widget.NormalButton" parent="Widget.MaterialComponents.Button">
+    <style name="Widget.NormalButton" parent="Widget.Material3.Button">
         <item name="android:textColor">@color/white</item>
         <item name="cornerRadius">@dimen/margin_10</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
     </style>
 
-    <style name="Widget.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="Widget.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:textColor">@color/outlined_button_color</item>
         <item name="cornerRadius">@dimen/margin_10</item>
         <item name="strokeColor">@color/outlined_button_color</item>
@@ -166,13 +167,13 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
     </style>
 
-    <style name="FloatingActionButton" parent="Theme.ZipCargoTraking">
+    <style name="FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
         <item name="colorOnSecondary">@color/black</item>
     </style>
 
-    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+    <style name="TextInputLayoutStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeWidth">2dp</item>
         <item name="boxStrokeColor">@color/mtrl_textinput_default_box_stroke_color</item>
         <item name="errorTextAppearance">@color/alertColor</item>
@@ -186,11 +187,11 @@
     </style>
 
 
-    <style name="BottomSheetTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
+    <style name="BottomSheetTheme" parent="ThemeOverlay.Material3.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
 
-    <style name="BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+    <style name="BottomSheetStyle" parent="Widget.Material3.BottomSheet.Modal">
         <item name="background">@drawable/layout_topcorners_round_white</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -202,7 +203,7 @@
         <item name="android:indeterminateDrawable">@drawable/circle_progress_bar</item>
     </style>
 
-    <style name="Widget.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+    <style name="Widget.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
         <item name="colorSurface">@color/colorPrimary</item>
         <item name="colorOnSurfaceVariant">@color/colorPrimaryVariant</item>
     </style>
