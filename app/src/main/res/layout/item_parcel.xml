@@ -51,7 +51,7 @@
                     android:id="@+id/imageStatus"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_margin="@dimen/margin_5"
+                    android:layout_margin="@dimen/margin_3"
                     android:adjustViewBounds="true"
                     app:handle_parcel_status="@{!parcelModel.imageUrl.empty &amp;&amp; parcelModel.imageUrl!=null ? parcelModel.imageUrl : parcelModel.status}"
                     app:layout_constraintBottom_toTopOf="@id/guideline8H"
@@ -110,6 +110,7 @@
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_3"
                     android:text="@string/added"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -121,10 +122,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView"
                     app:layout_constraintEnd_toStartOf="@+id/guideline7"
                     app:layout_constraintStart_toEndOf="@+id/textView"
-                    app:layout_constraintTop_toBottomOf="@id/guideline8H"
+                    app:layout_constraintTop_toTopOf="@+id/textView"
                     app:time_transit_spent="@{parcelModel.dateAdded}" />
 
                 <androidx.constraintlayout.widget.Guideline
@@ -140,6 +141,7 @@
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_3"
                     android:text="@string/updated"
                     app:layout_constraintStart_toStartOf="@+id/guideline7"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -148,13 +150,13 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewParcelUpdated"
                     style="@style/Widget.TextView.TextViewSmall"
-                    android:textStyle="bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView2"
-                    app:layout_constraintTop_toBottomOf="@id/guideline8H"
+                    app:layout_constraintTop_toTopOf="@+id/textView2"
                     app:time_transit_spent="@{parcelModel.dateUpdated}" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

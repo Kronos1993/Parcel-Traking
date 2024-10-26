@@ -136,7 +136,6 @@
 
     <style name="Widget.TextView.TextViewSmall" parent="Widget.MaterialComponents.TextView">
         <item name="android:textColor">@color/primary_text_color</item>
-        <item name="android:layout_marginTop">@dimen/margin_8</item>
         <item name="android:layout_marginStart">@dimen/margin_8</item>
         <item name="android:layout_marginEnd">@dimen/margin_8</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
