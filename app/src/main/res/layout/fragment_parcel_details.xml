@@ -30,20 +30,6 @@
                     app:layout_constraintGuide_percent="0.05" />
 
                 <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.15" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline55"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.55" />
-
-                <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline95"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -224,12 +210,12 @@
                     style="@style/Widget.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
                     android:text="@string/barcode_scan"
                     app:icon="@drawable/ic_qr_code_scanner"
-                    android:layout_margin="10dp"
                     app:iconGravity="textEnd"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline55"
-                    app:layout_constraintStart_toStartOf="@+id/guideline15"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline5"
+                    app:layout_constraintStart_toStartOf="@+id/guideline05"
                     app:layout_constraintTop_toBottomOf="@+id/textViewParcelUpdated" />
 
 
@@ -242,9 +228,8 @@
                     android:text="@string/update"
                     app:icon="@drawable/ic_save"
                     app:iconGravity="textEnd"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline95"
-                    app:layout_constraintStart_toStartOf="@+id/guideline55"
+                    app:layout_constraintStart_toStartOf="@+id/guideline5"
                     app:layout_constraintTop_toBottomOf="@+id/textViewParcelUpdated" />
 
 
