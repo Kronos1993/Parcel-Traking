@@ -10,7 +10,7 @@
 
 
     <string-array name="times_entries">
-        <item>1H </item>
+        <item>1H</item>
         <item>2H</item>
         <item>4H</item>
         <item>6H</item>
